@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+  }
+
+h2{
+    text-align: center;
+    color:rgb(0, 0, 0);
+}
+
+.texto-ayuda {
+    display: block;
+    width: 33%;
+    text-align: center;
+}
+
+form {
+   display: grid;
+   grid-auto-rows: auto;
+    gap: 15px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    width: 33%;
+}
+
+form input {
+   width: 80%;
+    height: auto;
+    border-radius: 10%;
+}
+
+button {
+    width:80%;
+    height: auto;
+    margin-top: 7px;
+}
