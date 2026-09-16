@@ -29,7 +29,7 @@
 /* grid principal */
 .dashboard-inicio {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(9, 1fr);
     gap: 20px;
 }
 
@@ -39,11 +39,11 @@
     padding: 22px;
     border-radius: 18px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    grid-column: span 2;
+    grid-column: span 3;
 }
 
 .tarjeta-ancha2{
-    grid-column: span 3;
+    grid-column: span 4;
 }
 
 .tarjeta-ancha1{
@@ -74,6 +74,11 @@
     color: white;
     padding: 10px 16px;
     border-radius: 10px;
+    cursor: pointer;
+}
+.tarjeta button a {
+    text-decoration: none;
+    color: white;
     cursor: pointer;
 }
 
