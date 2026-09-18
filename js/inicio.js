@@ -69,4 +69,4 @@ function renderRecordatorios() {
   });
 }
 
-renderRecordatorios(); //la llamo acá abajo para que arranque sola, igual que renderEventos()
+renderRecordatorios(); //la llamo acá abajo para que arranque sola, igual que renderEventos

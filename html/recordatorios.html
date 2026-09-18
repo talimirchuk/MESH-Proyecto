@@ -21,7 +21,7 @@
         <button><a href="graficos.html"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
         <button><a href="recordatorios.html" class="active"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
-    </div> <!-- Se eliminó el </div> extra que estaba aquí -->
+    </div> 
 
     <main>
         <h1 style="view-transition-name: titulo-seccion;">Recordatorios</h1>
@@ -31,55 +31,12 @@
                     <button class="btn-accion-top">Agregar recordatorio</button>
                     <button class="btn-accion-top">Editar lista</button>
                 </div>
-
-                <!-- FILA 1 -->
-                <div class="fila-recordatorio">
-                    <span class="bloque">xx/mm</span>
-                    <span class="bloque">--:--</span>
-                    <span class="bloque">Categoría/Terapia</span>
-                    <div class="linea"></div>
-                    <button class="btn-check">Hecho</button>
-                </div>
-
-                <!-- FILA 2 -->
-                <div class="fila-recordatorio">
-                    <span class="bloque">xx/mm</span>
-                    <span class="bloque">--:--</span>
-                    <span class="bloque">Categoría/Terapia</span>
-                    <div class="linea"></div>
-                    <button class="btn-check">Hecho</button>
-                </div>
-
-                <!-- FILA 3 -->
-                <div class="fila-recordatorio">
-                    <span class="bloque">xx/mm</span>
-                    <span class="bloque">--:--</span>
-                    <span class="bloque">Categoría/Terapia</span>
-                    <div class="linea"></div>
-                    <button class="btn-check">Hecho</button>
-                </div>
-
-                <!-- FILA 4 -->
-                <div class="fila-recordatorio">
-                    <span class="bloque">xx/mm</span>
-                    <span class="bloque">--:--</span>
-                    <span class="bloque">Categoría/Terapia</span>
-                    <div class="linea"></div>
-                    <button class="btn-check">Hecho</button>
-                </div>
-
-                <!-- FILA 5 -->
-                <div class="fila-recordatorio">
-                    <span class="bloque">xx/mm</span>
-                    <span class="bloque">--:--</span>
-                    <span class="bloque">Categoría/Terapia</span>
-                    <div class="linea"></div>
-                    <button class="btn-check">Hecho</button>
-                </div>
-
+                <div id="contenedor-recordatorios"></div>
+    
             </div> 
         </div>
     </main>
-
-</body>
-</html>
+    
+    <script src="../js/recordatorios.js"></script>
+    </body>
+    </html>
