@@ -39,3 +39,34 @@ function renderEventos() {
 }
 
 renderEventos(); //fuera de cualquier función, para que se ejecute sola apenas carga la página
+
+function mostrarRecordatorios() {
+  const recordatorios = [
+    { hora: "10:00", tipo: "Medicación" },
+    { hora: "14:30", tipo: "Terapia" },
+    { hora: "18:00", tipo: "Actividad" },
+    { hora: "20:00", tipo: "Medicación" } // para probar que slice corta bien a 3
+  ]; 
+
+  const lineas = recordatorios.slice(0, 3).map(recordatorio => { //sin find porque acá no hay que buscar por día(en eventos sí)
+    return `${recordatorio.hora} - ${recordatorio.tipo}`; //arma el texto de la línea, todavía no es un <p>
+  });
+
+  return lineas;
+}
+
+function renderRecordatorios() {
+  const lineas = mostrarRecordatorios();
+  const tarjeta = document.querySelector(".tarjeta.tarjeta-ancha2"); //la tarjeta de recordatorios, no la de eventos
+
+  tarjeta.querySelectorAll("p").forEach(p => p.remove()); //por si se llama más de una vez
+  const boton = tarjeta.querySelector("button");
+
+  lineas.forEach(linea => {
+    const p = document.createElement("p");
+    p.textContent = linea;
+    tarjeta.insertBefore(p, boton);
+  });
+}
+
+renderRecordatorios(); //la llamo acá abajo para que arranque sola, igual que renderEventos()
