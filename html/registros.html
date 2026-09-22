@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MESH - Registros</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link class="css-path" rel="stylesheet" href="../css/registros.css">
     <meta name="view-transition" content="same-origin">
 </head>
 
@@ -20,12 +21,34 @@
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
         </div>
-    </div>
 
     <main>
         <h1 style="view-transition-name: titulo-seccion;">Registros</h1>
+        <div class="registros-grid">
+            <button class="registro-card" id="registro-sueno" data-tipo="sueno">
+                <i class="fa-solid fa-moon"></i>
+                <span>Sueño</span>
+            </button>
+            <button class="registro-card" id="registro-crisis" data-tipo="crisis">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Crisis</span>
+            </button>
+            <button class="registro-card" id="registro-medicacion" data-tipo="medicacion">
+                <i class="fa-solid fa-pills"></i>
+                <span>Medicación</span>
+            </button>
+            <button class="registro-card" id="registro-animo" data-tipo="animo">
+                <i class="fa-regular fa-face-smile"></i>
+                <span>Estado de ánimo</span>
+            </button>
+            <button class="registro-card" id="registro-menstruacion" data-tipo="menstruacion">
+                <i class="fa-solid fa-venus"></i>
+                <span>Menstruación</span>
+            </button>
+        </div>
+    </main>
     </main>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="../js/registros.js"></script>
 </body>
 </html>

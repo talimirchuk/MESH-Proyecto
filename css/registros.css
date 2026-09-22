@@ -1,0 +1,40 @@
+.registros-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /*divide el ancho en 3 columnas iguales*/
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "sueno    .          crisis"
+        ".        medicacion ."
+        "animo    .          menstruacion"; /*dibujo hecho con texto de cómo se reparte la grilla, . es que queda vacía*/
+    gap: 24px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+/*"la tarjeta con id registro-sueno, ubicala en el área que llamé sueno"*/
+#registro-sueno         { grid-area: sueno; }
+#registro-crisis        { grid-area: crisis; }
+#registro-medicacion    { grid-area: medicacion; }
+#registro-animo         { grid-area: animo; }
+#registro-menstruacion  { grid-area: menstruacion; }
+
+.registro-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 20px;
+    padding: 30px 20px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.registro-card i {
+    font-size: 32px;
+}
+
+.registro-card span {
+    font-size: 15px;
+}
