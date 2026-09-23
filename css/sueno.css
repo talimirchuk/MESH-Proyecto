@@ -91,12 +91,16 @@ form label {
 }
 
 .btn-periodo {
-    background-color: #c0c0c0;
+    background-color: #6cffce;
     border: none;
     padding: 2px 6px;
     font-size: 11px;
     cursor: pointer;
     border-radius: 3px;
+    
+}
+.btn-periodo:hover{
+    background-color: #6cffce;
 }
 
 .btn-periodo.seleccionado {
@@ -135,34 +139,61 @@ form label {
     font-size: 16px;
 }
 
-/*saca  borde azul cuando hacés clic en el input */
+/* Saca el contorno azul por defecto */
 .formulario:focus,
 .input-hora:focus {
     outline: none;
 }
 
-/* oculta el reloj (desplegable) */
+/* 1. CAMBIO DE FONDO PARA EL INPUT DE NÚMERO (¿Cuántas veces?) */
+.formulario:hover,
+.formulario:focus {
+    background-color: #c0c0c0; /* Pasa a un gris más oscuro */
+    cursor: pointer;
+}
+
+/* 2. CAMBIO DE FONDO PARA LA CAJA DE HORA (Pasa el mouse O hace clic) */
+.campo-hora-caja:hover,
+.campo-hora-caja:focus-within {
+    background-color: #c0c0c0; /* Pasa a un gris más oscuro */
+    cursor: pointer;
+}
+
+/* Oculta el icono del reloj en los inputs time */
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
 
+/* Oculta las flechitas del input de numero */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
-
-/* saca el resaltado de los 2 dígitos de hora y minutos al hacer clic */
+/* Estado normal de la hora */
+input[type="time"]::-webkit-datetime-edit,
 input[type="time"]::-webkit-datetime-edit-fields-wrapper,
 input[type="time"]::-webkit-datetime-edit-text,
 input[type="time"]::-webkit-datetime-edit-hour-field,
 input[type="time"]::-webkit-datetime-edit-minute-field {
     background: transparent !important;
-    color: inherit !important;
+    color: #555555 !important;
 }
 
-
-
-/* occulta las flechas arriba y abajo en Chrome,Safari,Edge,Opera */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+/* 3. CAMBIO DEL TEXTO XX:XX (Pasa el mouse por la caja O hace clic para escribir) */
+.campo-hora-caja:hover input[type="time"]::-webkit-datetime-edit,
+.campo-hora-caja:hover input[type="time"]::-webkit-datetime-edit-fields-wrapper,
+.campo-hora-caja:hover input[type="time"]::-webkit-datetime-edit-text,
+.campo-hora-caja:hover input[type="time"]::-webkit-datetime-edit-hour-field,
+.campo-hora-caja:hover input[type="time"]::-webkit-datetime-edit-minute-field,
+input[type="time"]:focus::-webkit-datetime-edit,
+input[type="time"]:focus::-webkit-datetime-edit-fields-wrapper,
+input[type="time"]:focus::-webkit-datetime-edit-text,
+input[type="time"]:focus::-webkit-datetime-edit-hour-field,
+input[type="time"]:focus::-webkit-datetime-edit-minute-field {
+    background: transparent !important;
+    color: #000000 !important; /* Texto negro bien claro */
+    font-weight: bold;
 }
