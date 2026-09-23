@@ -1,6 +1,12 @@
 body {
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 40px 0; /* Espaciado superior e inferior para no pegar al borde */
 }
 
 .encabezado {
@@ -8,10 +14,9 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    width: 90%;
+    max-width: 900px;
 }
-
 .btn-volver {
     position: absolute;
     left: 20px;
@@ -28,9 +33,11 @@ h1 {
 form {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    width: 80%;
-    margin: 0 auto;
+    gap: 20px 40px;
+    width: 90%;
+    max-width: 900px;
+    flex: 1; /* Ocupa todo el alto restante entre el encabezado y el final */
+    align-content: space-evenly; /* Distribuye verticalmente las preguntas y el botón */
 }
 
 .caja-pregunta {
