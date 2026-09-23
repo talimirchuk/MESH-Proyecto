@@ -100,7 +100,7 @@ form label {
     
 }
 .btn-periodo:hover{
-    background-color: #6cffce;
+    background-color: red;
 }
 
 .btn-periodo.seleccionado {
@@ -121,6 +121,10 @@ form label {
     border-radius: 4px;
 }
 
+.btn-opcion:hover{
+    background-color: red;
+}
+
 .btn-opcion.seleccionado {
     background-color: #888;
     color: white;
@@ -138,6 +142,9 @@ form label {
     cursor: pointer;
     font-size: 16px;
 }
+#guardar:hover{
+    background-color: red;
+}
 
 /* Saca el contorno azul por defecto */
 .formulario:focus,
@@ -148,14 +155,14 @@ form label {
 /* 1. CAMBIO DE FONDO PARA EL INPUT DE NÚMERO (¿Cuántas veces?) */
 .formulario:hover,
 .formulario:focus {
-    background-color: #c0c0c0; /* Pasa a un gris más oscuro */
+    background-color: yellow; 
     cursor: pointer;
 }
 
 /* 2. CAMBIO DE FONDO PARA LA CAJA DE HORA (Pasa el mouse O hace clic) */
 .campo-hora-caja:hover,
 .campo-hora-caja:focus-within {
-    background-color: #c0c0c0; /* Pasa a un gris más oscuro */
+    background-color: yellow; 
     cursor: pointer;
 }
 
@@ -194,6 +201,6 @@ input[type="time"]:focus::-webkit-datetime-edit-text,
 input[type="time"]:focus::-webkit-datetime-edit-hour-field,
 input[type="time"]:focus::-webkit-datetime-edit-minute-field {
     background: transparent !important;
-    color: #000000 !important; /* Texto negro bien claro */
+    color: blue !important; /* Texto negro bien claro */
     font-weight: bold;
 }
