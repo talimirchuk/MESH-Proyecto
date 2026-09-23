@@ -1,11 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crisis</title>
+    <title>MESH - Registro de Crisis</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/crisis.css">
+    <meta name="view-transition" content="same-origin">
 </head>
 <body>
+
+    <main class="crisis-container">
+        <!-- ENCABEZADO CON BOTÓN DE REGRESO Y TÍTULO -->
+        <header class="crisis-header">
+            <a href="registros.html" class="btn-volver" aria-label="Volver a Registros">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div class="crisis-titulo">
+                <h1>CRISIS</h1>
+                <i class="fa-solid fa-triangle-exclamation icono-alerta"></i>
+            </div>
+        </header>
+
+        <!-- FORMULARIO DE REGISTRO -->
+        <form id="form-crisis" class="crisis-grid">
+            
+            <!-- FILA 1: ¿Hubo crisis? y Tipo de crisis -->
+            <div class="form-group">
+                <label>¿Hubo crisis?</label>
+                <div class="opciones-toggle" id="toggle-crisis">
+                    <button type="button" class="btn-toggle seleccionado" data-value="si">Sí</button>
+                    <button type="button" class="btn-toggle" data-value="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo-crisis">Tipo de crisis</label>
+                <div class="select-container">
+                    <select id="tipo-crisis" class="select-gris">
+                        <option value="" disabled selected hidden></option>
+                        <option value="ausencia">Ausencia</option>
+                        <option value="focal">Focal</option>
+                        <option value="generalizada">Generalizada</option>
+                        <option value="otra">Otra</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+            </div>
+
+            <!-- FILA 2: Día / Mes / Año -->
+            <div class="form-group">
+                <label for="fecha-dia">Día</label>
+                <input 
+                    type="number" 
+                    id="fecha-dia" 
+                    class="input-gris" 
+                    min="1" 
+                    max="31" 
+                    placeholder=""
+                    onkeydown="if(['-', '+', 'e', 'E', ',', '.'].includes(event.key)) event.preventDefault();"
+                    oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2); if(this.value > 31) this.value = 31;"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="fecha-mes">Mes</label>
+                <div class="select-container">
+                    <select id="fecha-mes" class="select-gris">
+                        <option value="" disabled selected hidden></option>
+                        <option value="01">Enero</option>
+                        <option value="02">Febrero</option>
+                        <option value="03">Marzo</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Mayo</option>
+                        <option value="06">Junio</option>
+                        <option value="07">Julio</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha-anio">Año</label>
+                <input 
+                    type="number" 
+                    id="fecha-anio" 
+                    class="input-gris" 
+                    placeholder=""
+                    onkeydown="if(['-', '+', 'e', 'E', ',', '.'].includes(event.key)) event.preventDefault();"
+                    oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"
+                >
+            </div>
+
+            <!-- FILA 3: ¿Hubo pastilla de rescate? y ¿Cuál? -->
+            <div class="form-group">
+                <label>¿Hubo pastilla de rescate?</label>
+                <div class="opciones-toggle" id="toggle-pastilla">
+                    <button type="button" class="btn-toggle" data-value="si">Sí</button>
+                    <button type="button" class="btn-toggle seleccionado" data-value="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre-pastilla">¿Cuál?</label>
+                <input type="text" id="nombre-pastilla" class="input-gris" placeholder="">
+            </div>
+
+            <!-- FILA 4: Observaciones y Botón Guardar -->
+            <div class="form-group">
+                <label for="observaciones">Observaciones</label>
+                <textarea id="observaciones" rows="4" class="textarea-gris"></textarea>
+            </div>
+
+            <div class="form-group group-submit">
+                <button type="submit" id="btn-guardar" class="btn-guardar">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Guardar registro</span>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- ARCHIVOS JS ENLAZADOS -->
     <script src="../js/registros.js"></script>
+    <script src="../js/crisis.js"></script>
 </body>
 </html>
