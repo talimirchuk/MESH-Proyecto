@@ -151,7 +151,7 @@ input[type="time"]::-webkit-datetime-edit-text,
 input[type="time"]::-webkit-datetime-edit-hour-field,
 input[type="time"]::-webkit-datetime-edit-minute-field {
     background: transparent !important;
-    color: red !important;
+    color: inherit !important;
 }
 
 /* oculta las flechas arriba/abajo en Firefox */
