@@ -161,10 +161,7 @@ input[type="time"]::-webkit-datetime-edit-minute-field {
     color: inherit !important;
 }
 
-/* oculta las flechas arriba/abajo en Firefox */
-input[type="number"] {
-    -moz-appearance: textfield;
-}
+
 
 /* occulta las flechas arriba y abajo en Chrome,Safari,Edge,Opera */
 input[type="number"]::-webkit-outer-spin-button,
