@@ -1,12 +1,11 @@
 body {
     margin: 0;
-    padding: 0;
+    padding: 40px 30px; /* 40px arriba/abajo, 30px a los lados */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    padding: 40px 0; /* Espaciado superior e inferior para no pegar al borde */
 }
 
 .encabezado {
@@ -14,8 +13,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 90%;
-    max-width: 900px;
+    width: 100%;
 }
 .btn-volver {
     position: absolute;
@@ -34,8 +32,7 @@ form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px 40px;
-    width: 90%;
-    max-width: 900px;
+    width: 100%;
     flex: 1; /* Ocupa todo el alto restante entre el encabezado y el final */
     align-content: space-evenly; /* Distribuye verticalmente las preguntas y el botón */
 }
@@ -54,7 +51,7 @@ form label {
 }
 
 .formulario {
-    width: 80%;
+    width: 100%;
     height: 30px;
     background-color: #d9d9d9;
     border: none;
@@ -69,7 +66,7 @@ form label {
     align-items: center;
     position: relative; /* Permite centrar el input de forma absoluta */
     justify-content: flex-end;
-    width: 80%;
+    width: 100%;
     height: 30px;
     background-color: #d9d9d9;
     border-radius: 4px;
