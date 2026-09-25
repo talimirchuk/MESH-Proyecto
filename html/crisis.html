@@ -3,134 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESH - Registro de Crisis</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/crisis.css">
-    <meta name="view-transition" content="same-origin">
+    <title>Crisis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/crisis.css">
 </head>
 <body>
 
-    <main class="crisis-container">
-        <!-- ENCABEZADO CON BOTÓN DE REGRESO Y TÍTULO -->
-        <header class="crisis-header">
-            <a href="registros.html" class="btn-volver" aria-label="Volver a Registros">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-            <div class="crisis-titulo">
-                <h1>CRISIS</h1>
-                <i class="fa-solid fa-triangle-exclamation icono-alerta"></i>
+    <div class="encabezado">
+        <a href="index.html" class="btn-volver">←</a>
+        <h1>CRISIS <i class="fa-solid fa-triangle-exclamation"></i></h1>
+    </div>
+
+    <form id="form-crisis">
+        <!-- Fila 1 -->
+        <div class="caja-pregunta">
+            <label>¿Hubo crisis?</label>
+            <div class="opciones-si-no" id="grupo-hubo-crisis">
+                <button type="button" class="btn-opcion" data-valor="si">Sí</button>
+                <button type="button" class="btn-opcion" data-valor="no">No</button>
             </div>
-        </header>
+        </div>
 
-        <!-- FORMULARIO DE REGISTRO -->
-        <form id="form-crisis" class="crisis-grid">
-            
-            <!-- FILA 1: ¿Hubo crisis? y Tipo de crisis -->
-            <div class="form-group">
-                <label>¿Hubo crisis?</label>
-                <div class="opciones-toggle" id="toggle-crisis">
-                    <button type="button" class="btn-toggle seleccionado" data-value="si">Sí</button>
-                    <button type="button" class="btn-toggle" data-value="no">No</button>
-                </div>
+        <div class="caja-pregunta oculto" id="caja-tipo-crisis">
+            <label for="tipo-crisis">Tipo de crisis</label>
+            <input type="text" class="formulario" id="tipo-crisis" placeholder="Describa el tipo">
+        </div>
+
+        <!-- Fila 2: Día / Mes / Año agrupados -->
+        <div class="grupo-fecha-triple">
+            <div class="caja-pregunta">
+                <label for="dia">Día</label>
+                <input type="number" class="formulario" id="dia" min="1" max="31" placeholder="DD">
             </div>
-
-            <div class="form-group">
-                <label for="tipo-crisis">Tipo de crisis</label>
-                <div class="select-container">
-                    <select id="tipo-crisis" class="select-gris">
-                        <option value="" disabled selected hidden></option>
-                        <option value="ausencia">Ausencia</option>
-                        <option value="focal">Focal</option>
-                        <option value="generalizada">Generalizada</option>
-                        <option value="otra">Otra</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down select-arrow"></i>
-                </div>
+            <div class="caja-pregunta">
+                <label for="mes">Mes</label>
+                <select class="formulario" id="mes">
+                    <option value="" disabled selected>Mes</option>
+                    <option value="Enero">Enero</option>
+                    <option value="Febrero">Febrero</option>
+                    <option value="Marzo">Marzo</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Mayo">Mayo</option>
+                    <option value="Junio">Junio</option>
+                    <option value="Julio">Julio</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Septiembre">Septiembre</option>
+                    <option value="Octubre">Octubre</option>
+                    <option value="Noviembre">Noviembre</option>
+                    <option value="Diciembre">Diciembre</option>
+                </select>
             </div>
-
-            <!-- FILA 2: Día / Mes / Año -->
-            <div class="form-group">
-                <label for="fecha-dia">Día</label>
-                <input 
-                    type="number" 
-                    id="fecha-dia" 
-                    class="input-gris" 
-                    min="1" 
-                    max="31" 
-                    placeholder=""
-                    onkeydown="if(['-', '+', 'e', 'E', ',', '.'].includes(event.key)) event.preventDefault();"
-                    oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2); if(this.value > 31) this.value = 31;"
-                >
+            <div class="caja-pregunta">
+                <label for="anio">Año</label>
+                <input type="number" class="formulario" id="anio" placeholder="AAAA" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="fecha-mes">Mes</label>
-                <div class="select-container">
-                    <select id="fecha-mes" class="select-gris">
-                        <option value="" disabled selected hidden></option>
-                        <option value="01">Enero</option>
-                        <option value="02">Febrero</option>
-                        <option value="03">Marzo</option>
-                        <option value="04">Abril</option>
-                        <option value="05">Mayo</option>
-                        <option value="06">Junio</option>
-                        <option value="07">Julio</option>
-                        <option value="08">Agosto</option>
-                        <option value="09">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down select-arrow"></i>
-                </div>
+        <!-- Espaciador si no se muestra Tipo de Crisis -->
+        <div class="espaciador-vacio"></div>
+
+        <!-- Fila 3 -->
+        <div class="caja-pregunta">
+            <label>¿Hubo pastilla de rescate?</label>
+            <div class="opciones-si-no" id="grupo-pastilla">
+                <button type="button" class="btn-opcion" data-valor="si">Sí</button>
+                <button type="button" class="btn-opcion" data-valor="no">No</button>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="fecha-anio">Año</label>
-                <input 
-                    type="number" 
-                    id="fecha-anio" 
-                    class="input-gris" 
-                    placeholder=""
-                    onkeydown="if(['-', '+', 'e', 'E', ',', '.'].includes(event.key)) event.preventDefault();"
-                    oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);"
-                >
-            </div>
+        <div class="caja-pregunta">
+            <label for="cual-pastilla">¿Cuál?</label>
+            <input type="text" class="formulario" id="cual-pastilla">
+        </div>
 
-            <!-- FILA 3: ¿Hubo pastilla de rescate? y ¿Cuál? -->
-            <div class="form-group">
-                <label>¿Hubo pastilla de rescate?</label>
-                <div class="opciones-toggle" id="toggle-pastilla">
-                    <button type="button" class="btn-toggle" data-value="si">Sí</button>
-                    <button type="button" class="btn-toggle seleccionado" data-value="no">No</button>
-                </div>
-            </div>
+        <!-- Fila 4 -->
+        <div class="caja-pregunta">
+            <label for="observaciones">Observaciones</label>
+            <textarea class="formulario" id="observaciones"></textarea>
+        </div>
 
-            <div class="form-group">
-                <label for="nombre-pastilla">¿Cuál?</label>
-                <input type="text" id="nombre-pastilla" class="input-gris" placeholder="">
-            </div>
+        <div class="caja-pregunta" style="justify-content: flex-end;">
+            <button id="guardar" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar registro
+            </button>
+        </div>
+    </form>
 
-            <!-- FILA 4: Observaciones y Botón Guardar -->
-            <div class="form-group">
-                <label for="observaciones">Observaciones</label>
-                <textarea id="observaciones" rows="4" class="textarea-gris"></textarea>
-            </div>
-
-            <div class="form-group group-submit">
-                <button type="submit" id="btn-guardar" class="btn-guardar">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    <span>Guardar registro</span>
-                </button>
-            </div>
-
-        </form>
-    </main>
-
-    <!-- ARCHIVOS JS ENLAZADOS -->
-    <script src="../js/registros.js"></script>
-    <script src="../js/crisis.js"></script>
+    <script src="js/crisis.js"></script>
 </body>
 </html>
