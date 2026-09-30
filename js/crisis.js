@@ -93,12 +93,6 @@ botonGuardar.addEventListener("click", async function () {
     await guardarRegistro(registro);
     recordarTipo(registro.tipo); // recién se recuerda si el guardado salió bien
 
-    alert("Registro guardado");
-
-    // limpia el formulario para cargar otro
-    inputTipo.value = "";
-    inputDia.value = "";
-    document.getElementById("mes").value = "";
-    inputAnio.value = "";
-    document.getElementById("observaciones").value = "";
+    // Redirige directamente a la pantalla de registros
+    window.location.href = "registros.html";
 });
