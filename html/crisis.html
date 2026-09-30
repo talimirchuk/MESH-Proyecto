@@ -3,92 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crisis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/crisis.css">
+    <title>MESH-Crisis</title>
+    <link rel="stylesheet" href="../css/crisis.css">
 </head>
 <body>
 
     <div class="encabezado">
-        <a href="index.html" class="btn-volver">←</a>
+        <a href="../html/registros.html" class="btn-volver"><i class="fa-solid fa-left-long"></i></a>
         <h1>CRISIS <i class="fa-solid fa-triangle-exclamation"></i></h1>
     </div>
 
-    <form id="form-crisis">
-        <!-- Fila 1 -->
-        <div class="caja-pregunta">
-            <label>¿Hubo crisis?</label>
-            <div class="opciones-si-no" id="grupo-hubo-crisis">
-                <button type="button" class="btn-opcion" data-valor="si">Sí</button>
-                <button type="button" class="btn-opcion" data-valor="no">No</button>
-            </div>
-        </div>
-
-        <div class="caja-pregunta oculto" id="caja-tipo-crisis">
+    <form>
+        <div class="caja-pregunta caja-tipo">
             <label for="tipo-crisis">Tipo de crisis</label>
-            <input type="text" class="formulario" id="tipo-crisis" placeholder="Describa el tipo">
+            <input type="text" class="formulario" id="tipo-crisis" list="lista-tipos" autocomplete="off">
+            <datalist id="lista-tipos">
+                <!-- las opciones las genera crisis.js -->
+            </datalist>
         </div>
 
-        <!-- Fila 2: Día / Mes / Año agrupados -->
-        <div class="grupo-fecha-triple">
-            <div class="caja-pregunta">
-                <label for="dia">Día</label>
-                <input type="number" class="formulario" id="dia" min="1" max="31" placeholder="DD">
-            </div>
-            <div class="caja-pregunta">
-                <label for="mes">Mes</label>
-                <select class="formulario" id="mes">
-                    <option value="" disabled selected>Mes</option>
-                    <option value="Enero">Enero</option>
-                    <option value="Febrero">Febrero</option>
-                    <option value="Marzo">Marzo</option>
-                    <option value="Abril">Abril</option>
-                    <option value="Mayo">Mayo</option>
-                    <option value="Junio">Junio</option>
-                    <option value="Julio">Julio</option>
-                    <option value="Agosto">Agosto</option>
-                    <option value="Septiembre">Septiembre</option>
-                    <option value="Octubre">Octubre</option>
-                    <option value="Noviembre">Noviembre</option>
-                    <option value="Diciembre">Diciembre</option>
-                </select>
-            </div>
-            <div class="caja-pregunta">
-                <label for="anio">Año</label>
-                <input type="number" class="formulario" id="anio" placeholder="AAAA" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);">
-            </div>
+        <div class="caja-pregunta caja-fecha">
+            <label for="dia">Día</label>
+            <input type="number" class="formulario" id="dia" min="1" max="31">
         </div>
 
-        <!-- Espaciador si no se muestra Tipo de Crisis -->
-        <div class="espaciador-vacio"></div>
-
-        <!-- Fila 3 -->
-        <div class="caja-pregunta">
-            <label>¿Hubo pastilla de rescate?</label>
-            <div class="opciones-si-no" id="grupo-pastilla">
-                <button type="button" class="btn-opcion" data-valor="si">Sí</button>
-                <button type="button" class="btn-opcion" data-valor="no">No</button>
-            </div>
+        <div class="caja-pregunta caja-fecha">
+            <label for="mes">Mes</label>
+            <select class="formulario" id="mes">
+                <option value=""></option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
         </div>
 
-        <div class="caja-pregunta">
-            <label for="cual-pastilla">¿Cuál?</label>
-            <input type="text" class="formulario" id="cual-pastilla">
+        <div class="caja-pregunta caja-fecha">
+            <label for="anio">Año</label>
+            <input type="number" class="formulario" id="anio" min="1000" max="9999">
         </div>
 
-        <!-- Fila 4 -->
-        <div class="caja-pregunta">
+        <div class="caja-pregunta caja-izq">
             <label for="observaciones">Observaciones</label>
             <textarea class="formulario" id="observaciones"></textarea>
         </div>
 
-        <div class="caja-pregunta" style="justify-content: flex-end;">
-            <button id="guardar" type="submit">
-                <i class="fa-solid fa-floppy-disk"></i> Guardar registro
-            </button>
-        </div>
+        <button id="guardar" type="button"><i class="fa-regular fa-floppy-disk"></i> Guardar registro</button>
     </form>
 
-    <script src="js/crisis.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="../js/crisis.js"></script>
 </body>
 </html>
