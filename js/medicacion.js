@@ -48,20 +48,20 @@ function guardarDosisEnHistorial(nuevaDosis) {
 // la llamo apenas abre la pantalla para cargar las opciones
 cargarHistorialDosis();
 
-// mock guardado de medicacion (despues se cambia por el fetch del back)
+// borrador guardado de medicacion (despues se cambia por el fetch del back)
 async function guardarRegistro(registro) {
     const registros = JSON.parse(localStorage.getItem("registrosMedicacion")) || [];
     registros.push(registro);
-    localStorage.setItem("registrosMedicacion", JSON.stringify(registros));
+    localStorage.setItem("registrosMedicacion", JSON.stringify(registros)); //Convierte la lista actualizada a texto y la vuelve a guardar en la memoria del navegador
 }
 
 // evento al tocar el boton guardar
 const formMedicacion = document.getElementById("form-medicacion");
 
 formMedicacion.addEventListener("submit", async function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Al enviar un formulario el navegador por defecto recarga la página, Con e.preventDefault(), lo evito esto
 
-    const dosisIngresada = document.getElementById("dosis").value.trim();
+    const dosisIngresada = document.getElementById("dosis").value.trim(); //.value obtiene el texto exacto que escribió el usuario adentro de esa casilla en ese momento, trim elimina todos los espacios en blanco sobrantes que haya al principio y al final
 
     if (dosisIngresada) {
         guardarDosisEnHistorial(dosisIngresada);
@@ -78,8 +78,8 @@ formMedicacion.addEventListener("submit", async function(e) {
         observaciones: document.getElementById("observaciones").value.trim()
     };
 
-    await guardarRegistro(registro);
+    await guardarRegistro(registro); //orden de esperar a que los datos se guarden del todo antes de pasar a la línea que sigue ( volver a registros.html)
 
-    // me regresa a la pantalla principal de registros
+    // me devuelve a la pantalla principal de registros
     window.location.href = "registros.html";
 });
