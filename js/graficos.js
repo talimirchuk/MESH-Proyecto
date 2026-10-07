@@ -1,3 +1,4 @@
+//GRRÁFICOS
 const ctx = document.getElementById('graficoCanvas')
 const names = ['Tali','Vicky','Martu','Juan','Sofi']
 const ages = [14, 15, 16, 17, 18]
@@ -29,3 +30,44 @@ data: {
     }]
 }
 })
+
+//COSAS DEL ENCABEZADO
+// desplegable interactivo de categorías
+const btnDropdown = document.getElementById("btn-dropdown-categorias");
+const listaCategorias = document.getElementById("lista-categorias");
+const checkboxes = document.querySelectorAll(".checkbox-categoria");
+const textoCategorias = document.getElementById("texto-categorias-seleccionadas");
+
+// abrir y cerrar el desplegable al hacer clic en el botón
+btnDropdown.addEventListener("click", function() {
+    listaCategorias.classList.toggle("abierto");
+});
+
+// selecciónar de hasta máximo 2 opciones
+checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener("change", function() {
+        const seleccionados = document.querySelectorAll(".checkbox-categoria:checked");
+
+        // si intenta marcar más de 2, desmarca la última elegida
+        if (seleccionados.length > 2) {
+            this.checked = false;
+            return;
+        }
+
+        // actualizar el texto del botón con lo que tildó el usuario
+        const nombresSeleccionados = Array.from(seleccionados).map(c => c.parentElement.textContent.trim());
+        
+        if (nombresSeleccionados.length > 0) {
+            textoCategorias.textContent = nombresSeleccionados.join(" y ");
+        } else {
+            textoCategorias.textContent = "Categorías (hasta 2)";
+        }
+    });
+});
+
+// cerrar la lista si el usuario hace clic fuera del desplegable
+document.addEventListener("click", function(e) {
+    if (!btnDropdown.contains(e.target) && !listaCategorias.contains(e.target)) {
+        listaCategorias.classList.remove("abierto");
+    }
+});

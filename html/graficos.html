@@ -26,23 +26,41 @@
         <h1 style="view-transition-name: titulo-seccion;">Gráficos</h1>
         
         <section class="historial">
-            <div class="select-categoría">
-                <select id="categoría">
-                    <option value="" disabled selected hidden>Categoría</option>
-                    <option value="sueno">Sueño</option>
-                    <option value="medicacion">Medicación</option>
-                    <option value="crisis">Crisis</option>
-                    <option value="estado_animo">Estado de ánimo</option>
-                    <option value="menstruacion">Menstruación</option>
-                </select>
+            <!-- Dropdown personalizado de Categorías con casillas -->
+            <div class="dropdown-categorias">
+                <button type="button" class="btn-dropdown" id="btn-dropdown-categorias">
+                    <span id="texto-categorias-seleccionadas">Categorías (hasta 2)</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+        
+                <!-- Lista desplegable oculta con casillas -->
+                <div class="lista-opciones" id="lista-categorias">
+                    <label class="opcion-item">
+                        <input type="checkbox" value="sueno" class="checkbox-categoria"> Sueño
+                    </label>
+                    <label class="opcion-item">
+                        <input type="checkbox" value="medicacion" class="checkbox-categoria"> Medicación
+                    </label>
+                    <label class="opcion-item">
+                        <input type="checkbox" value="crisis" class="checkbox-categoria"> Crisis
+                    </label>
+                    <label class="opcion-item">
+                        <input type="checkbox" value="estado_animo" class="checkbox-categoria"> Estado de ánimo
+                    </label>
+                    <label class="opcion-item">
+                        <input type="checkbox" value="menstruacion" class="checkbox-categoria"> Menstruación
+                    </label>
+                </div>
             </div>
         
-            <div class="select-periodo">
-                <select id="periodo">
-                    <option value="" disabled selected hidden>Fecha</option>
-                    <option value="7dias">Últimos 7 días</option>
-                    <option value="15dias">Últimos 15 días</option>
-                    <option value="30dias">Últimos 30 días</option>
+            <!-- Filtro de tiempo personalizado: "Últimos [ 7 ] [ Días v ]" -->
+            <div class="filtro-tiempo">
+                <span>Últimos</span>
+                <input type="number" id="cantidad-tiempo" value="7" min="1">
+                <select id="unidad-tiempo">
+                    <option value="dias" selected>Días</option>
+                    <option value="meses">Meses</option>
+                    <option value="anos">Años</option>
                 </select>
             </div>
         </section>
