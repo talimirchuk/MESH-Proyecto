@@ -6,7 +6,6 @@
     <title>MESH - Gráficos</title>
     <link rel="stylesheet" href="../css/style.css">
     <link class="css-path" rel="stylesheet" href="../css/graficos.css">
-
     <meta name="view-transition" content="same-origin">
 </head>
 
@@ -18,17 +17,15 @@
         <button><a href="paciente.html"><i class="fa-solid fa-user"></i>Paciente</a></button>
         <button><a href="historial.html"><i class="fa-solid fa-book-medical"></i>Historial</a></button>
         <button><a href="registros.html"><i class="fa-solid fa-plus"></i>Registros</a></button>
-        <button><a href="graficos.html"class="active"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
+        <button><a href="graficos.html" class="active"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
-        </div>
     </div>
 
     <main>
         <h1 style="view-transition-name: titulo-seccion;">Gráficos</h1>
-        <section class="historial">
-            <input type="text" placeholder="Buscar gráfico" id="buscar">
         
+        <section class="historial">
             <div class="select-categoría">
                 <select id="categoría">
                     <option value="" disabled selected hidden>Categoría</option>
@@ -36,44 +33,31 @@
                     <option value="medicacion">Medicación</option>
                     <option value="crisis">Crisis</option>
                     <option value="estado_animo">Estado de ánimo</option>
-                    <option value="conducta">Menstruación</option>
+                    <option value="menstruacion">Menstruación</option>
                 </select>
             </div>
         
             <div class="select-periodo">
                 <select id="periodo">
                     <option value="" disabled selected hidden>Fecha</option>
-                    <option value="hoy">Hoy</option>
                     <option value="7dias">Últimos 7 días</option>
+                    <option value="15dias">Últimos 15 días</option>
                     <option value="30dias">Últimos 30 días</option>
-                    <option value="mes">Este mes</option>
-                    <option value="año">Este año</option>
                 </select>
             </div>
         </section>
 
         <div class="dashboard-gráficos">
+            <!-- Acá Chart.js va a hacer el gráfico -->
 
-            <div class="tarjeta">
-                
-            </div>
-
-            <div class="tarjeta">
-                
-            </div>
-
-            <div class="tarjeta">
-               
-            </div>
-
-            <div class="tarjeta">
-               
-            </div>
-
+            <canvas id="graficoCanvas"></canvas>
         </div>
 
     </main>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
+    <script src="../js/graficos.js"></script>
 
 </body>
 </html>

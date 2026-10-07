@@ -1,12 +1,6 @@
-.tarjeta {
-    background-color: white;
-    padding: 22px;
-    border-radius: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    grid-column: span 2;
-    height: 180px;
+body{
+    height: 100vh;
 }
-
 .historial {
     display: flex;
     gap: 15px;
@@ -36,9 +30,15 @@
     border-radius: 4px;
 }
 
-/* grid principal */
 .dashboard-gráficos {
-    display: grid;
-    grid-template-columns: repeat(4, 2fr);
-    gap: 40px;
+    background-color: white;
+    padding: 22px;
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 900px;
+}
+
+#graficoCanvas{
+max-width: 100%;
 }
