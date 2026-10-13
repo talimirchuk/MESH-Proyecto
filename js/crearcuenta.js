@@ -91,5 +91,5 @@ formRegistro.addEventListener("submit", async function(e) {
     await guardarUsuario(nuevoUsuario);
 
     /* me manda a la pantalla de iniciar sesion */
-    window.location.href = "../html/inicio.html";
+    window.location.href = "../html/cuentacreada.html";
 });

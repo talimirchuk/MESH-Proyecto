@@ -22,20 +22,20 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1.5vh 0;
+    padding: 2vh 0;
 }
 
 .formulario-registro {
     width: 100%;
     max-width: 449px;
-    height: 96vh;
+    height: 92vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .titulo-form {
-    font-size: clamp(26px, 2.2vw, 34px);
+    font-size: clamp(24px, 2.5vh, 36px);
     font-weight: 700;
     color: #128258;
 }
@@ -62,7 +62,7 @@ body {
 /* RECTANGULOS DE FIGMA CON ALTURA AJUSTADA */
 .input-estilo {
     width: 100%;
-    height: 44px;
+    height: 5.2vh;
     background-color: #E4F2F0;
     border: none;
     border-radius: 20px;
@@ -95,8 +95,8 @@ body {
 /* TEXTO DE ERROR ROJO DEBAJO DE LAS CASILLAS */
 .texto-error {
     color: #d93025;
-    font-size: 12px;
-    min-height: 15px;
+    font-size: clamp(10px, 1.2vh, 12px);
+    min-height: 1.5vh;
     margin-left: 5px;
     font-weight: 500;
 }
@@ -104,7 +104,7 @@ body {
 /* BOTON CONTINUAR */
 .btn-continuar {
     width: 100%;
-    height: 58px;
+    height: 7.2vh;
     background: #97CBB9;
     border: none;
     border-radius: 74px;
