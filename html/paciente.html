@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESH - Paciente</title>
+    <title>Paciente - MESH</title>
 
     <link class="css-path" rel="stylesheet" href="../css/style.css">
     <link class="css-path" rel="stylesheet" href="../css/paciente.css">
@@ -13,7 +13,7 @@
 
 <body>
 
-    <!-- SIDEBAR -->
+    <!-- sidebar -->
     <div class="sidebar">
         <h2>MESH</h2>
         <button><a href="inicio.html"><i class="fa-solid fa-house"></i>Inicio</a></button>        
@@ -25,70 +25,95 @@
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
     </div>
 
+    <!-- contenido principal -->
     <main>
 
-        <!-- ENCABEZADO DE LA SECCIÓN PACIENTE -->
-        <section class="inicio-header">
-            <div class="paciente-perfil">
-                <div class="paciente-foto-placeholder"></div>
-                <h1 class="paciente-nombre" id="paciente-nombre">--</h1>
-            </div>
-
-            <!-- Encabezado con Botón de Editar -->
-            <div class="ficha-acciones">
-                <button class="btn-editar" id="btn-editar">
-                    <i class="fa-solid fa-pen-to-square"></i> Editar Ficha de Datos
-                </button>
-            </div>
+        <!-- encabezado paciente -->
+        <section class="inicio-header-paciente">
+            <h1 class="paciente-nombre-titulo" id="paciente-nombre">--</h1>
+            <div class="linea-verde-subrayado"></div>
         </section>
 
-        <!-- CONTENIDO FICHA DE DATOS -->
+        <!-- contenido ficha de datos -->
         <section class="ficha-paciente-container">
             <div class="datos-grid-dos-columnas">
 
-                <!-- COLUMNA IZQUIERDA -->
+                <!-- columna izquierda -->
                 <div class="columna-datos">
+                    
                     <div class="tarjeta-dato">
-                        <span class="label">Fecha de Nacimiento</span>
-                        <div class="campo-con-edicion">
-                            <p class="valor" id="paciente-nacimiento">--</p>
-                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        <label class="label">Fecha de nacimiento</label>
+                        <div class="caja-input-paciente">
+                            <span class="valor" id="paciente-nacimiento">--</span>
+                            <div class="btn-lapiz" id="btn-edit-nacimiento">
+                                <!-- svg unificado recuadro y lapiz -->
+                                <svg class="icono-editar-completo" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 33.2819C0 34.3411 0.420777 35.357 1.16976 36.1059C1.91875 36.8549 2.9346 37.2757 3.99383 37.2757H33.2819C34.3411 37.2757 35.357 36.8549 36.1059 36.1059C36.8549 35.357 37.2757 34.3411 37.2757 33.2819V17.3066C37.2757 16.9535 37.1354 16.6149 36.8858 16.3652C36.6361 16.1156 36.2975 15.9753 35.9444 15.9753C35.5914 15.9753 35.2527 16.1156 35.0031 16.3652C34.7534 16.6149 34.6132 16.9535 34.6132 17.3066V33.2819C34.6132 33.635 34.4729 33.9736 34.2232 34.2232C33.9736 34.4729 33.635 34.6132 33.2819 34.6132H3.99383C3.64075 34.6132 3.30213 34.4729 3.05247 34.2232C2.80281 33.9736 2.66255 33.635 2.66255 33.2819V3.99383C2.66255 3.64075 2.80281 3.30213 3.05247 3.05247C3.30213 2.80281 3.64075 2.66255 3.99383 2.66255H21.3004C21.6535 2.66255 21.9921 2.52229 22.2418 2.27263C22.4914 2.02297 22.6317 1.68435 22.6317 1.33128C22.6317 0.978199 22.4914 0.639584 22.2418 0.389921C21.9921 0.140259 21.6535 0 21.3004 0H3.99383C2.9346 0 1.91875 0.420777 1.16976 1.16976C0.420777 1.91875 0 2.9346 0 3.99383V33.2819Z" fill="black"/>
+                                    <g transform="translate(6, 6) scale(0.8)">
+                                        <path d="M30.6239 3.83512C30.8727 4.08466 31.0123 4.42265 31.0123 4.775C31.0123 5.12735 30.8727 5.46534 30.6239 5.71488L27.8469 8.49458L22.5218 3.16948L25.2988 0.389779C25.5484 0.140204 25.887 0 26.24 0C26.593 0 26.9316 0.140204 27.1812 0.389779L30.6239 3.83246V3.83512ZM25.9644 10.3743L20.6393 5.04924L2.49938 23.1919C2.35284 23.3384 2.24252 23.5171 2.17721 23.7137L0.0338564 30.1411C-0.00501469 30.2583 -0.0105338 30.384 0.0179166 30.5041C0.0463669 30.6242 0.107666 30.7341 0.194961 30.8214C0.282257 30.9087 0.392109 30.97 0.51224 30.9984C0.632372 31.0269 0.758047 31.0214 0.875222 30.9825L7.30262 28.8391C7.49902 28.7746 7.67769 28.6652 7.82448 28.5196L25.9644 10.3743Z" fill="black"/>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
                     <div class="tarjeta-dato">
-                        <span class="label">Diagnóstico</span>
-                        <div class="campo-con-edicion">
-                            <p class="valor" id="paciente-diagnostico">--</p>
-                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        <label class="label">Diagnóstico</label>
+                        <div class="caja-input-paciente">
+                            <span class="valor" id="paciente-diagnostico">--</span>
+                            <div class="btn-lapiz" id="btn-edit-diagnostico">
+                                <svg class="icono-editar-completo" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 33.2819C0 34.3411 0.420777 35.357 1.16976 36.1059C1.91875 36.8549 2.9346 37.2757 3.99383 37.2757H33.2819C34.3411 37.2757 35.357 36.8549 36.1059 36.1059C36.8549 35.357 37.2757 34.3411 37.2757 33.2819V17.3066C37.2757 16.9535 37.1354 16.6149 36.8858 16.3652C36.6361 16.1156 36.2975 15.9753 35.9444 15.9753C35.5914 15.9753 35.2527 16.1156 35.0031 16.3652C34.7534 16.6149 34.6132 16.9535 34.6132 17.3066V33.2819C34.6132 33.635 34.4729 33.9736 34.2232 34.2232C33.9736 34.4729 33.635 34.6132 33.2819 34.6132H3.99383C3.64075 34.6132 3.30213 34.4729 3.05247 34.2232C2.80281 33.9736 2.66255 33.635 2.66255 33.2819V3.99383C2.66255 3.64075 2.80281 3.30213 3.05247 3.05247C3.30213 2.80281 3.64075 2.66255 3.99383 2.66255H21.3004C21.6535 2.66255 21.9921 2.52229 22.2418 2.27263C22.4914 2.02297 22.6317 1.68435 22.6317 1.33128C22.6317 0.978199 22.4914 0.639584 22.2418 0.389921C21.9921 0.140259 21.6535 0 21.3004 0H3.99383C2.9346 0 1.91875 0.420777 1.16976 1.16976C0.420777 1.91875 0 2.9346 0 3.99383V33.2819Z" fill="black"/>
+                                    <g transform="translate(6, 6) scale(0.8)">
+                                        <path d="M30.6239 3.83512C30.8727 4.08466 31.0123 4.42265 31.0123 4.775C31.0123 5.12735 30.8727 5.46534 30.6239 5.71488L27.8469 8.49458L22.5218 3.16948L25.2988 0.389779C25.5484 0.140204 25.887 0 26.24 0C26.593 0 26.9316 0.140204 27.1812 0.389779L30.6239 3.83246V3.83512ZM25.9644 10.3743L20.6393 5.04924L2.49938 23.1919C2.35284 23.3384 2.24252 23.5171 2.17721 23.7137L0.0338564 30.1411C-0.00501469 30.2583 -0.0105338 30.384 0.0179166 30.5041C0.0463669 30.6242 0.107666 30.7341 0.194961 30.8214C0.282257 30.9087 0.392109 30.97 0.51224 30.9984C0.632372 31.0269 0.758047 31.0214 0.875222 30.9825L7.30262 28.8391C7.49902 28.7746 7.67769 28.6652 7.82448 28.5196L25.9644 10.3743Z" fill="black"/>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
                     <div class="tarjeta-dato">
-                        <span class="label">Contacto Principal</span>
-                        <div class="campo-con-edicion">
-                            <p class="valor" id="paciente-contacto">--</p>
-                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        <label class="label">Contacto principal</label>
+                        <div class="caja-input-paciente">
+                            <span class="valor" id="paciente-contacto">--</span>
+                            <div class="btn-lapiz" id="btn-edit-contacto">
+                                <svg class="icono-editar-completo" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 33.2819C0 34.3411 0.420777 35.357 1.16976 36.1059C1.91875 36.8549 2.9346 37.2757 3.99383 37.2757H33.2819C34.3411 37.2757 35.357 36.8549 36.1059 36.1059C36.8549 35.357 37.2757 34.3411 37.2757 33.2819V17.3066C37.2757 16.9535 37.1354 16.6149 36.8858 16.3652C36.6361 16.1156 36.2975 15.9753 35.9444 15.9753C35.5914 15.9753 35.2527 16.1156 35.0031 16.3652C34.7534 16.6149 34.6132 16.9535 34.6132 17.3066V33.2819C34.6132 33.635 34.4729 33.9736 34.2232 34.2232C33.9736 34.4729 33.635 34.6132 33.2819 34.6132H3.99383C3.64075 34.6132 3.30213 34.4729 3.05247 34.2232C2.80281 33.9736 2.66255 33.635 2.66255 33.2819V3.99383C2.66255 3.64075 2.80281 3.30213 3.05247 3.05247C3.30213 2.80281 3.64075 2.66255 3.99383 2.66255H21.3004C21.6535 2.66255 21.9921 2.52229 22.2418 2.27263C22.4914 2.02297 22.6317 1.68435 22.6317 1.33128C22.6317 0.978199 22.4914 0.639584 22.2418 0.389921C21.9921 0.140259 21.6535 0 21.3004 0H3.99383C2.9346 0 1.91875 0.420777 1.16976 1.16976C0.420777 1.91875 0 2.9346 0 3.99383V33.2819Z" fill="black"/>
+                                    <g transform="translate(6, 6) scale(0.8)">
+                                        <path d="M30.6239 3.83512C30.8727 4.08466 31.0123 4.42265 31.0123 4.775C31.0123 5.12735 30.8727 5.46534 30.6239 5.71488L27.8469 8.49458L22.5218 3.16948L25.2988 0.389779C25.5484 0.140204 25.887 0 26.24 0C26.593 0 26.9316 0.140204 27.1812 0.389779L30.6239 3.83246V3.83512ZM25.9644 10.3743L20.6393 5.04924L2.49938 23.1919C2.35284 23.3384 2.24252 23.5171 2.17721 23.7137L0.0338564 30.1411C-0.00501469 30.2583 -0.0105338 30.384 0.0179166 30.5041C0.0463669 30.6242 0.107666 30.7341 0.194961 30.8214C0.282257 30.9087 0.392109 30.97 0.51224 30.9984C0.632372 31.0269 0.758047 31.0214 0.875222 30.9825L7.30262 28.8391C7.49902 28.7746 7.67769 28.6652 7.82448 28.5196L25.9644 10.3743Z" fill="black"/>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- COLUMNA DERECHA -->
+                <!-- columna derecha -->
                 <div class="columna-datos">
+                    
                     <div class="seccion-medicamentos">
-                        <span class="label-titulo">Medicamentos Habituales</span>
+                        <label class="label">Medicamentos habituales</label>
                         <div id="contenedor-medicamentos" class="contenedor-medicamentos">
-                            <!-- Se renderizan dinámicamente las tarjetas de medicamentos -->
+                            <!-- pildoras de medicamentos -->
                         </div>
                     </div>
 
                     <div class="tarjeta-dato">
-                        <span class="label">Observaciones</span>
-                        <div class="campo-con-edicion">
-                            <p class="valor" id="paciente-observaciones">--</p>
-                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        <label class="label">Observaciones</label>
+                        <div class="caja-input-paciente caja-observaciones">
+                            <span class="valor" id="paciente-observaciones">--</span>
+                            <div class="btn-lapiz" id="btn-edit-observaciones">
+                                <svg class="icono-editar-completo" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 33.2819C0 34.3411 0.420777 35.357 1.16976 36.1059C1.91875 36.8549 2.9346 37.2757 3.99383 37.2757H33.2819C34.3411 37.2757 35.357 36.8549 36.1059 36.1059C36.8549 35.357 37.2757 34.3411 37.2757 33.2819V17.3066C37.2757 16.9535 37.1354 16.6149 36.8858 16.3652C36.6361 16.1156 36.2975 15.9753 35.9444 15.9753C35.5914 15.9753 35.2527 16.1156 35.0031 16.3652C34.7534 16.6149 34.6132 16.9535 34.6132 17.3066V33.2819C34.6132 33.635 34.4729 33.9736 34.2232 34.2232C33.9736 34.4729 33.635 34.6132 33.2819 34.6132H3.99383C3.64075 34.6132 3.30213 34.4729 3.05247 34.2232C2.80281 33.9736 2.66255 33.635 2.66255 33.2819V3.99383C2.66255 3.64075 2.80281 3.30213 3.05247 3.05247C3.30213 2.80281 3.64075 2.66255 3.99383 2.66255H21.3004C21.6535 2.66255 21.9921 2.52229 22.2418 2.27263C22.4914 2.02297 22.6317 1.68435 22.6317 1.33128C22.6317 0.978199 22.4914 0.639584 22.2418 0.389921C21.9921 0.140259 21.6535 0 21.3004 0H3.99383C2.9346 0 1.91875 0.420777 1.16976 1.16976C0.420777 1.91875 0 2.9346 0 3.99383V33.2819Z" fill="black"/>
+                                    <g transform="translate(6, 6) scale(0.8)">
+                                        <path d="M30.6239 3.83512C30.8727 4.08466 31.0123 4.42265 31.0123 4.775C31.0123 5.12735 30.8727 5.46534 30.6239 5.71488L27.8469 8.49458L22.5218 3.16948L25.2988 0.389779C25.5484 0.140204 25.887 0 26.24 0C26.593 0 26.9316 0.140204 27.1812 0.389779L30.6239 3.83246V3.83512ZM25.9644 10.3743L20.6393 5.04924L2.49938 23.1919C2.35284 23.3384 2.24252 23.5171 2.17721 23.7137L0.0338564 30.1411C-0.00501469 30.2583 -0.0105338 30.384 0.0179166 30.5041C0.0463669 30.6242 0.107666 30.7341 0.194961 30.8214C0.282257 30.9087 0.392109 30.97 0.51224 30.9984C0.632372 31.0269 0.758047 31.0214 0.875222 30.9825L7.30262 28.8391C7.49902 28.7746 7.67769 28.6652 7.82448 28.5196L25.9644 10.3743Z" fill="black"/>
+                                    </g>
+                                </svg>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>

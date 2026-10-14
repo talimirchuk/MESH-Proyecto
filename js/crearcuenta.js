@@ -26,7 +26,7 @@ activarOcultarMostrarContrasena("confirmar-contrasena", "ojo-confirmar-contrasen
 
 /* funcion p/ guardar el usuario, preparado para el backend */
 async function guardarUsuario(usuario) {
-    localStorage.setItem("usuarioRegistrado", JSON.stringify(usuario));
+    localStorage.setItem("usuarioLogueado", JSON.stringify(usuario));
 }
 
 /* capturo el formulario */

@@ -11,21 +11,19 @@ body {
     display: flex;
     gap: 30px;
     height: 100vh;
-    background-color: #F1F5F4;
+    background-color: #ffffff;
 }
 .fa-solid{
 color:#252525;
 }
 .sidebar {
     width: 260px;
-    background-color:#b1aeae;
-    border-radius: 28px;
+    background-color:#D5EDE4;
     padding: 24px 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    height: 105vh;
+    height: 100%;
 }
 
 .sidebar h2 {
