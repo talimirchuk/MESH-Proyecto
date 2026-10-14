@@ -23,19 +23,97 @@
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
     </div> 
 
-    <main>
-        <h1 style="view-transition-name: titulo-seccion;">Recordatorios</h1>
+   <main>
+        <div class="encabezado-seccion">
+            <div class="caja-titulo">
+                <h1 style="view-transition-name: titulo-seccion;" class="titulo-pagina">Recordatorios</h1>
+                <div class="sublinea-decorativa"></div>
+            </div>
+
+            <button id="btn-abrir-modal" class="btn-nuevo-recordatorio" type="button">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.9997 8.33301V31.6663M8.33301 19.9997H31.6663" stroke="#1E1E1E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Nuevo recordatorio</span>
+            </button>
+        </div>
+
         <div class="dashboard-recordatorios">
-            <div class="tarjeta">
-                <div class="acciones-derecha">
-                    <button class="btn-accion-top">Agregar recordatorio</button>
-                    <button class="btn-accion-top">Editar lista</button>
-                </div>
-                <div id="contenedor-recordatorios"></div>
-    
-            </div> 
+            <div id="contenedor-recordatorios" class="lista-tarjetas-dias">
+                <!-- Se llena dinámicamente desde el JS -->
+            </div>
         </div>
     </main>
+
+    <!-- OVERLAY DEL CUADRANTE EMERGENTE -->
+    <div id="overlay-modal" class="overlay-modal oculto">
+        <div class="cuadrante-modal">
+            
+            <h2 class="titulo-cuadrante">Crear un nuevo recordatorio</h2>
+
+            <form id="form-nuevo-recordatorio" class="form-recordatorio">
+                
+                <!-- DESCRIPCIÓN -->
+                <div class="bloque-campo">
+                    <div class="encabezado-campo">
+                        <svg width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M44 56H4C2.93913 56 1.92172 55.5786 1.17157 54.8284C0.421427 54.0783 0 53.0609 0 52V4C0 2.93913 0.421427 1.92172 1.17157 1.17157C1.92172 0.421427 2.93913 0 4 0H44C45.0609 0 46.0783 0.421427 46.8284 1.17157C47.5786 1.92172 48 2.93913 48 4V52C48 53.0609 47.5786 54.0783 46.8284 54.8284C46.0783 55.5786 45.0609 56 44 56ZM4 4V52H44V4H4Z" fill="black"/>
+                            <path d="M9.14258 32H31.1426V36H9.14258V32ZM9.14258 42H23.1426V46H9.14258V42Z" fill="black"/>
+                        </svg>
+                        <label for="input-descripcion">Descripción</label>
+                    </div>
+                    <input type="text" id="input-descripcion" class="input-caja input-descripcion" placeholder="Resumen breve del recordatorio" maxlength="35" required>
+                </div>
+
+                <!-- HORA -->
+                <div class="bloque-campo">
+                    <div class="encabezado-campo">
+                        <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M30.7998 58.7998C46.2638 58.7998 58.7998 46.2638 58.7998 30.7998C58.7998 15.3358 46.2638 2.7998 30.7998 2.7998C15.3358 2.7998 2.7998 15.3358 2.7998 30.7998C2.7998 46.2638 15.3358 58.7998 30.7998 58.7998Z" stroke="black" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M39.1998 42L32.4406 35.2408C31.3903 34.1908 30.8001 32.7667 30.7998 31.2816V14" stroke="black" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <label for="input-hora">Hora</label>
+                    </div>
+                    <input type="text" id="input-hora" class="input-caja input-hora" placeholder="hh:mm" maxlength="5" required>
+                </div>
+
+                <!-- FECHA -->
+                <div class="bloque-campo">
+                    <div class="encabezado-campo">
+                        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M53.76 5.04H42V0.56C42 0.252 41.748 0 41.44 0H37.52C37.212 0 36.96 0.252 36.96 0.56V5.04H19.04V0.56C19.04 0.252 18.788 0 18.48 0H14.56C14.252 0 14 0.252 14 0.56V5.04H2.24C1.001 5.04 0 6.041 0 7.28V53.76C0 54.999 1.001 56 2.24 56H53.76C54.999 56 56 54.999 56 53.76V7.28C56 6.041 54.999 5.04 53.76 5.04ZM50.96 50.96H5.04V24.36H50.96V50.96ZM5.04 19.6V10.08H14V13.44C14 13.748 14.252 14 14.56 14H18.48C18.788 14 19.04 13.748 19.04 13.44V10.08H36.96V13.44C36.96 13.748 37.212 14 37.52 14H41.44C41.748 14 42 13.748 42 13.44V10.08H50.96V19.6H5.04Z" fill="black"/>
+                        </svg>
+                        <label for="input-fecha">Fecha</label>
+                    </div>
+                    <input type="text" id="input-fecha" class="input-caja input-fecha" placeholder="dd/mm/aaaa" maxlength="10" required>
+                </div>
+
+                <!-- BOTÓN GUARDAR -->
+                <button type="submit" id="btn-guardar" class="btn-guardar-registro">
+                    <svg width="50" height="54" viewBox="0 0 85 93" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.8852 89.1411H63.9723C68.5433 89.1411 72.927 87.1395 76.1592 83.5767C79.3913 80.0139 81.2071 75.1817 81.2071 70.1431V24.6146C81.2069 23.3551 80.7528 22.1472 79.9447 21.2567L65.2347 5.04199C64.4269 4.15123 63.3311 3.65066 62.1885 3.65039H20.8852C16.3143 3.65039 11.9305 5.65195 8.69835 9.21475C5.4662 12.7776 3.65039 17.6098 3.65039 22.6483V70.1431C3.65039 75.1817 5.4662 80.0139 8.69835 83.5767C11.9305 87.1395 16.3143 89.1411 20.8852 89.1411Z" stroke="black" stroke-width="7.3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M63.9718 89.1411V55.8947C63.9718 54.6351 63.5179 53.427 62.7099 52.5363C61.9018 51.6456 60.8059 51.1452 59.6631 51.1452H25.1935C24.0507 51.1452 22.9548 51.6456 22.1468 52.5363C21.3387 53.427 20.8848 54.6351 20.8848 55.8947V89.1411M29.5022 3.65039H55.3544V17.8988C55.3544 19.1585 54.9005 20.3665 54.0924 21.2572C53.2844 22.1479 52.1885 22.6483 51.0457 22.6483H33.8109C32.6681 22.6483 31.5722 22.1479 30.7642 21.2572C29.9561 20.3665 29.5022 19.1585 29.5022 17.8988V3.65039Z" stroke="black" stroke-width="7.3"/>
+                        <path d="M38.1201 70.1436H46.7375" stroke="black" stroke-width="7.3" stroke-linecap="round"/>
+                    </svg>
+                    <span>Guardar registro</span>
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- OVERLAY DE CONFIRMACIÓN DE BORRADO -->
+    <div id="overlay-confirmar" class="overlay-modal oculto">
+        <div class="modal-confirmar">
+            <h3>¿Eliminar recordatorio?</h3>
+            <p>Esta acción eliminará el registro de la lista.</p>
+            <div class="botones-confirmar">
+                <button id="btn-cancelar-eliminar" class="btn-cancelar" type="button">Cancelar</button>
+                <button id="btn-confirmar-eliminar" class="btn-eliminar" type="button">Eliminar</button>
+            </div>
+        </div>
+    </div>
     
     <script src="../js/recordatorios.js"></script>
     </body>

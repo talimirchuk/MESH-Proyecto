@@ -1,69 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief&family=Inter:wght@400;500;700&family=Itim&display=swap');
+
+/* variables del proyecto figma */
+:root {
+    --verde-header-tarjeta: #14B8A6;
+    --verde-boton-nuevo: #ACD8C0;
+    --verde-boton-guardar: #90E6D8;
+    --verde-sublinea: #21884F;
+    --verde-caja-desc: rgba(62, 210, 198, 0.7);
+    --verde-caja-hora: #BBEFEB;
+    --negro-texto: #1D2A3A;
+    --rojo-basura: #F95353;
+    
+    --fuente-titulos: 'Comic Relief', sans-serif;
+    --fuente-boton-nuevo: 'Itim', cursive, sans-serif;
+    --fuente-cuerpo: 'Inter', sans-serif;
+}
+
+/* NO TOCAMOS BODY NI MAIN PARA RESPETAR STYLE.CSS Y LA SIDEBAR */
+
+/* encabezado de la seccion */
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.caja-titulo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.titulo-pagina {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(38px, 4vw, 77px);
+    font-weight: 400;
+    color: var(--negro-texto);
+    margin: 0;
+    line-height: 100%;
+}
+
+.sublinea-decorativa {
+    width: 100%;
+    max-width: 484px;
+    height: 5px;
+    background-color: var(--verde-sublinea);
+    border-radius: 5px;
+}
+
+/* boton nuevo recordatorio */
+.btn-nuevo-recordatorio {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: var(--verde-boton-nuevo);
+    border: none;
+    border-radius: 115px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-nuevo-recordatorio svg {
+    display: block;
+    width: clamp(24px, 2.5vw, 40px);
+    height: clamp(24px, 2.5vw, 40px);
+    flex-shrink: 0;
+}
+
+.btn-nuevo-recordatorio span {
+    font-family: var(--fuente-boton-nuevo);
+    font-size: clamp(22px, 2.5vw, 50px);
+    color: var(--negro-texto);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.btn-nuevo-recordatorio:hover {
+    background-color: #98cbb0;
+}
+
+/* lista de tarjetas por dia dentro del dashboard */
 .dashboard-recordatorios {
-    display: grid;
-    grid-template-columns: 1fr;
+    width: 100%;
+}
+
+.lista-tarjetas-dias {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1071px;
+}
+
+.tarjeta-dia-bloque {
+    width: 100%;
+    border-radius: 63px;
+    overflow: hidden;
+}
+
+.encabezado-tarjeta-dia {
+    background-color: var(--verde-header-tarjeta);
+    padding: 22px 35px;
+    border-top-left-radius: 52px;
+    border-top-right-radius: 52px;
+}
+
+.texto-fecha-header {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(28px, 2.8vw, 49px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 100%;
+}
+
+.cuerpo-tarjeta-dia {
+    background-color: #ffffff;
+    border: 8px solid var(--verde-header-tarjeta);
+    border-top: none;
+    border-bottom-left-radius: 63px;
+    border-bottom-right-radius: 63px;
+    padding: 25px 35px;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
-
-
-.acciones-derecha {
+.fila-item-recordatorio {
     display: flex;
-    justify-content: flex-end; /* botones hacia la derecha */
-    gap: 15px;
-    width: 100%;
-    margin-bottom: 15px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-.btn-accion-top {
-    width: auto;
-    padding: 10px 15px;
-    background-color: #d9d9d9;
+.hora-item {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(22px, 2.2vw, 44px);
+    font-weight: 400;
+    color: var(--negro-texto);
+    min-width: 180px;
+}
+
+.texto-item {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(22px, 2.2vw, 44px);
+    font-weight: 400;
+    color: var(--negro-texto);
+    flex: 1;
+}
+
+.btn-borrar-item {
+    background: none;
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
     cursor: pointer;
-    text-align: center;
-    white-space: nowrap;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Filas con Grid auto-ajustable en las 3 primeras columnas */
-.fila-recordatorio {
-    display: grid;
-    grid-template-columns: max-content max-content max-content 1fr max-content; 
+.btn-borrar-item:hover svg path {
+    stroke-opacity: 1;
+}
+
+/* overlay: capa oscura de fondo */
+.overlay-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.overlay-modal.oculto {
+    display: none;
+}
+
+.cuadrante-modal {
+    background-color: #ffffff;
+    border-radius: 40px;
+    width: 90%;
+    max-width: 850px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.titulo-cuadrante {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(32px, 3.5vw, 65px);
+    font-weight: 400;
+    color: var(--negro-texto);
+    margin-bottom: 30px;
+    line-height: 100%;
+}
+
+.form-recordatorio {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.bloque-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.encabezado-campo {
+    display: flex;
     align-items: center;
     gap: 15px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eee;
 }
 
-/* Bloques grises dinámicos */
-.bloque {
-    text-align: center;
-    font-size: 14px;
-    width: auto;
-    height: auto;
-    padding: 6px 14px; 
-    background-color: #d9d9d9;
-    border-radius: 4px;
-    white-space: nowrap; 
+.encabezado-campo label {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(24px, 2.5vw, 45px);
+    font-weight: 400;
+    color: var(--negro-texto);
 }
 
-/* Línea separadora flexible */
-.linea {
-    height: 8px;
-    background-color: #c8bebd;
-    border-radius: 4px;
-    width: 100%;
-}
-
-/* Botón Hecho adaptativo */
-.btn-check {
-    width: auto;
-    height: auto;
-    padding: 6px 14px; 
-    background-color: #d9d9d9;
+.input-caja {
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
+    padding: 0 20px;
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(18px, 2vw, 32px);
+    color: var(--negro-texto);
+    height: 60px;
+}
+
+.input-caja:focus {
+    outline: none;
+}
+
+.input-descripcion {
+    background: var(--verde-caja-desc);
+    width: 100%;
+    max-width: 687px;
+}
+
+.input-hora {
+    background: var(--verde-caja-hora);
+    width: 100%;
+    max-width: 291px;
+}
+
+.input-fecha {
+    background: var(--verde-caja-hora);
+    width: 100%;
+    max-width: 380px;
+}
+
+.btn-guardar-registro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: var(--verde-boton-guardar);
+    border: none;
+    border-radius: 26.6px;
+    width: 100%;
+    max-width: 719px;
+    height: 80px;
     cursor: pointer;
-    white-space: nowrap; 
+    margin-top: 15px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-guardar-registro span {
+    font-family: var(--fuente-cuerpo);
+    font-size: clamp(24px, 2.5vw, 48px);
+    font-weight: 500;
+    color: var(--negro-texto);
+}
+
+.btn-guardar-registro:hover {
+    background-color: #7bd4c5;
+}
+
+/* cartel confirmar eliminar */
+.modal-confirmar {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.modal-confirmar h3 {
+    font-family: var(--fuente-cuerpo);
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.modal-confirmar p {
+    font-family: var(--fuente-cuerpo);
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.botones-confirmar {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-cancelar {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-eliminar {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    background: var(--rojo-basura);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
 }

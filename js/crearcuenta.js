@@ -65,6 +65,22 @@ formRegistro.addEventListener("submit", async function(e) {
         }
     });
 
+    const campoNombre = document.getElementById("nombre-completo");
+    const errorNombre = document.getElementById("error-nombre-completo");
+
+    if (campoNombre && campoNombre.value.trim()) {
+        const palabras = campoNombre.value.trim().split(" ").filter(function(p) {
+            return p.length > 0;
+        });
+
+        if (palabras.length < 2) {
+            if (errorNombre) {
+                errorNombre.textContent = "Ingresá tanto tu nombre como tu apellido";
+            }
+            hayErrores = true;
+        }
+    }
+    
     /* valido coincidencia de contrasenas */
     const valorContrasena = document.getElementById("contrasena").value;
     const valorConfirmar = document.getElementById("confirmar-contrasena").value;
@@ -80,7 +96,7 @@ formRegistro.addEventListener("submit", async function(e) {
 
     /* armo el objeto con los datos del usuario nuevo */
     const nuevoUsuario = {
-        nombreCompleto: document.getElementById("nombre-completo").value,
+        nombreCompleto: document.getElementById("nombre-completo").value.trim(),
         email: document.getElementById("email").value,
         contrasena: valorContrasena,
         fechaNacimiento: document.getElementById("fecha-nacimiento").value,
