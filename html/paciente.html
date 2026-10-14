@@ -25,49 +25,70 @@
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main>
 
         <!-- ENCABEZADO DE LA SECCIÓN PACIENTE -->
         <section class="inicio-header">
-            <div>
-                <h1>Ficha del Paciente</h1>
-                <p>Información general y de contacto</p>
-                <div class="paciente-perfil">
-                    <span class="paciente-nombre" id="paciente-nombre">--</span>
-                </div>
+            <div class="paciente-perfil">
+                <div class="paciente-foto-placeholder"></div>
+                <h1 class="paciente-nombre" id="paciente-nombre">--</h1>
             </div>
 
             <!-- Encabezado con Botón de Editar -->
             <div class="ficha-acciones">
                 <button class="btn-editar" id="btn-editar">
-                    <i class="fa-solid fa-pen-to-square"></i> Editar ficha de datos
+                    <i class="fa-solid fa-pen-to-square"></i> Editar Ficha de Datos
                 </button>
             </div>
         </section>
 
         <!-- CONTENIDO FICHA DE DATOS -->
         <section class="ficha-paciente-container">
-            <div class="datos-grid">
+            <div class="datos-grid-dos-columnas">
 
-                <div class="tarjeta-dato">
-                    <span class="label">Fecha de nacimiento</span>
-                    <p class="valor" id="paciente-nacimiento">--</p>
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="columna-datos">
+                    <div class="tarjeta-dato">
+                        <span class="label">Fecha de Nacimiento</span>
+                        <div class="campo-con-edicion">
+                            <p class="valor" id="paciente-nacimiento">--</p>
+                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-dato">
+                        <span class="label">Diagnóstico</span>
+                        <div class="campo-con-edicion">
+                            <p class="valor" id="paciente-diagnostico">--</p>
+                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-dato">
+                        <span class="label">Contacto Principal</span>
+                        <div class="campo-con-edicion">
+                            <p class="valor" id="paciente-contacto">--</p>
+                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="tarjeta-dato">
-                    <span class="label">Diagnóstico</span>
-                    <p class="valor" id="paciente-diagnostico">--</p>
-                </div>
+                <!-- COLUMNA DERECHA -->
+                <div class="columna-datos">
+                    <div class="seccion-medicamentos">
+                        <span class="label-titulo">Medicamentos Habituales</span>
+                        <div id="contenedor-medicamentos" class="contenedor-medicamentos">
+                            <!-- Se renderizan dinámicamente las tarjetas de medicamentos -->
+                        </div>
+                    </div>
 
-                <div class="tarjeta-dato">
-                    <span class="label">Contacto Principal</span>
-                    <p class="valor" id="paciente-contacto">--</p>
-                </div>
-
-                <div class="tarjeta-dato">
-                    <span class="label">Observaciones Generales</span>
-                    <p class="valor" id="paciente-observaciones">--</p>
+                    <div class="tarjeta-dato">
+                        <span class="label">Observaciones</span>
+                        <div class="campo-con-edicion">
+                            <p class="valor" id="paciente-observaciones">--</p>
+                            <i class="fa-solid fa-pen-to-square icono-editar-campo"></i>
+                        </div>
+                    </div>
                 </div>
 
             </div>

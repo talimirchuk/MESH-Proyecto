@@ -94,15 +94,23 @@ formRegistro.addEventListener("submit", async function(e) {
         return;
     }
 
-    /* armo el objeto con los datos del usuario nuevo */
-    const nuevoUsuario = {
-        nombreCompleto: document.getElementById("nombre-completo").value.trim(),
-        email: document.getElementById("email").value,
-        contrasena: valorContrasena,
-        fechaNacimiento: document.getElementById("fecha-nacimiento").value,
-        diagnostico: document.getElementById("diagnostico").value,
-        medicamentosHabituales: document.getElementById("medicamentos-habituales").value
-    };
+   /* armo el objeto con los datos del usuario nuevo */
+   const medicamentosTexto = document.getElementById("medicamentos-habituales").value;
+
+   /* separo por guion '-' y quito espacios sobrantes */
+   const listaMedicamentos = medicamentosTexto
+       .split("-")
+       .map(function(med) { return med.trim(); })
+       .filter(function(med) { return med.length > 0; });
+
+   const nuevoUsuario = {
+       nombreCompleto: document.getElementById("nombre-completo").value.trim(),
+       email: document.getElementById("email").value.trim(),
+       contrasena: valorContrasena,
+       fechaNacimiento: document.getElementById("fecha-nacimiento").value,
+       diagnostico: document.getElementById("diagnostico").value.trim(),
+       medicamentosHabituales: listaMedicamentos
+   };
 
     await guardarUsuario(nuevoUsuario);
 

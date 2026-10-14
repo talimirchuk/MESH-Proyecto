@@ -1,104 +1,98 @@
-/* FICHA DE DATOS PACIENTE */
-main h1 {
-    margin-top: 0;
-    color: #1a2b3c;
-    font-size: 28px;
-    margin-bottom: 5px;
-    
-}
-.ficha-acciones {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
+/* AJUSTES FICHA DE PACIENTE Y WIREFRAME */
 
-
-
-.btn-editar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #a8a8a8;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-editar:hover {
-    background-color: #000000;
-}
-
-.datos-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.tarjeta-dato {
-    background-color: white;
-    padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.tarjeta-dato.full-width {
-    grid-column: span 2;
-}
-
-.tarjeta-dato .label {
-    font-size: 15px;
-    color: #000000;
-    font-weight: 500;
-    display: block;
-    margin-bottom: 6px;
-}
-
-.tarjeta-dato .valor {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a2b3c;
-}
-.ficha-acciones h2 {
-    color: #26544c;
-    margin: 0;
-    margin-top: 5px;
-}
-
-.inicio-header p {
-    margin: 5px 0 0;
-    color: #6b7280;
-    margin-bottom: 5px;
-}
-.inicio-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* PERFIL Y FOTO DEL PACIENTE */
 .paciente-perfil {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 15px;
+    gap: 20px;
 }
 
-.paciente-foto {
-    width: 100px;
-    height: 100px;
-    border-radius: 80%;
-    object-fit: cover;
-    margin-bottom: 10px;
+.paciente-foto-placeholder {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #d9d9d9;
 }
 
 .paciente-nombre {
+    font-size: 32px;
+    font-weight: bold;
+    color: #000000;
+    border-bottom: 3px solid #26544c;
+    padding-bottom: 4px;
+    margin: 0;
+}
+
+.datos-grid-dos-columnas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.columna-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.campo-con-edicion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #d8e6e2;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-top: 6px;
+}
+
+.campo-con-edicion .valor {
+    margin: 0;
+    font-size: 16px;
+    color: #000000;
+}
+
+.icono-editar-campo {
+    color: #333333;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.seccion-medicamentos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label-titulo {
     font-size: 18px;
     font-weight: 600;
-    color: #1a2b3c;
+    color: #000000;
+}
+
+.tarjeta-medicamento {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #7ebf9b;
+    border-radius: 12px;
+    padding: 10px 14px;
+    background-color: #ffffff;
+}
+
+.info-medicamento {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icono-pildora {
+    font-size: 18px;
+    color: #d9534f;
+}
+
+.tarjeta-medicamento input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px 8px;
+    width: 100%;
 }
