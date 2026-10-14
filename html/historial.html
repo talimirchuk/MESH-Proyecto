@@ -22,38 +22,61 @@
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
         </div>
-    <main>
-        <h1 style="view-transition-name: titulo-seccion;">Historial</h1>
-
-        <section class="historial">
-            <input type="text" placeholder="Buscar" id="buscar">
+        <main class="main-historial">
         
-            <div class="select-categoría">
-                <select id="categoría">
-                    <option value="" disabled selected hidden>Categoría</option>
-                    <option value="sueno">Sueño</option>
-                    <option value="medicacion">Medicación</option>
-                    <option value="crisis">Crisis</option>
-                    <option value="estado_animo">Estado de ánimo</option>
-                </select>
+            <!-- Renglón 1: Ocupa todo el ancho disponible -->
+            <div class="renglon-superior">
+                <h1 class="titulo-historial" style="view-transition-name: titulo-seccion;">Historial</h1>
+                
+                <div class="buscador-container">
+                    <input type="search" id="buscar" placeholder="Buscar">
+                    <svg class="search-icon" width="28" height="28" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M32.5508 32.5498L25.2315 25.2175M29.2876 15.4182C29.2876 19.0964 27.8265 22.6238 25.2257 25.2247C22.6248 27.8255 19.0973 29.2866 15.4192 29.2866C11.7411 29.2866 8.21358 27.8255 5.61275 25.2247C3.01191 22.6238 1.55078 19.0964 1.55078 15.4182C1.55078 11.7401 3.01191 8.2126 5.61275 5.61177C8.21358 3.01094 11.7411 1.5498 15.4192 1.5498C19.0973 1.5498 22.6248 3.01094 25.2257 5.61177C27.8265 8.2126 29.2876 11.7401 29.2876 15.4182Z" stroke="black" stroke-width="3.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
             </div>
-        
-            <div class="select-periodo">
-                <select id="periodo">
-                    <option value="" disabled selected hidden>Fecha</option>
-                    <option value="hoy">Hoy</option>
-                    <option value="7dias">Últimos 7 días</option>
-                    <option value="30dias">Últimos 30 días</option>
-                    <option value="mes">Este mes</option>
-                    <option value="año">Este año</option>
-                </select>
+    
+            <!-- Renglón 2 y Tarjetas: Contenedor más angosto y centrado respecto al superior -->
+            <div class="contenedor-centrado">
+                
+                <!-- Filtros: Categoría (60%) y Fecha (40%) -->
+                <section class="historial-filtros">
+                    <div class="custom-dropdown dropdown-categoria" id="dropdown-categoria">
+                        <button class="dropdown-btn" type="button">
+                            <span id="label-categoria">Categoría</span>
+                            <svg width="20" height="12" viewBox="0 0 42 23" fill="none"><path d="M2.25 2.25L20.7226 20.1553L39.1953 2.25" stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item active" data-value="">Todas las Categorías</div>
+                            <div class="dropdown-item" data-value="sueño">Sueño</div>
+                            <div class="dropdown-item" data-value="medicación">Medicación</div>
+                            <div class="dropdown-item" data-value="crisis">Crisis</div>
+                            <div class="dropdown-item" data-value="estado de ánimo">Estado de Ánimo</div>
+                            <div class="dropdown-item" data-value="menstruación">Menstruación</div>
+                        </div>
+                    </div>
+    
+                    <div class="custom-dropdown dropdown-periodo" id="dropdown-periodo">
+                        <button class="dropdown-btn" type="button">
+                            <span id="label-periodo">Fecha</span>
+                            <svg width="20" height="12" viewBox="0 0 42 23" fill="none"><path d="M2.25 2.25L20.7226 20.1553L39.1953 2.25" stroke="black" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item active" data-value="">Todas las Fechas</div>
+                            <div class="dropdown-item" data-value="7dias">Últimos 7 Días</div>
+                            <div class="dropdown-item" data-value="15dias">Últimos 15 Días</div>
+                            <div class="dropdown-item" data-value="30dias">Últimos 30 Días</div>
+                        </div>
+                    </div>
+                </section>
+    
+                <!-- Dashboard de tarjetas dinámicas -->
+                <div class="dashboard-historial" id="dashboard-historial">
+                    <!-- Se generan desde JS -->
+                </div>
             </div>
-        </section>
-
-        <div class="dashboard-historial" id="dashboard-historial">
-            
-        </div>
-    </main>
+    
+        </main>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="../js/historial.js"></script>
 </body>
