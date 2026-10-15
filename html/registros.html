@@ -5,50 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MESH - Registros</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link class="css-path" rel="stylesheet" href="../css/registros.css">
+    <link rel="stylesheet" href="../css/registros.css">
     <meta name="view-transition" content="same-origin">
 </head>
-
 <body>
 
     <div class="sidebar">
         <h2>MESH</h2>
         <button><a href="inicio.html"><i class="fa-solid fa-house"></i>Inicio</a></button>        
-        <button><a href="paciente.html"><i class="fa-solid fa-user"></i>Paciente</a></button>
         <button><a href="historial.html"><i class="fa-solid fa-book-medical"></i>Historial</a></button>
-        <button><a href="registros.html"class="active"><i class="fa-solid fa-plus"></i>Registros</a></button>
+        <button><a href="paciente.html"><i class="fa-solid fa-user"></i>Paciente</a></button>
+        <button><a href="registros.html" class="active"><i class="fa-solid fa-plus"></i>Registros</a></button>
         <button><a href="graficos.html"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
+        <button><a href="colaboradores.html"><i class="fa-solid fa-users"></i>Colaboradores</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
-        </div>
+    </div>
 
-    <main>
-        <h1 style="view-transition-name: titulo-seccion;">Registros</h1>
-        <div class="registros-grid">
-            <button class="registro-card" id="registro-sueno" data-tipo="sueno">
-                <i class="fa-solid fa-moon"></i>
-                <span>Sueño</span>
-            </button>
-            <button class="registro-card" id="registro-crisis" data-tipo="crisis">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                <span>Crisis</span>
-            </button>
-            <button class="registro-card" id="registro-medicacion" data-tipo="medicacion">
-                <i class="fa-solid fa-pills"></i>
-                <span>Medicación</span>
-            </button>
-            <button class="registro-card" id="registro-animo" data-tipo="animo">
-                <i class="fa-regular fa-face-smile"></i>
-                <span>Estado de ánimo</span>
-            </button>
-            <button class="registro-card" id="registro-menstruacion" data-tipo="menstruacion">
-                <i class="fa-solid fa-venus"></i>
-                <span>Menstruación</span>
-            </button>
+    <main class="main-registros">
+        <h1 class="titulo-registros">Registros</h1>
+        <p class="subtitulo-pregunta">¿Qué querés registrar hoy?</p>
+
+        <div class="registros-flex-container">
+            <!-- Sueño -->
+            <div class="registro-item">
+                <button class="registro-circulo" data-tipo="sueno" aria-label="Sueño">
+                    <svg width="60" height="60" viewBox="0 0 102 103" fill="none">
+                        <path d="M95.4012 58.7608C91.424 59.9336 87.3449 60.5454 83.2657 60.5454C60.2186 60.5454 41.4546 41.7814 41.4546 18.7343C41.4546 14.6551 42.0664 10.576 43.2392 6.59881C43.8001 4.81419 43.2902 2.82561 41.9644 1.49989C40.6387 0.174166 38.7011 -0.335727 36.8655 0.225155C26.1763 3.453 16.8145 10.0449 10.1724 19.0205C3.5303 27.996 -0.0372648 38.8758 0.000293539 50.0417C0.000293539 78.6976 23.3024 102.051 52.0093 102.051C75.1075 102.051 95.0953 87.2128 101.775 65.1345C102.336 63.3499 101.826 61.3613 100.5 60.0356C99.1744 58.7098 97.2368 58.1999 95.4012 58.7608ZM52.0093 91.8529C28.9622 91.8529 10.1981 73.0888 10.1981 50.0417C10.1687 42.6147 12.1303 35.3156 15.8787 28.9038C19.6271 22.4921 25.0253 17.2021 31.5117 13.5843C31.3587 15.318 31.2567 17.0516 31.2567 18.7852C31.2567 47.4412 54.5588 70.7943 83.2657 70.7943C84.9994 70.7943 86.733 70.6923 88.4667 70.5393C81.2262 83.5926 67.4591 91.8529 52.0093 91.8529ZM71.3852 30.6657L76.1782 20.162L86.682 15.369L76.1782 10.576L71.3852 0.0721876L66.5923 10.576L56.0885 15.369L66.5923 20.162L71.3852 30.6657ZM93.0557 28.1163L90.2513 34.235L84.1326 37.0394L90.2513 39.8438L93.0557 45.9625L95.8601 39.8438L101.979 37.0394L95.8601 34.235L93.0557 28.1163Z" fill="black"/>
+                    </svg>
+                </button>
+                <span class="etiqueta-registro">sueño</span>
+            </div>
+
+            <!-- Estado de Ánimo -->
+            <!-- Estado de Ánimo -->
+             <div class="registro-item">
+               <button class="registro-circulo" data-tipo="animo" aria-label="Estado de Ánimo">
+        <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Círculo exterior de la cara -->
+            <path d="M39.2478 39.2487C35.122 43.3745 29.5262 45.6924 23.6914 45.6924C17.8566 45.6924 12.2609 43.3745 8.13506 39.2487C4.00926 35.1229 1.69141 29.5271 1.69141 23.6924C1.69141 17.8576 4.00926 12.2618 8.13506 8.13603C12.2609 4.01023 17.8566 1.69238 23.6914 1.69238C29.5262 1.69238 35.122 4.01023 39.2478 8.13603C43.3736 12.2618 45.6914 17.8576 45.6914 23.6924C45.6914 29.5271 43.3736 35.1229 39.2478 39.2487Z" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Ojo Izquierdo -->
+            <circle cx="16" cy="18" r="2.5" fill="black"/>
+            <!-- Ojo Derecho -->
+            <circle cx="32" cy="18" r="2.5" fill="black"/>
+            <!-- Sonrisa -->
+            <path d="M14 28C17 35 31 35 34 28" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+    <span class="etiqueta-registro">estado de ánimo</span>
+</div>
+
+            <!-- Medicación -->
+            <div class="registro-item">
+                <button class="registro-circulo" data-tipo="medicacion" aria-label="Medicación">
+                    <svg width="55" height="55" viewBox="0 0 102 103" fill="none">
+                        <path d="M68.9341 0.000173397C64.5846 -0.0139592 60.2757 0.835947 56.2573 2.50056C52.239 4.16518 48.5913 6.61134 45.5259 9.69708L9.65781 45.5652C-3.21927 58.4423 -3.21927 79.4523 9.65781 92.3815C15.9139 98.6375 24.2032 102.078 33.0659 102.078C41.9287 102.078 50.218 98.6375 56.4741 92.3815L92.3422 56.5133C105.219 43.6363 105.219 22.6263 92.3422 9.69708C89.2769 6.61134 85.6292 4.16518 81.6108 2.50056C77.5925 0.835947 73.2835 -0.0139592 68.9341 0.000173397ZM84.9392 49.1103L70.7066 63.3429L38.6443 31.2805L52.8768 17.048C57.1518 12.773 62.8344 10.427 68.8819 10.427C74.9295 10.427 80.6121 12.773 84.887 17.048C89.1193 21.31 91.4945 27.0727 91.4945 33.0791C91.4945 39.0856 89.1193 44.8483 84.887 49.1103H84.9392Z" fill="black"/>
+                    </svg>
+                </button>
+                <span class="etiqueta-registro">medicación</span>
+            </div>
+
+            <!-- Crisis -->
+            <div class="registro-item">
+                <button class="registro-circulo" data-tipo="crisis" aria-label="Crisis">
+                    <svg width="55" height="55" viewBox="0 0 112 100" fill="none">
+                        <path d="M55.6299 36.2734V58.9047M55.6299 74.7466V77.0097" stroke="black" stroke-width="9.18" stroke-linecap="round"/>
+                        <path d="M47.2149 9.35259L5.81224 81.6096C2.32376 87.6929 6.95466 95.116 14.2325 95.116H97.0226C104.306 95.116 108.926 87.6929 105.453 81.6096L64.0555 9.35259C60.4242 3.00226 50.8513 3.00226 47.2149 9.35259Z" stroke="black" stroke-width="9.18" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="etiqueta-registro">crisis</span>
+            </div>
+
+            <!-- Menstruación -->
+            <div class="registro-item">
+                <button class="registro-circulo" data-tipo="menstruacion" aria-label="Menstruación">
+                    <svg width="45" height="60" viewBox="0 0 68 110" fill="none">
+                        <path d="M34 0C15.2433 0 0 14.7131 0 32.8174C0 49.062 12.2967 62.5171 28.3333 65.1425V76.5739H11.3333V87.513H28.3333V109.391H39.6667V87.513H56.6667V76.5739H39.6667V65.1425C55.7033 62.5171 68 49.062 68 32.8174C68 14.7131 52.7567 0 34 0ZM34 54.6957C21.4767 54.6957 11.3333 44.9051 11.3333 32.8174C11.3333 20.7297 21.4767 10.9391 34 10.9391C46.5233 10.9391 56.6667 20.7297 56.6667 32.8174C56.6667 44.9051 46.5233 54.6957 34 54.6957Z" fill="black"/>
+                    </svg>
+                </button>
+                <span class="etiqueta-registro">menstruación</span>
+            </div>
         </div>
     </main>
-    </main>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="../js/registros.js"></script>
 </body>
 </html>
