@@ -10,6 +10,7 @@
 </head>
 <body>
 
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <h2>MESH</h2>
         <button><a href="inicio.html"><i class="fa-solid fa-house"></i>Inicio</a></button>        
@@ -18,14 +19,15 @@
         <button><a href="registros.html" class="active"><i class="fa-solid fa-plus"></i>Registros</a></button>
         <button><a href="graficos.html"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
-        <button><a href="colaboradores.html"><i class="fa-solid fa-users"></i>Colaboradores</a></button>
         <button><a href="configuracion.html"><i class="fa-solid fa-gear"></i>Configuración</a></button>
     </div>
 
+    <!-- MAIN -->
     <main class="main-registros">
         <h1 class="titulo-registros">Registros</h1>
         <p class="subtitulo-pregunta">¿Qué querés registrar hoy?</p>
 
+        <!-- TARJETAS CIRCULARES -->
         <div class="registros-flex-container">
             <!-- Sueño -->
             <div class="registro-item">
@@ -38,22 +40,17 @@
             </div>
 
             <!-- Estado de Ánimo -->
-            <!-- Estado de Ánimo -->
-             <div class="registro-item">
-               <button class="registro-circulo" data-tipo="animo" aria-label="Estado de Ánimo">
-        <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Círculo exterior de la cara -->
-            <path d="M39.2478 39.2487C35.122 43.3745 29.5262 45.6924 23.6914 45.6924C17.8566 45.6924 12.2609 43.3745 8.13506 39.2487C4.00926 35.1229 1.69141 29.5271 1.69141 23.6924C1.69141 17.8576 4.00926 12.2618 8.13506 8.13603C12.2609 4.01023 17.8566 1.69238 23.6914 1.69238C29.5262 1.69238 35.122 4.01023 39.2478 8.13603C43.3736 12.2618 45.6914 17.8576 45.6914 23.6924C45.6914 29.5271 43.3736 35.1229 39.2478 39.2487Z" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Ojo Izquierdo -->
-            <circle cx="16" cy="18" r="2.5" fill="black"/>
-            <!-- Ojo Derecho -->
-            <circle cx="32" cy="18" r="2.5" fill="black"/>
-            <!-- Sonrisa -->
-            <path d="M14 28C17 35 31 35 34 28" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </button>
-    <span class="etiqueta-registro">estado de ánimo</span>
-</div>
+            <div class="registro-item">
+                <button class="registro-circulo" data-tipo="animo" aria-label="Estado de Ánimo">
+                    <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M39.2478 39.2487C35.122 43.3745 29.5262 45.6924 23.6914 45.6924C17.8566 45.6924 12.2609 43.3745 8.13506 39.2487C4.00926 35.1229 1.69141 29.5271 1.69141 23.6924C1.69141 17.8576 4.00926 12.2618 8.13506 8.13603C12.2609 4.01023 17.8566 1.69238 23.6914 1.69238C29.5262 1.69238 35.122 4.01023 39.2478 8.13603C43.3736 12.2618 45.6914 17.8576 45.6914 23.6924C45.6914 29.5271 43.3736 35.1229 39.2478 39.2487Z" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="16" cy="18" r="2.5" fill="black"/>
+                        <circle cx="32" cy="18" r="2.5" fill="black"/>
+                        <path d="M14 28C17 35 31 35 34 28" stroke="black" stroke-width="3.38" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <span class="etiqueta-registro">estado de ánimo</span>
+            </div>
 
             <!-- Medicación -->
             <div class="registro-item">
@@ -86,8 +83,74 @@
                 <span class="etiqueta-registro">menstruación</span>
             </div>
         </div>
+
+        <!-- MODAL CRISIS -->
+        <div id="modal-crisis" class="modal-overlay oculto">
+            <div class="modal-tarjeta">
+                <button type="button" class="btn-cerrar-modal" id="btn-cerrar-modal" aria-label="Cerrar">&times;</button>
+                
+                <div class="modal-encabezado">
+                    <h2 class="modal-titulo">crisis</h2>
+                    <svg width="45" height="40" viewBox="0 0 104 93" fill="none">
+                        <path d="M51.812 33.7832V54.8613M51.812 69.616V71.7238" stroke="black" stroke-width="8.55" stroke-linecap="round"/>
+                        <path d="M43.9745 8.71128L5.41321 76.0095C2.16413 81.6753 6.47723 88.5889 13.2556 88.5889H90.3641C97.1472 88.5889 101.451 81.6753 98.216 76.0095L59.6594 8.71128C56.2773 2.79676 47.3614 2.79676 43.9745 8.71128Z" stroke="black" stroke-width="8.55" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <form id="form-crisis">
+                    <!-- ¿Qué tipo de crisis tuviste? -->
+                    <div class="caja-campo">
+                        <label for="tipo-crisis">¿Qué tipo de crisis tuviste?</label>
+                        <div class="input-desplegable-wrapper">
+                            <input type="text" id="tipo-crisis" list="lista-tipos" placeholder="Escribí o seleccioná..." autocomplete="off">
+                            <datalist id="lista-tipos"></datalist>
+                        </div>
+                    </div>
+
+                    <!-- ¿Cuándo? -->
+                    <div class="caja-campo">
+                        <label>¿Cuándo?</label>
+                        <div class="grupo-fecha">
+                            <input type="number" id="dia" placeholder="dd" min="1" max="31">
+                            <span class="separador-fecha">/</span>
+                            <input type="number" id="mes" placeholder="mm" min="1" max="12">
+                            <span class="separador-fecha">/</span>
+                            <input type="number" id="anio" placeholder="aaaa" min="1000" max="9999">
+                        </div>
+                    </div>
+
+                    <!-- ¿A qué hora ocurrió? + AM/PM -->
+                    <div class="caja-campo">
+                        <label for="hora-crisis">¿A qué hora ocurrió?</label>
+                        <div class="campo-hora-caja">
+                            <input type="time" id="hora-crisis">
+                            <div class="opciones-periodo">
+                                <button type="button" class="btn-periodo" data-periodo="AM">AM</button>
+                                <button type="button" class="btn-periodo" data-periodo="PM">PM</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <div class="caja-campo">
+                        <label for="observaciones">observaciones</label>
+                        <textarea id="observaciones" maxlength="200" placeholder="Máximo 200 caracteres..."></textarea>
+                    </div>
+
+                    <!-- Botón Guardar -->
+                    <button type="button" id="guardar" class="btn-guardar-modal">
+                        <svg width="32" height="32" viewBox="0 0 73 72" fill="none">
+                            <path d="M17.8079 68.7743H54.6162C58.5211 68.7743 62.266 67.2363 65.0272 64.4987C67.7883 61.7611 69.3395 58.0481 69.3395 54.1765V19.1927C69.3393 18.2249 68.9341 17.2968 68.261 16.6125L55.6947 4.15328C55.0045 3.46882 54.0685 3.08419 53.0923 3.08398H17.8079C13.903 3.08398 10.1581 4.62197 7.3969 7.3596C4.63574 10.0972 3.08453 13.8102 3.08453 17.6818V54.1765C3.08453 58.0481 4.63574 61.7611 7.3969 64.4987C10.1581 67.2363 13.903 68.7743 17.8079 68.7743Z" stroke="black" stroke-width="6.16" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M54.616 68.7743V43.2281C54.616 42.2602 54.2282 41.3319 53.5379 40.6475C52.8476 39.9631 51.9114 39.5786 50.9352 39.5786H21.4885C20.5123 39.5786 19.5761 39.9631 18.8858 40.6475C18.1955 41.3319 17.8077 42.2602 17.8077 43.2281V68.7743" stroke="black" stroke-width="6.16"/>
+                        </svg>
+                        <span>guardar registro</span>
+                    </button>
+                </form>
+            </div>
+        </div>
     </main>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="../js/registros.js"></script>
 </body>
 </html>
