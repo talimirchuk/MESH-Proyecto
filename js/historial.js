@@ -14,15 +14,18 @@ const dashboardHistorial = document.getElementById("dashboard-historial");
 const busqueda = document.getElementById("buscar");
 
 function cargarRegistros() {
-  todosLosRegistros = JSON.parse(localStorage.getItem("registrosMESH")) || [
-      { fechaISO: "2026-10-05", hora: "08:15 AM", tipo: "sueño", info: "9 horas" },
-      { fechaISO: "2026-10-05", hora: "12:45 PM", tipo: "medicación", info: "ibupirac" },
-      { fechaISO: "2026-10-05", hora: "06:30 PM", tipo: "crisis", info: "focal" },
-      { fechaISO: "2026-10-04", hora: "08:15 AM", tipo: "estado de ánimo", info: "feliz" },
-      { fechaISO: "2026-10-04", hora: "12:45 PM", tipo: "sueño", info: "7 horas" },
-      { fechaISO: "2026-10-04", hora: "06:30 PM", tipo: "medicación", info: "paracetamol" }
-  ];
-  aplicarFiltros();
+    // 1. Obtener el usuario activo de la clave correcta 'usuarioLogueado'
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado")) 
+                       || { email: "invitado" };
+
+    // 2. Traer todos los registros del LocalStorage
+    const todos = JSON.parse(localStorage.getItem("registrosMESH")) || [];
+
+    // 3. FILTRAR: Solo se muestran si pertenecen al email del usuario activo
+    todosLosRegistros = todos.filter(reg => reg.usuarioEmail === usuarioActivo.email);
+
+    aplicarFiltros();
 }
 
 function convertirAFechaFormateada(fechaISO) {
@@ -47,56 +50,67 @@ function convertirHoraAMinutos(horaStr) {
 }
 
 function mostrarHistorial(lista) {
-  if (!dashboardHistorial) return;
-  dashboardHistorial.innerHTML = "";
+    if (!dashboardHistorial) return;
+    dashboardHistorial.innerHTML = "";
 
-  if (lista.length === 0) {
-      dashboardHistorial.innerHTML = "<p style='font-size:22px; text-align:center;'>No se encontraron registros.</p>";
-      return;
-  }
+    if (lista.length === 0) {
+        dashboardHistorial.innerHTML = "<p style='font-size:22px; text-align:center;'>No se encontraron registros.</p>";
+        return;
+    }
 
-  const agrupado = {};
-  lista.forEach(reg => {
-      if (!agrupado[reg.fechaISO]) {
-          agrupado[reg.fechaISO] = [];
-      }
-      agrupado[reg.fechaISO].push(reg);
-  });
+    // 1. AGRUPAR POR FECHA (Mantiene el mismo día en una sola tarjeta)
+    const agrupado = {};
+    lista.forEach(reg => {
+        const fechaKey = reg.fechaISO; // Usa la string 'AAAA-MM-DD' directamente
+        if (!agrupado[fechaKey]) {
+            agrupado[fechaKey] = [];
+        }
+        agrupado[fechaKey].push(reg);
+    });
 
-  const fechasOrdenadas = Object.keys(agrupado).sort((a, b) => new Date(b) - new Date(a));
+    // 2. ORDENAR FECHAS CRONOLÓGICAMENTE (Más reciente arriba: 2026 primero, 2022 después)
+    // Se compara como texto 'YYYY-MM-DD' para evitar problemas de zona horaria/horas desfasadas
+    const fechasOrdenadas = Object.keys(agrupado).sort((a, b) => b.localeCompare(a));
 
-  fechasOrdenadas.forEach(fechaISO => {
-      const registrosDelDia = agrupado[fechaISO];
-      registrosDelDia.sort((a, b) => convertirHoraAMinutos(a.hora) - convertirHoraAMinutos(b.hora));
+    fechasOrdenadas.forEach(fechaISO => {
+        const registrosDelDia = agrupado[fechaISO];
+        
+        // Ordenar registros internamente por hora si la tienen
+        registrosDelDia.sort((a, b) => convertirHoraAMinutos(a.hora) - convertirHoraAMinutos(b.hora));
 
-      let htmlItems = "";
-      registrosDelDia.forEach(reg => {
-          const tipoNormalizado = reg.tipo.toLowerCase().trim();
-          const iconSvg = ICONOS[tipoNormalizado] || "";
+        let htmlItems = "";
+        registrosDelDia.forEach(reg => {
+            const tipoNormalizado = reg.tipo.toLowerCase().trim();
+            const iconSvg = ICONOS[tipoNormalizado] || "";
 
-          htmlItems += `
-              <div class="registro-item">
-                  <span class="registro-hora">${reg.hora}</span>
-                  <span class="registro-categoria">
-                      <span class="registro-icon">${iconSvg}</span>
-                      ${reg.tipo}
-                  </span>
-                  <span class="registro-info">${reg.info}</span>
-              </div>
-          `;
-      });
+            // SI TIENE HORA LA MUESTRA, SI ESTÁ VACÍA (Menstruación) NO GENERA EL SPAN
+            const htmlHora = reg.hora && reg.hora.trim() !== "" 
+                ? `<span class="registro-hora">${reg.hora}</span>` 
+                : "";
 
-      dashboardHistorial.innerHTML += `
-          <article class="tarjeta-dia">
-              <div class="tarjeta-header">
-                  <h2>${convertirAFechaFormateada(fechaISO)}</h2>
-              </div>
-              <div class="tarjeta-body">
-                  ${htmlItems}
-              </div>
-          </article>
-      `;
-  });
+            htmlItems += `
+                <div class="registro-item">
+                    ${htmlHora}
+                    <span class="registro-categoria">
+                        <span class="registro-icon">${iconSvg}</span>
+                        ${reg.tipo}
+                    </span>
+                    <span class="registro-info">${reg.info}</span>
+                </div>
+            `;
+        });
+
+        dashboardHistorial.innerHTML += `
+            <article class="tarjeta-dia">
+                <div class="tarjeta-header">
+                    <h2>${convertirAFechaFormateada(fechaISO)}</h2>
+                </div>
+                <div class="tarjeta-body">
+                    ${htmlItems}
+                </div>
+            </article>
+        `;
+    });
 }
 
 function aplicarFiltros() {

@@ -26,6 +26,16 @@ activarOcultarMostrarContrasena("confirmar-contrasena", "ojo-confirmar-contrasen
 
 /* funcion p/ guardar el usuario, preparado para el backend */
 async function guardarUsuario(usuario) {
+    // 1. Leemos la lista de usuarios o creamos una lista vacía si no existe
+    const listaUsuarios = JSON.parse(localStorage.getItem("usuariosMESH")) || [];
+    
+    // 2. Agregamos el nuevo usuario a la lista
+    listaUsuarios.push(usuario);
+    
+    // 3. Guardamos la lista actualizada de usuarios
+    localStorage.setItem("usuariosMESH", JSON.stringify(listaUsuarios));
+
+    // 4. Establecemos este usuario como la sesión activa
     localStorage.setItem("usuarioLogueado", JSON.stringify(usuario));
 }
 

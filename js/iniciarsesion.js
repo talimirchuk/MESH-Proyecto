@@ -47,21 +47,25 @@ if (continuar) {
         const password = passwordInput.value.trim();
 
         /* Leo cuenta que se guardó desde crearcuenta.js */
-        const usuarioGuardado = JSON.parse(localStorage.getItem("usuarioRegistrado"));
+        /* 1. Leo la lista completa de usuarios creados en usuariosMESH */
+        const listaUsuarios = JSON.parse(localStorage.getItem("usuariosMESH")) || [];
 
-        /* Si no hay ninguna cuenta guardada en el navegador */
-        if (!usuarioGuardado) {
+        /* Si no hay ninguna cuenta guardada en la lista */
+        if (listaUsuarios.length === 0) {
             textoayuda.textContent = "No hay ninguna cuenta registrada. Registrate primero.";
             return;
         }
 
-        /* Reviso si la clave guardada se llama 'contrasena' o 'password' xq a veces pongo las dos*/
-        const claveGuardada = usuarioGuardado.contrasena || usuarioGuardado.password;
+        /* 2. Busco en el array el usuario cuyo email y contraseña coincidan */
+        const usuarioEncontrado = listaUsuarios.find(function(u) {
+            const claveGuardada = u.contrasena || u.password;
+            return u.email.toLowerCase() === email.toLowerCase() && password === claveGuardada;
+        });
 
-        /* Comparo datos */
-        if (email === usuarioGuardado.email && password === claveGuardada) {
-            // Guardo en localStorage qué usuario inició sesión que desp lo hace back
-            localStorage.setItem("usuarioLogueado", JSON.stringify(usuarioGuardado));
+        /* 3. Comparo datos */
+        if (usuarioEncontrado) {
+            // Guardamos en 'usuarioLogueado' SÓLO la cuenta que acaba de ingresar
+            localStorage.setItem("usuarioLogueado", JSON.stringify(usuarioEncontrado));
 
             window.location.href = "../html/inicio.html";
         } else {

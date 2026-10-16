@@ -1,5 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/comic-relief');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 .main-registros {
     padding: 40px 60px;
@@ -81,7 +82,7 @@
 }
 
 /* ==========================================
-   MODAL DE CRISIS
+   ESTILOS GENERALES DE MODALES
 ========================================== */
 .modal-overlay {
     position: fixed;
@@ -143,7 +144,11 @@
     text-underline-offset: 6px;
 }
 
-#form-crisis {
+/* ==========================================
+   MODAL CRISIS Y MENSTRUACIÓN
+========================================== */
+#form-crisis,
+#form-menstruacion {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -167,6 +172,7 @@
 
 .input-desplegable-wrapper {
     width: 85%;
+    position: relative;
 }
 
 .input-desplegable-wrapper input,
@@ -247,7 +253,7 @@ textarea#observaciones {
 }
 
 .btn-guardar-modal {
-    background-color: #97CCB9;
+    background-color: #B9D3BF;
     border: none;
     border-radius: 25px;
     padding: 10px 30px;
@@ -275,4 +281,122 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+/* Alineación de etiqueta con ícono de calendario en Menstruación */
+.label-con-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.label-con-icono label {
+    font-size: 20px;
+    color: #000;
+}
+
+#obs-menstruacion {
+    width: 100%;
+    max-width: 703px;
+    height: 98px;
+    background-color: rgba(213, 237, 228, 0.8);
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 12px 16px;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   MODAL MEDICACIÓN
+========================================== */
+#form-medicacion {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+}
+
+/* Alineación de textos a la izquierda solo en Medicación */
+#modal-medicacion .caja-campo label,
+#modal-medicacion .label-con-icono {
+    text-align: left;
+    justify-content: flex-start;
+    width: 85%;
+}
+
+/* Fila de 2 columnas (Medicación y Dosis) */
+.fila-dos-columnas {
+    display: flex;
+    gap: 15px;
+    width: 85%;
+}
+
+.fila-dos-columnas .caja-campo {
+    width: 50%;
+}
+
+/* Select con texto alineado a la izquierda */
+.input-caja-select {
+    width: 100%;
+    background-color: #D5EDE4;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 40px 10px 18px;
+    font-size: 18px;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+/* Flechita personalizada en los desplegables */
+.icono-flecha-select {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 16px;
+    color: #000;
+}
+
+/* Botones circulares AM / PM para Medicación */
+.btn-periodo-med {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #B4D5C0;
+    border: none;
+    font-family: 'Itim', cursive, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.btn-periodo-med:hover {
+    background-color: #98c4a7;
+    transform: scale(1.05);
+}
+
+.btn-periodo-med:focus {
+    outline: 3px solid #2E8B57;
+}
+
+.btn-periodo-med.seleccionado {
+    background-color: #2E8B57;
+    color: #FFFFFF;
 }

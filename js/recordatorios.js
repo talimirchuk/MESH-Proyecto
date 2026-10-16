@@ -1,11 +1,6 @@
 /* Lista inicial de prueba */
 let listaRecordatorios = [
-    { id: 1, fecha: "30/09/26", hora: "21:15", texto: "medicación - ibupirac" },
-    { id: 2, fecha: "30/09/26", hora: "16:45", texto: "análisis de sangre" },
-    { id: 3, fecha: "30/09/26", hora: "11:30", texto: "medicación - paracetamol" },
-    { id: 4, fecha: "29/09/26", hora: "22:30", texto: "medicación - amoxilina" },
-    { id: 5, fecha: "29/09/26", hora: "15:00", texto: "terapia - psicología" },
-    { id: 6, fecha: "29/09/26", hora: "10:15", texto: "medicación - ibupirac" }
+    
 ];
 
 let idAEliminar = null;
@@ -60,27 +55,35 @@ function renderizarTarjetas() {
 
     contenedor.innerHTML = "";
 
-    /* Si no hay recordatorios en ningún día, no genera tarjetas */
-    if (listaRecordatorios.length === 0) {
+    // 1. Obtenemos el usuario activo
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                       || { email: "invitado" };
+
+    // 2. Filtramos la lista global para mostrar solo los de este usuario
+    const recordatoriosUsuario = listaRecordatorios.filter(item => item.usuarioEmail === usuarioActivo.email);
+
+    /* Si no hay recordatorios para este usuario */
+    if (recordatoriosUsuario.length === 0) {
         contenedor.innerHTML = "<p style='font-size: 22px; color: #666;'>No hay recordatorios registrados.</p>";
         return;
     }
 
-    /* 1. Agrupar items por fecha */
+    /* 3. Agrupar items por fecha */
     const agrupados = {};
-    listaRecordatorios.forEach(item => {
+    recordatoriosUsuario.forEach(item => {
         if (!agrupados[item.fecha]) {
             agrupados[item.fecha] = [];
         }
         agrupados[item.fecha].push(item);
     });
 
-    /* 2. Ordenar los días por fecha (de más cercana a más lejana) */
+    /* 4. Ordenar los días por fecha (de más cercana a más lejana) */
     const fechasOrdenadas = Object.keys(agrupados).sort((a, b) => {
         return parsearFecha(a) - parsearFecha(b);
     });
 
-    /* 3. Dibujar cada tarjeta con sus ítems ordenados por hora (00:00 a 23:59) */
+    /* 5. Dibujar cada tarjeta con sus ítems ordenados por hora (00:00 a 23:59) */
     fechasOrdenadas.forEach(fecha => {
         const tarjeta = document.createElement("div");
         tarjeta.className = "tarjeta-dia-bloque";
@@ -146,8 +149,14 @@ function configurarEventosModal() {
 
             if (!texto || !hora || !fecha) return;
 
+            // Obtenemos el usuario activo
+            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                               || JSON.parse(sessionStorage.getItem("usuarioLogueado")) 
+                               || { email: "invitado" };
+
             const nuevo = {
                 id: Date.now(),
+                usuarioEmail: usuarioActivo.email, // <--- Único agregado
                 fecha: fecha,
                 hora: hora,
                 texto: texto

@@ -12,6 +12,8 @@
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
     width: 100%;
+    flex: 1;
+    min-width: 0;      /* Evita que el contenido interno de historial empuje a la sidebar */
 }
 
 /* Renglón 1: Ocupa todo el ancho posible de la pantalla */
