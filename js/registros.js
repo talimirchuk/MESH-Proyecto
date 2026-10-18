@@ -102,6 +102,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnGuardarMed = document.getElementById("guardar-medicacion");
     let periodoMedSeleccionado = "";
 
+    //SUEÑO
+    const modalSueno = document.getElementById("modal-sueno");
+    const btnCerrarSueno = document.getElementById("btn-cerrar-sueno");
+    const inputHoraDormiste = document.getElementById("hora-dormiste");
+    const inputHoraDespertaste = document.getElementById("hora-despertaste");
+    const btnsPeriodoDormiste = document.querySelectorAll(".btn-periodo-dormiste");
+    const btnsPeriodoDespertaste = document.querySelectorAll(".btn-periodo-despertaste");
+    const btnMenos = document.getElementById("btn-menos");
+    const btnMas = document.getElementById("btn-mas");
+    const valorContador = document.getElementById("valor-contador");
+    const btnGuardarSueno = document.getElementById("guardar-sueno");
+
+    let periodoDormiste = "";
+    let periodoDespertaste = "";
+    let contadorDesperto = 0;
+
     let periodoSeleccionado = "";
 
     //RESTRICCIONES CRISIS
@@ -143,6 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else if (boton.dataset.tipo === "medicacion") {
                 modalMedicacion.classList.remove("oculto");
+            }
+            else if (boton.dataset.tipo === "sueno") {
+                modalSueno.classList.remove("oculto");
             }
         });
     });
@@ -361,5 +380,121 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "registros.html";
         });
     }
+    if (btnMas) {
+        btnMas.addEventListener("click", () => {
+            contadorDesperto++;
+            valorContador.textContent = contadorDesperto;
+        });
+    }
 
+    if (btnMenos) {
+        btnMenos.addEventListener("click", () => {
+            if (contadorDesperto > 0) {
+                contadorDesperto--;
+                valorContador.textContent = contadorDesperto;
+            }
+        });
+    }
+
+    btnsPeriodoDormiste.forEach(btn => {
+        btn.addEventListener("click", () => {
+            btnsPeriodoDormiste.forEach(b => b.classList.remove("seleccionado"));
+            btn.classList.add("seleccionado"); // Queda seleccionado en verde
+            periodoDormiste = btn.dataset.periodo;
+        });
+    });
+
+    btnsPeriodoDespertaste.forEach(btn => {
+        btn.addEventListener("click", () => {
+            btnsPeriodoDespertaste.forEach(b => b.classList.remove("seleccionado"));
+            btn.classList.add("seleccionado"); // Queda seleccionado en verde
+            periodoDespertaste = btn.dataset.periodo;
+        });
+    });
+
+    if (btnCerrarSueno) {
+        btnCerrarSueno.addEventListener("click", () => {
+            modalSueno.classList.add("oculto");
+        });
+    }
+    // Función para calcular las horas y minutos exactos de sueño
+    function calcularHorasSueno(horaInicio, periodoInicio, horaFin, periodoFin) {
+        const [hIniStr, mIniStr] = horaInicio.split(":");
+        let hIni = parseInt(hIniStr, 10);
+        const mIni = parseInt(mIniStr || "0", 10);
+
+        const [hFinStr, mFinStr] = horaFin.split(":");
+        let hFin = parseInt(hFinStr, 10);
+        const mFin = parseInt(mFinStr || "0", 10);
+
+        // Convertir hora inicio a 24hs
+        if (periodoInicio === "PM" && hIni < 12) hIni += 12;
+        if (periodoInicio === "AM" && hIni === 12) hIni = 0;
+
+        // Convertir hora fin a 24hs
+        if (periodoFin === "PM" && hFin < 12) hFin += 12;
+        if (periodoFin === "AM" && hFin === 12) hFin = 0;
+
+        let inicioMinutos = hIni * 60 + mIni;
+        let finMinutos = hFin * 60 + mFin;
+
+        // Si se despertó al día siguiente (ejemplo: durmió 23:00 PM y despertó 07:00 AM)
+        if (finMinutos <= inicioMinutos) {
+            finMinutos += 24 * 60;
+        }
+
+        const diferenciaMinutos = finMinutos - inicioMinutos;
+        const horas = Math.floor(diferenciaMinutos / 60);
+        const minutos = diferenciaMinutos % 60;
+
+        // Armar el texto comprensible
+        if (minutos === 0) {
+            return `${horas} hs`;
+        } else if (horas === 0) {
+            return `${minutos} min`;
+        } else {
+            return `${horas} hs y ${minutos} min`;
+        }
+    }
+
+    // Guardar Registro SUEÑO
+    if (btnGuardarSueno) {
+        btnGuardarSueno.addEventListener("click", async () => {
+            const hDormiste = inputHoraDormiste.value.trim();
+            const hDespertaste = inputHoraDespertaste.value.trim();
+
+            if (!hDormiste) return alert("Ingresá la hora a la que te dormiste.");
+            if (!periodoDormiste) return alert("Seleccioná si la hora en que te dormiste fue AM o PM.");
+            if (!hDespertaste) return alert("Ingresá la hora a la que te despertaste.");
+            if (!periodoDespertaste) return alert("Seleccioná si la hora en que te despertaste fue AM o PM.");
+
+            // Calcula cuantas horas y minutos durmió en total
+            const tiempoDormido = calcularHorasSueno(hDormiste, periodoDormiste, hDespertaste, periodoDespertaste);
+
+            const ahora = new Date();
+            const aStr = ahora.getFullYear();
+            const mStr = String(ahora.getMonth() + 1).padStart(2, '0');
+            const dStr = String(ahora.getDate()).padStart(2, '0');
+            const fechaISO = `${aStr}-${mStr}-${dStr}`;
+
+            let textoVeces = contadorDesperto === 0 
+                ? "No se despertó durante la noche" 
+                : `Se despertó ${contadorDesperto} ${contadorDesperto === 1 ? 'vez' : 'veces'} durante la noche`;
+
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: fechaISO,
+                hora: `${hDespertaste} ${periodoDespertaste}`,
+                tipo: "Sueño",
+                info: `Durmió ${tiempoDormido}. ${textoVeces}.`,
+                detalles: {
+                    horasDurmió: tiempoDormido,
+                    vecesDesperto: contadorDesperto
+                }
+            };
+
+            await apiGuardarRegistro(nuevoRegistro);
+            window.location.href = "registros.html";
+        });
+    }
 });

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESH - Configuración</title>
+    <title>Configuración - MESH</title>
     <link rel="stylesheet" href="../css/style.css">
     <link class="css-path" rel="stylesheet" href="../css/configuracion.css">
 
@@ -23,26 +23,55 @@
         <button><a href="configuracion.html"class="active"><i class="fa-solid fa-gear"></i>Configuración</a></button>
     </div>
 
-    <main>
-        <h1 style="view-transition-name: titulo-seccion;">Configuración</h1>
-        <div class="configuracion-grid">
-            <div class="barra-texto">
-                <p>-</p>
-            </div>
-            <button class="btn-flecha"><i class="fa-solid fa-chevron-right"></i></button>
+    <main class="main-configuracion">
+        <h1 class="titulo-configuracion">Configuración</h1>
 
-            <div class="barra-texto">
-                <p>-</p>
+        <div class="contenedor-centrado">
+            <div class="contenedor-opciones">
+                <button type="button" id="btn-ver-contrasena" class="btn-opcion-config">ver contraseña</button>
+                <button type="button" id="btn-eliminar-perfil" class="btn-opcion-config">eliminar perfil</button>
             </div>
-            <button class="btn-flecha"><i class="fa-solid fa-chevron-right"></i></button>
-
-            <div class="barra-texto">
-                <p>-</p>
-            </div>
-            <button class="btn-flecha"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </main>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- OVERLAY MODAL: VER CONTRASEÑA (Frame 107) -->
+    <div id="modal-contrasena" class="overlay-modal">
+        <div class="tarjeta-modal">
+            <!-- Usuario -->
+            <div class="bloque-campo-modal">
+                <div class="etiqueta-modal">
+                    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17 0C7.633 0 0 7.633 0 17C0 22.542 2.686 27.472 6.8 30.566V30.6H6.851C9.69 32.725 13.192 34 17 34C20.808 34 24.327 32.725 27.149 30.6H27.2V30.566C31.314 27.455 34 22.542 34 17C34 7.633 26.367 0 17 0ZM10.506 28.934C11.203 26.945 13.073 25.5 15.3 25.5H18.7C20.927 25.5 22.814 26.945 23.494 28.934C21.556 29.988 19.346 30.6 17 30.6C14.654 30.6 12.427 30.005 10.506 28.934ZM26.316 26.877C24.939 24.055 22.049 22.083 18.7 22.083H15.3C11.951 22.083 9.078 24.055 7.684 26.877C6.33 25.6095 5.25103 24.0771 4.51407 22.3751C3.77712 20.6731 3.39791 18.8377 3.4 16.983C3.4 9.486 9.503 3.383 17 3.383C24.497 3.383 30.6 9.486 30.6 16.983C30.6 20.876 28.951 24.395 26.316 26.877Z" fill="black"/>
+                    </svg>
+                    <span>usuario</span>
+                </div>
+                <div class="recuadro-valor-modal" id="valor-email-usuario">--</div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="bloque-campo-modal">
+                <div class="etiqueta-modal">
+                    <svg width="37" height="13" viewBox="0 0 37 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.14453 1.14453C1.14453 1.14453 2.30116 2.40345 4.54158 3.81118M4.54158 3.81118C6.50785 5.04665 9.3089 6.39674 12.8955 7.11102M4.54158 3.81118L4.54453 3.80787M4.54158 3.81118L1.14453 7.62072M12.8955 7.11102C14.4911 7.42879 16.2423 7.62072 18.1445 7.62072C20.0306 7.62072 21.7682 7.43204 23.3529 7.11909M12.8955 7.11102L12.8983 7.10263M12.8955 7.11102L11.3445 11.6683M23.3529 7.11909C31.0524 5.59858 35.1445 1.14453 35.1445 1.14453M23.3529 7.11909L23.3516 7.11558M23.3529 7.11909L24.9445 11.6683M35.1445 7.62072L31.7513 3.81272" stroke-width="2.28945" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+                    </svg>
+                    <span>contraseña</span>
+                </div>
+                <div class="recuadro-valor-modal" id="valor-pass-usuario">--</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY MODAL: ELIMINAR PERFIL (Frame 109) -->
+    <div id="modal-eliminar" class="overlay-modal">
+        <div class="tarjeta-modal tarjeta-eliminar">
+            <h2>¿eliminar perfil?</h2>
+            <p>Se borraran todos tus datos registrados una vez que elimines este perfil.</p>
+            
+            <button type="button" id="btn-cancelar-eliminar" class="btn-modal-cancelar">cancelar</button>
+            <button type="button" id="btn-confirmar-eliminar" class="btn-modal-eliminar">eliminar</button>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <script src="../js/configuracion.js"></script>
 </body>
 </html>

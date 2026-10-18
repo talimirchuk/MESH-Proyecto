@@ -16,8 +16,8 @@
     <div class="sidebar">
         <h2>MESH</h2>
         <button><a href="inicio.html"><i class="fa-solid fa-house"></i>Inicio</a></button>        
-        <button><a href="historial.html"><i class="fa-solid fa-book-medical"></i>Historial</a></button>
         <button><a href="paciente.html"><i class="fa-solid fa-user"></i>Paciente</a></button>
+        <button><a href="historial.html"><i class="fa-solid fa-book-medical"></i>Historial</a></button>
         <button><a href="registros.html" class="active"><i class="fa-solid fa-plus"></i>Registros</a></button>
         <button><a href="graficos.html"><i class="fa-solid fa-chart-simple"></i>Gráficos</a></button>
         <button><a href="recordatorios.html"><i class="fa-solid fa-list-check"></i>Recordatorios</a></button>
@@ -307,11 +307,88 @@
                     <path d="M17.8079 68.7743H54.6162C58.5211 68.7743 62.266 67.2363 65.0272 64.4987C67.7883 61.7611 69.3395 58.0481 69.3395 54.1765V19.1927C69.3393 18.2249 68.9341 17.2968 68.261 16.6125L55.6947 4.15328C55.0045 3.46882 54.0685 3.08419 53.0923 3.08398H17.8079C13.903 3.08398 10.1581 4.62197 7.3969 7.3596C4.63574 10.0972 3.08453 13.8102 3.08453 17.6818V54.1765C3.08453 58.0481 4.63574 61.7611 7.3969 64.4987C10.1581 67.2363 13.903 68.7743 17.8079 68.7743Z" stroke="black" stroke-width="6.16" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M54.616 68.7743V43.2281C54.616 42.2602 54.2282 41.3319 53.5379 40.6475C52.8476 39.9631 51.9114 39.5786 50.9352 39.5786H21.4885C20.5123 39.5786 19.5761 39.9631 18.8858 40.6475C18.1955 41.3319 17.8077 42.2602 17.8077 43.2281V68.7743" stroke="black" stroke-width="6.16"/>
                 </svg>
-                <span>guardar registro</span>
+                <span>Guardar registro</span>
             </button>
         </form>
     </div>
 </div>
+
+<!-- MODAL SUEÑO -->
+        <div id="modal-sueno" class="modal-overlay oculto">
+            <div class="modal-tarjeta">
+                <button type="button" class="btn-cerrar-modal" id="btn-cerrar-sueno" aria-label="Cerrar">&times;</button>
+               
+                <div class="modal-encabezado">
+                    <h2 class="modal-titulo">Sueño</h2>
+                    <svg width="45" height="40" viewBox="0 0 106 100" fill="none">
+                        <path d="M99.1424 57.58C95.0093 58.7292 90.7702 59.3288 86.5311 59.3288C62.5801 59.3288 43.0802 40.9418 43.0802 18.3578C43.0802 14.3606 43.7161 10.3635 44.9348 6.46621C45.5177 4.71745 44.9878 2.76883 43.6101 1.46975C42.2324 0.170666 40.2188 -0.32898 38.3112 0.220631C27.2028 3.38362 17.4739 9.84305 10.5713 18.6382C3.66874 27.4334 -0.0387262 38.0946 0.000305051 49.0361C0.000305051 77.1162 24.2162 100 54.0489 100C78.0529 100 98.8245 85.4603 105.766 63.8256C106.349 62.0768 105.819 60.1282 104.441 58.8291C103.064 57.5301 101.05 57.0304 99.1424 57.58ZM54.0489 90.0071C30.098 90.0071 10.5981 71.6201 10.5981 49.0361C10.5675 41.7584 12.606 34.6059 16.5014 28.323C20.3968 22.0401 26.0067 16.8564 32.7474 13.3114C32.5884 15.0102 32.4825 16.709 32.4825 18.4078C32.4825 46.4879 56.6984 69.3717 86.5311 69.3717C88.3327 69.3717 90.1343 69.2717 91.9359 69.1218C84.4115 81.9128 70.1045 90.0071 54.0489 90.0071ZM74.1847 30.0495L79.1656 19.7568L90.0813 15.0601L79.1656 10.3634L74.1847 0.070737L69.2037 10.3634L58.288 15.0601L69.2037 19.7568L74.1847 30.0495ZM96.7049 27.5513L93.7906 33.547L87.4319 36.2951L93.7906 39.0431L96.7049 45.0389L99.6193 39.0431L105.978 36.2951L99.6193 33.547L96.7049 27.5513Z" fill="black"/>
+                    </svg>
+                </div>
+
+                <form id="form-sueno">
+                   <!-- ¿A qué hora te dormiste? -->
+<div class="caja-campo">
+    <div class="label-con-icono">
+        <svg width="24" height="24" viewBox="0 0 55 55" fill="none">
+            <path d="M27.5 52.5C41.3071 52.5 52.5 41.3071 52.5 27.5C52.5 13.6929 41.3071 2.5 27.5 2.5C13.6929 2.5 2.5 13.6929 2.5 27.5C2.5 41.3071 13.6929 52.5 27.5 52.5Z" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35 37.5L28.965 31.465C28.0273 30.5275 27.5003 29.256 27.5 27.93V12.5" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <label for="hora-dormiste">¿A qué hora te dormiste?</label>
+    </div>
+    <div class="fila-hora-periodo">
+        <input type="time" class="input-hora-individual" id="hora-dormiste">
+        <div class="opciones-periodo">
+            <button type="button" class="btn-periodo-circulo btn-periodo-dormiste" data-periodo="AM">AM</button>
+            <button type="button" class="btn-periodo-circulo btn-periodo-dormiste" data-periodo="PM">PM</button>
+        </div>
+    </div>
+</div>
+
+<!-- ¿A qué hora te despertaste? -->
+<div class="caja-campo">
+    <div class="label-con-icono">
+        <svg width="24" height="24" viewBox="0 0 55 55" fill="none">
+            <path d="M27.5 52.5C41.3071 52.5 52.5 41.3071 52.5 27.5C52.5 13.6929 41.3071 2.5 27.5 2.5C13.6929 2.5 2.5 13.6929 2.5 27.5C2.5 41.3071 13.6929 52.5 27.5 52.5Z" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M35 37.5L28.965 31.465C28.0273 30.5275 27.5003 29.256 27.5 27.93V12.5" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <label for="hora-despertaste">¿A qué hora te despertaste?</label>
+    </div>
+    <div class="fila-hora-periodo">
+        <input type="time" class="input-hora-individual" id="hora-despertaste">
+        <div class="opciones-periodo">
+            <button type="button" class="btn-periodo-circulo btn-periodo-despertaste" data-periodo="AM">AM</button>
+            <button type="button" class="btn-periodo-circulo btn-periodo-despertaste" data-periodo="PM">PM</button>
+        </div>
+    </div>
+</div>
+
+                    <!-- ¿Cuántas veces te despertaste? -->
+                    <div class="caja-campo">
+                        <div class="label-con-icono">
+                            <svg width="28" height="24" viewBox="0 0 65 56" fill="none">
+                                <path d="M64.6385 25.6185C64.3779 25.0644 63.9776 24.5877 63.4769 24.2352C62.9763 23.8828 62.3925 23.6666 61.783 23.608C58.7447 23.2966 55.927 21.8787 53.8665 19.6242C52.0997 17.6365 50.8924 15.2153 50.3678 12.6081C49.8433 10.0009 50.0204 7.30113 50.881 4.78478C51.0845 4.17745 51.1276 3.52779 51.006 2.89891C50.8843 2.27002 50.6022 1.68327 50.1868 1.19564C49.8068 0.745173 49.3152 0.402372 48.7611 0.201519C48.207 0.00066609 47.6099 -0.0511994 47.0295 0.0511098L46.9854 0.0580751C43.0099 0.93265 39.4363 3.10013 36.8236 6.22153C34.2109 9.34294 32.7063 13.2422 32.5452 17.3096C30.6715 16.6194 28.6917 16.2612 26.6949 16.251C22.9977 16.2702 19.4012 17.4581 16.4199 19.6447C13.4385 21.8313 11.2249 24.9047 10.0957 28.4253C6.86733 29.3464 4.08089 31.4038 2.2503 34.2181C0.41971 37.0323 -0.331548 40.4136 0.13508 43.7383C0.601708 47.0629 2.25475 50.1067 4.78933 52.3083C7.32391 54.5099 10.5691 55.7207 13.9263 55.7176H39.4635C41.7127 55.7263 43.9304 55.1881 45.9254 54.1494C47.9205 53.1107 49.6331 51.6026 50.9158 49.7549C52.1985 47.9073 53.0129 45.7755 53.2887 43.5432C53.5645 41.3109 53.2935 39.0451 52.4991 36.9408C54.922 36.5545 57.2359 35.6605 59.2892 34.3174C61.3424 32.9743 63.0886 31.2124 64.4134 29.1473C64.7536 28.6291 64.9533 28.0313 64.9927 27.4127C65.0322 26.794 64.9102 26.1757 64.6385 25.6185ZM39.4635 51.0744H13.9263C11.6008 51.0783 9.35878 50.208 7.64496 48.6361C5.93115 47.0642 4.87075 44.9055 4.6741 42.5884C4.47744 40.2712 5.1589 37.9647 6.5833 36.1265C8.00771 34.2882 10.071 33.0525 12.3639 32.6644L13.9031 32.4044L14.2397 30.8815C14.8697 28.0478 16.4471 25.5137 18.7116 23.6974C20.976 21.8812 23.7921 20.8913 26.6949 20.8913C29.5977 20.8913 32.4138 21.8812 34.6782 23.6974C36.9427 25.5137 38.5201 28.0478 39.1501 30.8815L39.4867 32.4044L41.0259 32.6668C43.3159 33.0579 45.3755 34.2946 46.7971 36.132C48.2186 37.9694 48.8985 40.2736 48.702 42.5884C48.5055 44.9032 47.447 47.0599 45.7361 48.6315C44.0252 50.203 41.7866 51.0749 39.4635 51.0744ZM49.8293 32.4996H49.7805C48.0443 30.5578 45.7951 29.1455 43.2918 28.4253C42.2017 25.0287 40.0947 22.0488 37.2557 19.8889C37.2325 19.6544 37.1721 19.4315 37.1605 19.1927C36.9588 16.2225 37.7011 13.2649 39.2814 10.7423C40.8616 8.2197 43.199 6.26126 45.9592 5.14694C45.2314 8.23162 45.2609 11.4466 46.0452 14.5174C46.8294 17.5882 48.3452 20.4237 50.4631 22.7815C52.8736 25.4029 56.0391 27.2104 59.5218 27.954C58.3388 29.3765 56.8572 30.5212 55.1821 31.3068C53.507 32.0924 51.6795 32.4996 49.8293 32.4996Z" fill="black"/>
+                            </svg>
+                            <label>¿Cuántas veces te despertaste?</label>
+                        </div>
+                        <div class="contador-veces">
+                            <button type="button" class="btn-contador" id="btn-menos">[ - ]</button>
+                            <span id="valor-contador">0</span>
+                            <button type="button" class="btn-contador" id="btn-mas">[ + ]</button>
+                        </div>
+                    </div>
+
+                    <!-- Botón Guardar -->
+<button type="button" id="guardar-sueno" class="btn-guardar-modal">
+    <svg class="icono-disquete" viewBox="0 0 55 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.6002 55.5311H40.6175C43.4837 55.5311 46.2324 54.2964 48.2591 52.0985C50.2858 49.9007 51.4244 46.9198 51.4244 43.8115V15.7255C51.4242 14.9485 51.1395 14.2034 50.6328 13.6541L41.4091 3.65143C40.9025 3.10193 40.2155 2.79313 39.499 2.79297H13.6002C10.7341 2.79297 7.98529 4.02771 5.9586 6.22556C3.93192 8.42341 2.79333 11.4043 2.79333 14.5126V43.8115C2.79333 46.9198 3.93192 49.9007 5.9586 52.0985C7.98529 54.2964 10.7341 55.5311 13.6002 55.5311Z" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M40.6175 55.5311V35.0219C40.6175 34.2448 40.3329 33.4996 39.8262 32.9501C39.3195 32.4006 38.6324 32.092 37.9158 32.092H16.302C15.5855 32.092 14.8983 32.4006 14.3916 32.9501C13.8849 33.4996 13.6003 34.2448 13.6003 35.0219V55.5311M19.0037 2.79297H35.2141V11.5827C35.2141 12.3597 34.9294 13.105 34.4228 13.6544C33.9161 14.2039 33.2289 14.5126 32.5124 14.5126H21.7055C20.9889 14.5126 20.3017 14.2039 19.795 13.6544C19.2884 13.105 19.0037 12.3597 19.0037 11.5827V2.79297Z" stroke="black" stroke-width="4"/>
+        <path d="M24.4074 43.8105H29.8109" stroke="black" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <span>Guardar registro</span>
+</button>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="../js/registros.js"></script>
