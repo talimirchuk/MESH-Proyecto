@@ -96,3 +96,27 @@ main {
     height: 100vh;
     overflow-y: auto;
 }
+
+/* ESTADO ACTIVO (PÁGINA SELECCIONADA) */
+.nav-item.active {
+    background-color: #82E2C0; /* Verde más oscuro */
+}
+
+.nav-item.active .nav-label {
+    color: #000000;
+}
+
+/* Cambiar trazo para los íconos delineados (Historial, Registros, Configuración) */
+.nav-item.active .icon-container svg path[stroke] {
+    stroke: #000000;
+}
+
+/* Cambiar relleno para los íconos rellenos (Inicio, Paciente, Gráficos) */
+.nav-item.active .icon-container svg path[fill] {
+    fill: #000000;
+}
+
+/* Para el ícono de Recordatorios q es de fontawesome */
+.nav-item.active .icon-container i {
+    color: #000000 !important;
+}

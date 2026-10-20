@@ -6,13 +6,16 @@ body {
 }
 
 .main-configuracion {
-    padding: 40px 60px;
+    padding: 30px 40px;
     font-family: 'Comic Relief', 'Comic Sans MS', cursive, sans-serif;
     height: 100vh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    flex-grow: 1;
+    overflow-y: auto;
 }
+
 
 /* Título Configuración con línea verde abajo */
 .titulo-configuracion {
