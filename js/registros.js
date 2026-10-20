@@ -114,6 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const valorContador = document.getElementById("valor-contador");
     const btnGuardarSueno = document.getElementById("guardar-sueno");
 
+    // ESTADO DE ÁNIMO
+    const modalAnimo = document.getElementById("modal-animo");
+    const btnCerrarAnimo = document.getElementById("btn-cerrar-animo");
+    const cuadradosEmocion = document.querySelectorAll(".cuadrado-emocion");
+    const rangeIntensidadAnimo = document.getElementById("range-intensidad-animo");
+    const btnGuardarAnimo = document.getElementById("guardar-animo");
+
+    let emocionSeleccionada = "normal/calmado";
+
     let periodoDormiste = "";
     let periodoDespertaste = "";
     let contadorDesperto = 0;
@@ -162,6 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else if (boton.dataset.tipo === "sueno") {
                 modalSueno.classList.remove("oculto");
+            }
+            else if (boton.dataset.tipo === "animo") {
+                modalAnimo.classList.remove("oculto");
             }
         });
     });
@@ -490,6 +502,57 @@ document.addEventListener("DOMContentLoaded", () => {
                 detalles: {
                     horasDurmió: tiempoDormido,
                     vecesDesperto: contadorDesperto
+                }
+            };
+
+            await apiGuardarRegistro(nuevoRegistro);
+            window.location.href = "registros.html";
+        });
+    }
+
+    // Selección de Tarjeta de Emoción
+    cuadradosEmocion.forEach(cuadrado => {
+        cuadrado.addEventListener("click", () => {
+            cuadradosEmocion.forEach(c => c.classList.remove("activo"));
+            cuadrado.classList.add("activo");
+            emocionSeleccionada = cuadrado.dataset.emocion;
+        });
+    });
+
+    // Cerrar Modal ESTADO DE ÁNIMO
+    if (btnCerrarAnimo) {
+        btnCerrarAnimo.addEventListener("click", () => {
+            modalAnimo.classList.add("oculto");
+        });
+    }
+
+    // Guardar Registro ESTADO DE ÁNIMO (automático como Sueño)
+    if (btnGuardarAnimo) {
+        btnGuardarAnimo.addEventListener("click", async () => {
+            const mapaIntensidad = { "1": "baja", "2": "moderada", "3": "alta" };
+            const valorIntensidad = mapaIntensidad[rangeIntensidadAnimo.value] || "moderada";
+
+            const ahora = new Date();
+            const aStr = ahora.getFullYear();
+            const mStr = String(ahora.getMonth() + 1).padStart(2, '0');
+            const dStr = String(ahora.getDate()).padStart(2, '0');
+            const fechaISO = `${aStr}-${mStr}-${dStr}`;
+
+            let horas = ahora.getHours();
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            const periodo = horas >= 12 ? "PM" : "AM";
+            horas = horas % 12 || 12;
+            const horaFormateada = `${String(horas).padStart(2, '0')}:${minutos} ${periodo}`;
+
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: fechaISO,
+                hora: horaFormateada,
+                tipo: "Estado de Ánimo",
+                info: `Emoción: ${emocionSeleccionada} - Intensidad: ${valorIntensidad}`,
+                detalles: {
+                    emocion: emocionSeleccionada,
+                    intensidad: valorIntensidad
                 }
             };
 

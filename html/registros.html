@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESH - Registros</title>
+    <title>Registros - MESH</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../css/style.css">
@@ -464,6 +464,100 @@
                 </form>
             </div>
         </div>
+
+       <!-- MODAL ESTADO DE ÁNIMO -->
+<div id="modal-animo" class="modal-overlay oculto">
+    <div class="modal-tarjeta">
+        <button type="button" class="btn-cerrar-modal" id="btn-cerrar-animo" aria-label="Cerrar">&times;</button>
+        
+        <!-- Encabezado con Título e Ícono -->
+        <div class="modal-encabezado">
+            <h2 class="modal-titulo">Estado de Ánimo</h2>
+            <svg class="icono-animo-header" width="45" height="45" viewBox="0 0 79 79" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M39.3077 75.8086C48.9881 75.8086 58.2721 71.9631 65.1171 65.118C71.9622 58.2729 75.8077 48.989 75.8077 39.3086C75.8077 29.6282 71.9622 20.3443 65.1171 13.4992C58.2721 6.65412 48.9881 2.80859 39.3077 2.80859C29.6273 2.80859 20.3434 6.65412 13.4983 13.4992C6.65326 20.3443 2.80774 29.6282 2.80774 39.3086C2.80774 48.989 6.65326 58.2729 13.4983 65.118C20.3434 71.9631 29.6273 75.8086 39.3077 75.8086Z" stroke-width="5.61538" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+            </svg>
+        </div>
+
+        <form id="form-animo">
+            <!-- Sección 1: Emociones -->
+            <p class="pregunta-animo">¿Cómo te sentiste durante el día?</p>
+            <div class="contenedor-cuadrados-emociones">
+                
+                <!-- Feliz -->
+                <button type="button" class="cuadrado-emocion" data-emocion="feliz">
+                    <div class="area-svg-emocion">
+                        <svg width="40" height="40" viewBox="0 0 54 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.61348 6.48744C9.94167 6.81563 10.3868 7 10.8509 7C11.315 7 11.7602 6.81563 12.0884 6.48744C12.4165 6.15925 12.6009 5.71413 12.6009 5.25C12.6009 4.78587 12.4165 4.34075 12.0884 4.01256C11.7602 3.68437 11.315 3.5 10.8509 3.5C10.3868 3.5 9.94167 3.68437 9.61348 4.01256C9.28529 4.34075 9.10091 4.78587 9.10091 5.25C9.10091 5.71413 9.28529 6.15925 9.61348 6.48744Z" fill="black"/>
+                            <path d="M41.1135 6.48744C41.4417 6.81563 41.8868 7 42.3509 7C42.815 7 43.2602 6.81563 43.5884 6.48744C43.9165 6.15925 44.1009 5.71413 44.1009 5.25C44.1009 4.78587 43.9165 4.34075 43.5884 4.01256C43.2602 3.68437 41.8868 3.5 42.3509 3.5C41.8868 3.5 41.4417 3.68437 41.1135 4.01256C40.7853 4.34075 40.6009 4.78587 40.6009 5.25C40.6009 5.71413 40.7853 6.15925 41.1135 6.48744Z" fill="black"/>
+                            <path d="M3.50092 24.5C7.00092 37.1 21.0009 44.8 33.6009 41.3C41.3009 38.5 47.6009 32.2 49.7009 24.5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+                        </svg>
+                    </div>
+                    <span>feliz</span>
+                </button>
+
+                <!-- Irritable -->
+                <button type="button" class="cuadrado-emocion" data-emocion="irritable">
+                    <div class="area-svg-emocion">
+                        <svg width="40" height="30" viewBox="0 0 53 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M39.9 12.6V5.39927M39.9 5.39927V5.3928M39.9 5.39927C42.7533 4.15403 45.8494 3.5 49 3.5M39.9 5.39927C38.2953 6.09958 36.7675 6.98688 35.35 8.05M3.5 3.5C6.65056 3.5 9.74673 4.15403 12.6 5.39927M12.6 5.39927C14.2047 6.09958 15.7325 6.98688 17.15 8.05M12.6 5.39927V12.6M12.6 5.39927V5.3928M12.6 35.35C16.5383 32.3955 21.3289 30.7983 26.2523 30.7983C31.1757 30.7983 35.9662 32.3955 39.9046 35.35" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+                        </svg>
+                    </div>
+                    <span>irritable</span>
+                </button>
+
+                <!-- Normal/Calmado -->
+                <button type="button" class="cuadrado-emocion activo" data-emocion="normal/calmado">
+                    <div class="area-svg-emocion">
+                        <svg width="40" height="12" viewBox="0 0 53 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.50024 9.52831C44.5395 5.28101 49.4463 3.5 49.4463 3.5" stroke-width="7" stroke-linecap="round" stroke="black"/>
+                        </svg>
+                    </div>
+                    <span>normal/calmado</span>
+                </button>
+
+                <!-- Ansioso -->
+                <button type="button" class="cuadrado-emocion" data-emocion="ansioso">
+                    <div class="area-svg-emocion">
+                        <svg width="40" height="40" viewBox="0 0 95 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M31.1719 59.375C28.7041 59.375 26.7188 61.3604 26.7188 63.8281C26.7188 66.2959 28.7041 68.2812 31.1719 68.2812H32.6562V59.375H31.1719ZM38.5938 68.2812H44.5312V59.375H38.5938V68.2812ZM56.4062 68.2812V59.375H50.4688V68.2812H56.4062ZM62.3438 68.2812H63.8281C66.2959 68.2812 68.2812 66.2959 68.2812 63.8281C68.2812 61.3604 66.2959 59.375 63.8281 59.375H62.3438V68.2812ZM31.1719 53.4375H63.8281C69.5615 53.4375 74.2188 58.0947 74.2188 63.8281C74.2188 69.5615 69.5615 74.2188 63.8281 74.2188H31.1719C25.4385 74.2188 20.7812 69.5615 20.7812 63.8281C20.7812 58.0947 25.4385 53.4375 31.1719 53.4375Z" fill="black"/>
+                        </svg>
+                    </div>
+                    <span>ansioso</span>
+                </button>
+
+                <!-- Triste -->
+                <button type="button" class="cuadrado-emocion" data-emocion="triste">
+                    <div class="area-svg-emocion">
+                        <svg width="40" height="40" viewBox="0 0 91 91" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M45.5 47.125C41.3597 47.1196 37.2715 48.0471 33.5388 49.8385C29.8062 51.63 26.5252 54.2394 23.9395 57.473" stroke-width="4" stroke="black"/>
+                        </svg>
+                    </div>
+                    <span>triste</span>
+                </button>
+            </div>
+
+            <!-- Sección 2: Intensidad -->
+            <p class="pregunta-animo">¿Cuál fue la intensidad de esa emoción?</p>
+            <div class="bloque-intensidad-animo">
+                <input type="range" id="range-intensidad-animo" min="1" max="3" step="1" value="2" class="barra-range-animo">
+                <div class="etiquetas-intensidad-animo">
+                    <span>baja</span>
+                    <span>moderada</span>
+                    <span>alta</span>
+                </div>
+            </div>
+
+            <!-- Botón Guardar -->
+            <button type="button" id="guardar-animo" class="btn-guardar-modal">
+                <svg class="icono-disquete" viewBox="0 0 55 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.6002 55.5311H40.6175C43.4837 55.5311 46.2324 54.2964 48.2591 52.0985C50.2858 49.9007 51.4244 46.9198 51.4244 43.8115V15.7255C51.4242 14.9485 51.1395 14.2034 50.6328 13.6541L41.4091 3.65143C40.9025 3.10193 40.2155 2.79313 39.499 2.79297H13.6002C10.7341 2.79297 7.98529 4.02771 5.9586 6.22556C3.93192 8.42341 2.79333 11.4043 2.79333 14.5126V43.8115C2.79333 46.9198 3.93192 49.9007 5.9586 52.0985C7.98529 54.2964 10.7341 55.5311 13.6002 55.5311Z" stroke-width="5.58665" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+                </svg>
+                <span>guardar registro</span>
+            </button>
+        </form>
+    </div>
+</div>
+
     </main>
 
     <script src="../js/registros.js"></script>

@@ -565,3 +565,120 @@ input[type="number"]::-webkit-inner-spin-button {
     font-weight: 500;
     color: #000;
 }
+
+
+/* ==========================================
+   MODAL ESTADO DE ÁNIMO
+========================================== */
+
+/* Ancho personalizado para la tarjeta de Ánimo */
+#modal-animo .modal-tarjeta {
+    max-width: 800px;
+}
+
+#form-animo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.pregunta-animo {
+    font-size: 22px;
+    color: #000;
+    margin: 10px 0 5px 0;
+    text-align: left;
+}
+
+/* Contenedor horizontal de 5 emociones */
+.contenedor-cuadrados-emociones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.cuadrado-emocion {
+    flex: 1;
+    height: 125px;
+    border-radius: 18px;
+    background-color: #D5EDE4;
+    border: 2px solid #98DFB8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 8px 4px;
+    box-sizing: border-box;
+}
+
+.cuadrado-emocion:hover,
+.cuadrado-emocion.activo {
+    background-color: #A9D2C3;
+    border-color: #2E8B57;
+}
+
+.area-svg-emocion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 55px;
+    width: 100%;
+}
+
+.cuadrado-emocion span {
+    font-family: inherit;
+    font-size: 15px;
+    color: #000;
+    margin-top: 6px;
+    text-align: center;
+}
+
+/* Slider de Intensidad */
+.bloque-intensidad-animo {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.barra-range-animo {
+    width: 100%;
+    height: 22px;
+    background: #D5EDE4;
+    border-radius: 20px;
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.barra-range-animo::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #46D3C1;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.barra-range-animo::-webkit-slider-thumb:hover {
+    transform: scale(1.05);
+}
+
+.etiquetas-intensidad-animo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #000;
+}
+
+#form-animo .btn-guardar-modal {
+    align-self: center;
+}
