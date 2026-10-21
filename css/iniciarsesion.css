@@ -232,3 +232,13 @@ body {
 .btn-ingresar:hover {
     background-color: var(--gris-boton-hover);
 }
+
+/* para el ojo ocultar */
+.oculto {
+    display: none !important;
+}
+
+.svg-pestana,
+.svg-ojo {
+    transition: opacity 0.2s ease;
+}

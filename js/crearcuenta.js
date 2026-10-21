@@ -24,19 +24,39 @@ function activarOcultarMostrarContrasena(idDelInput, idDelBoton) {
 activarOcultarMostrarContrasena("contrasena", "ojo-contrasena");
 activarOcultarMostrarContrasena("confirmar-contrasena", "ojo-confirmar-contrasena");
 
-/* funcion p/ guardar el usuario, preparado para el backend */
-async function guardarUsuario(usuario) {
-    // 1. Leemos la lista de usuarios o creamos una lista vacía si no existe
-    const listaUsuarios = JSON.parse(localStorage.getItem("usuariosMESH")) || [];
-    
-    // 2. Agregamos el nuevo usuario a la lista
-    listaUsuarios.push(usuario);
-    
-    // 3. Guardamos la lista actualizada de usuarios
-    localStorage.setItem("usuariosMESH", JSON.stringify(listaUsuarios));
+async function guardarUsuario(datosFrontend) {
+    // 1. Mapeamos las propiedades al formato EXACTO que pide tu server.ts
+    const datosParaBackend = {
+        nombreYapellido: datosFrontend.nombreCompleto,
+        email: datosFrontend.email,
+        contraseña: datosFrontend.contraseña,
+        medicamentosHabituales: Array.isArray(datosFrontend.medicamentosHabituales) 
+                                ? datosFrontend.medicamentosHabituales.join(" - ") 
+                                : datosFrontend.medicamentosHabituales,
+        diagnostico: datosFrontend.diagnostico,
+        fechaNacimiento: datosFrontend.fechaNacimiento,
+        observaciones: datosFrontend.observaciones || ""
+    };
 
-    // 4. Establecemos este usuario como la sesión activa
-    localStorage.setItem("usuarioLogueado", JSON.stringify(usuario));
+    // 2. Petición POST al endpoint de server.ts
+    const respuesta = await fetch("http://10.4.0.49:3000/usuarios/crear", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosParaBackend)
+    });
+
+    const resultado = await respuesta.json();
+
+    // 3. Si tu backend responde con error 400 (ej. email repetido)
+    if (!respuesta.ok) {
+        throw new Error(resultado.mensaje || "Error al crear la cuenta.");
+    }
+
+    // 4. Si fue exitoso (201), tu backend devuelve el objeto 'usuario' dentro de la respuesta
+    localStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
+    sessionStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
 }
 
 /* capturo el formulario */
@@ -122,8 +142,12 @@ formRegistro.addEventListener("submit", async function(e) {
        medicamentosHabituales: listaMedicamentos
    };
 
+   try {
     await guardarUsuario(nuevoUsuario);
 
-    /* me manda a la pantalla de iniciar sesion */
+    /* me manda a la pantalla de confirmacion de cuenta creada */
     window.location.href = "../html/cuentacreada.html";
+} catch (error) {
+    alert(error.message);
+}
 });
