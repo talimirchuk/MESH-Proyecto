@@ -29,48 +29,59 @@ function activarOcultarMostrarContrasena(idDelInput, idDelBoton) {
 activarOcultarMostrarContrasena("password", "ojo-contrasena");
 
 /*  el botón de continuar en iniciar sesión */
+/* Botón de ingresar / continuar */
 const continuar = document.getElementById("continuar");
 
 if (continuar) {
-    continuar.addEventListener("click", function(e) {
-        e.preventDefault(); // Previene recargas
+    continuar.addEventListener("click", async function(e) {
+        e.preventDefault();
 
         const emailInput = document.getElementById("email");
         const passwordInput = document.getElementById("password");
         const textoayuda = document.getElementById("texto-ayuda");
 
-        if (!emailInput || !passwordInput) {
-            return;
-        }
+        if (!emailInput || !passwordInput) return;
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
-        /* Leo cuenta que se guardó desde crearcuenta.js */
-        /* 1. Leo la lista completa de usuarios creados en usuariosMESH */
-        const listaUsuarios = JSON.parse(localStorage.getItem("usuariosMESH")) || [];
+        if (textoayuda) textoayuda.textContent = "";
 
-        /* Si no hay ninguna cuenta guardada en la lista */
-        if (listaUsuarios.length === 0) {
-            textoayuda.textContent = "No hay ninguna cuenta registrada. Registrate primero.";
+        if (!email || !password) {
+            if (textoayuda) textoayuda.textContent = "Por favor, completá todos los campos.";
             return;
         }
 
-        /* 2. Busco en el array el usuario cuyo email y contraseña coincidan */
-        const usuarioEncontrado = listaUsuarios.find(function(u) {
-            const claveGuardada = u.contrasena || u.password;
-            return u.email.toLowerCase() === email.toLowerCase() && password === claveGuardada;
-        });
+        try {
+            // Petición POST enviando credenciales a la IP del backend por Wi-Fi
+            const respuesta = await fetch("http://10.8.5.92:3000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    email: email, 
+                    contraseña: password // coincide con req.body.contraseña en tu server.ts
+                })
+            });
 
-        /* 3. Comparo datos */
-        if (usuarioEncontrado) {
-            // Guardamos en 'usuarioLogueado' SÓLO la cuenta que acaba de ingresar
-            localStorage.setItem("usuarioLogueado", JSON.stringify(usuarioEncontrado));
+            if (!respuesta.ok) {
+                // Si el servidor responde 401 (Credenciales incorrectas)
+                if (textoayuda) textoayuda.textContent = "Email o contraseña incorrectos.";
+                return;
+            }
 
+            const resultado = await respuesta.json();
+
+            // Guardamos la sesión del usuario devuelto por el servidor
+            localStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
+            sessionStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
+
+            // Redirigimos a inicio.html
             window.location.href = "../html/inicio.html";
-        } else {
-            // Muestro el mensaje de error si no coinciden
-            textoayuda.textContent = "Email o contraseña incorrectos";
+
+        } catch (error) {
+            if (textoayuda) textoayuda.textContent = "Error de conexión con el servidor.";
         }
     });
 }

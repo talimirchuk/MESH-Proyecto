@@ -29,7 +29,7 @@ async function guardarUsuario(datosFrontend) {
     const datosParaBackend = {
         nombreYapellido: datosFrontend.nombreCompleto,
         email: datosFrontend.email,
-        contraseña: datosFrontend.contraseña,
+        contraseña: datosFrontend.contrasena,
         medicamentosHabituales: Array.isArray(datosFrontend.medicamentosHabituales) 
                                 ? datosFrontend.medicamentosHabituales.join(" - ") 
                                 : datosFrontend.medicamentosHabituales,
@@ -39,7 +39,7 @@ async function guardarUsuario(datosFrontend) {
     };
 
     // 2. Petición POST al endpoint de server.ts
-    const respuesta = await fetch("http://10.4.0.49:3000/usuarios/crear", {
+    const respuesta = await fetch("http://10.8.5.92:3000/usuarios/crear", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
