@@ -18,13 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Obtener usuario activo
     const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
                        || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                       || { email: "juanperez@gmail.com", password: "JuanPerez1901" };
+                       || { email: "--", password: "--" };
 
     // Abrir modal Ver Contraseña
     if (btnVerContrasena && modalContrasena) {
         btnVerContrasena.addEventListener("click", () => {
-            valorEmailUsuario.textContent = usuarioActivo.email || usuarioActivo.usuario || "juanperez@gmail.com";
-            valorPassUsuario.textContent = usuarioActivo.password || usuarioActivo.contrasena || "JuanPerez1901";
+            valorEmailUsuario.textContent = usuarioActivo.email || usuarioActivo.usuario || "--";
+            valorPassUsuario.textContent = usuarioActivo.password || usuarioActivo.contrasena || "--";
             modalContrasena.classList.add("activo");
         });
     }

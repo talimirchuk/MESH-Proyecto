@@ -1,9 +1,10 @@
-// Obtener datos iniciales desde localStorage
-function obtenerDatosPaciente() {
-    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioLogueado")) || JSON.parse(localStorage.getItem("usuarioRegistrado"));
-    
-    // Si no hay ningún usuario en localStorage, devolvemos los campos vacíos
-    if (!usuarioSesion) {
+// Obtener datos iniciales desde el Backend
+async function obtenerDatosPaciente() {
+    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                       || JSON.parse(localStorage.getItem("usuarioRegistrado"))
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado"));
+
+    if (!usuarioSesion || !usuarioSesion.id) {
         return {
             nombreCompleto: "--",
             fechaNacimiento: "",
@@ -13,20 +14,89 @@ function obtenerDatosPaciente() {
             observaciones: ""
         };
     }
-    
-    return usuarioSesion;
+
+    try {
+        const respuesta = await fetch(`http://10.4.17.117:3000/usuarios/${usuarioSesion.id}`);
+        if (respuesta.ok) {
+            const datosUsuario = await respuesta.json();
+
+            // Si el backend devuelve medicamentos como string "Med1 - Med2", los convierte a Array
+            if (typeof datosUsuario.medicamentosHabituales === "string") {
+                datosUsuario.medicamentosHabituales = datosUsuario.medicamentosHabituales
+                    .split("-")
+                    .map(m => m.trim())
+                    .filter(m => m.length > 0);
+            }
+
+            return datosUsuario;
+        }
+    } catch (error) {
+        console.error("Error al obtener los datos del paciente:", error);
+    }
+
+    // si falla el pedido
+    return {
+        nombreCompleto: "--",
+        fechaNacimiento: "",
+        diagnostico: "",
+        email: usuarioSesion ? usuarioSesion.email : "",
+        medicamentosHabituales: [],
+        observaciones: ""
+    };
 }
 
-let pacienteDatos = obtenerDatosPaciente();
+let pacienteDatos = {};
 
 // Guardar los datos de forma permanente
-function guardarDatos() {
-    localStorage.setItem("usuarioLogueado", JSON.stringify(pacienteDatos));
-    localStorage.setItem("usuarioRegistrado", JSON.stringify(pacienteDatos));
+// Guardar los datos de forma permanente en el Backend mediante PATCH
+async function guardarDatos() {
+    const usuarioSesion = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                       || JSON.parse(localStorage.getItem("usuarioRegistrado"))
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado"));
+
+    if (!usuarioSesion || !usuarioSesion.id) {
+        return;
+    }
+
+    // Convertimos el Array de medicamentos a String "Med1 - Med2" para enviar al Backend
+    const medicamentosFormateados = Array.isArray(pacienteDatos.medicamentosHabituales)
+        ? pacienteDatos.medicamentosHabituales.join(" - ")
+        : pacienteDatos.medicamentosHabituales;
+
+    const datosAEnviar = {
+        fechaNacimiento: pacienteDatos.fechaNacimiento,
+        diagnostico: pacienteDatos.diagnostico,
+        medicamentosHabituales: medicamentosFormateados,
+        observaciones: pacienteDatos.observaciones
+    };
+
+    try {
+        const respuesta = await fetch(`http://10.4.17.117:3000/editar-usuario/${usuarioSesion.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datosAEnviar)
+        });
+
+        if (respuesta.ok) {
+            const resultado = await respuesta.json();
+            if (resultado.usuario) {
+                if (localStorage.getItem("usuarioLogueado")) {
+                    localStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
+                }
+                if (sessionStorage.getItem("usuarioLogueado")) {
+                    sessionStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Error al actualizar la ficha del paciente:", error);
+    }
 }
 
 function mostrarPaciente() {
-    document.getElementById("paciente-nombre").textContent = pacienteDatos.nombreCompleto || "Juan Perez";
+    document.getElementById("paciente-nombre").textContent = pacienteDatos.nombreCompleto || "--";
     document.getElementById("paciente-nacimiento").textContent = pacienteDatos.fechaNacimiento || "";
     document.getElementById("paciente-diagnostico").textContent = pacienteDatos.diagnostico || "";
     document.getElementById("paciente-contacto").textContent = pacienteDatos.email || "";
@@ -148,5 +218,10 @@ function asignarEventosEdicionPuntual() {
     });
 }
 
-// Carga inicial
-mostrarPaciente();
+// Carga inicial asíncrona desde  Back
+async function inicializarPaciente() {
+    pacienteDatos = await obtenerDatosPaciente();
+    mostrarPaciente();
+}
+
+inicializarPaciente();

@@ -39,7 +39,7 @@ async function guardarUsuario(datosFrontend) {
     };
 
     // 2. Petición POST al endpoint de server.ts
-    const respuesta = await fetch("http://10.8.5.92:3000/usuarios/crear", {
+    const respuesta = await fetch("http://10.4.17.117:3000/usuarios/crear", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
