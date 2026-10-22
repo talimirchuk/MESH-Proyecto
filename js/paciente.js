@@ -6,7 +6,7 @@ async function obtenerDatosPaciente() {
 
     if (!usuarioSesion || !usuarioSesion.id) {
         return {
-            nombreCompleto: "--",
+            nombreCompleto: "",
             fechaNacimiento: "",
             diagnostico: "",
             email: "",
@@ -16,10 +16,11 @@ async function obtenerDatosPaciente() {
     }
 
     try {
-        const respuesta = await fetch(`http://10.4.17.117:3000/usuarios/${usuarioSesion.id}`);
+        const respuesta = await fetch(`http://10.8.5.215:3000/usuarios/${usuarioSesion.id}`);
         if (respuesta.ok) {
             const datosUsuario = await respuesta.json();
 
+            datosUsuario.nombreCompleto = datosUsuario.nombreYapellido || datosUsuario.nombreCompleto;
             // Si el backend devuelve medicamentos como string "Med1 - Med2", los convierte a Array
             if (typeof datosUsuario.medicamentosHabituales === "string") {
                 datosUsuario.medicamentosHabituales = datosUsuario.medicamentosHabituales
@@ -71,7 +72,7 @@ async function guardarDatos() {
     };
 
     try {
-        const respuesta = await fetch(`http://10.4.17.117:3000/editar-usuario/${usuarioSesion.id}`, {
+        const respuesta = await fetch(`http://10.8.5.215:3000/editar-usuario/${usuarioSesion.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
