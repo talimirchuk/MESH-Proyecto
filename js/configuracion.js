@@ -1,3 +1,5 @@
+const IP_BACKEND = "http://10.8.5.215:3000";
+
 document.addEventListener("DOMContentLoaded", () => {
     // Botones principales
     const btnVerContrasena = document.getElementById("btn-ver-contrasena");
@@ -18,13 +20,33 @@ document.addEventListener("DOMContentLoaded", () => {
     // Obtener usuario activo
     const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
                        || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                       || { email: "--", password: "--" };
+                       || { email: "", password: "" };
 
     // Abrir modal Ver Contraseña
+    // Abrir modal Ver Contraseña pidiendo los datos al backend
     if (btnVerContrasena && modalContrasena) {
-        btnVerContrasena.addEventListener("click", () => {
-            valorEmailUsuario.textContent = usuarioActivo.email || usuarioActivo.usuario || "--";
-            valorPassUsuario.textContent = usuarioActivo.password || usuarioActivo.contrasena || "--";
+        btnVerContrasena.addEventListener("click", async () => {
+            if (usuarioActivo && usuarioActivo.id) {
+                try {
+                    // Petición GET al backend Express
+                    const respuesta = await fetch(`${IP_BACKEND}/usuarios/${usuarioActivo.id}`);
+                    if (respuesta.ok) {
+                        const datosBackend = await respuesta.json();
+                        valorEmailUsuario.textContent = datosBackend.email || "--";
+                        valorPassUsuario.textContent = datosBackend.contraseña || datosBackend.contrasena || "--";
+                    } else {
+                        valorEmailUsuario.textContent = usuarioActivo.email || "--";
+                        valorPassUsuario.textContent = usuarioActivo.contraseña || usuarioActivo.contrasena || "--";
+                    }
+                } catch (error) {
+                    console.error("Error al obtener los datos del usuario:", error);
+                    valorEmailUsuario.textContent = usuarioActivo.email || "--";
+                    valorPassUsuario.textContent = usuarioActivo.contraseña || usuarioActivo.contrasena || "--";
+                }
+            } else {
+                valorEmailUsuario.textContent = usuarioActivo ? (usuarioActivo.email || "--") : "--";
+                valorPassUsuario.textContent = "--";
+            }
             modalContrasena.classList.add("activo");
         });
     }
@@ -43,27 +65,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Confirmar eliminación -> Borrar datos reales del usuario y redirigir a primera.html
+    // Confirmar eliminación -> Borrar usuario en Backend e ir a primera.html
     if (btnConfirmarEliminar) {
-        btnConfirmarEliminar.addEventListener("click", () => {
-            const emailAEliminar = usuarioActivo.email || usuarioActivo.usuario;
+        btnConfirmarEliminar.addEventListener("click", async () => {
+            if (usuarioActivo && usuarioActivo.id) {
+                try {
+                    // Petición DELETE a la Ruta 17 (/usuarios/:id) deExpress
+                    const respuesta = await fetch(`${IP_BACKEND}/usuarios/${usuarioActivo.id}`, {
+                        method: "DELETE"
+                    });
 
-            if (emailAEliminar) {
-                // 1. Borrar de los registros generales MESH solo los del usuario activo
-                const registrosBD = JSON.parse(localStorage.getItem("registrosMESH")) || [];
-                const registrosFiltrados = registrosBD.filter(reg => reg.usuarioEmail !== emailAEliminar);
-                localStorage.setItem("registrosMESH", JSON.stringify(registrosFiltrados));
-
-                // 2. Borrar historiales y configuraciones individuales del usuario
-                localStorage.removeItem(`meds_${emailAEliminar}`);
-                localStorage.removeItem(`dosis_${emailAEliminar}`);
+                    if (!respuesta.ok) {
+                        alert("No se pudo eliminar el usuario en el servidor.");
+                        return;
+                    }
+                } catch (error) {
+                    console.error("Error al intentar eliminar el usuario:", error);
+                    alert("Error de conexión al eliminar el perfil.");
+                    return;
+                }
             }
 
-            // 3. Borrar la sesión activa del almacenamiento local y de sesión
+            // borra la sesión local del navegador
             localStorage.removeItem("usuarioLogueado");
             sessionStorage.removeItem("usuarioLogueado");
 
-            // 4. Redirigir a la pantalla de entrada primera.html
             window.location.href = "primera.html";
         });
     }
