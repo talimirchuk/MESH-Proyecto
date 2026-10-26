@@ -1,3 +1,5 @@
+const IP_BACKEND = "http://192.168.0.153:3000";
+
 // futuro BACKEND 
 async function apiGuardarRegistro(nuevoRegistro) {
     // Leemos 'usuarioLogueado' (la clave real de tu pantalla)
@@ -489,24 +491,36 @@ document.addEventListener("DOMContentLoaded", () => {
             const dStr = String(ahora.getDate()).padStart(2, '0');
             const fechaISO = `${aStr}-${mStr}-${dStr}`;
 
-            let textoVeces = contadorDesperto === 0 
-                ? "No se despertó durante la noche" 
-                : `Se despertó ${contadorDesperto} ${contadorDesperto === 1 ? 'vez' : 'veces'} durante la noche`;
+            //Obtener el usuario activo
+            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                               || { id: 1 };
 
-            const nuevoRegistro = {
-                id: Date.now(),
-                fechaISO: fechaISO,
-                hora: `${hDespertaste} ${periodoDespertaste}`,
-                tipo: "Sueño",
-                info: `Durmió ${tiempoDormido}. ${textoVeces}.`,
-                detalles: {
-                    horasDurmió: tiempoDormido,
-                    vecesDesperto: contadorDesperto
-                }
+            // Prepara el objeto con la estructura exactas que espera el endpoint POST /sueño
+            const datosSueno = {
+                pacienteId: usuarioActivo.id,
+                fechaDelDia: fechaISO,
+                horasDormidas: String(tiempoDormido),
+                cuantasVeces: String(contadorDesperto)
             };
 
-            await apiGuardarRegistro(nuevoRegistro);
-            window.location.href = "registros.html";
+            // Envia la petición al backend
+            try {
+                const respuesta = await fetch(`${IP_BACKEND}/sueño`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosSueno)
+                });
+
+                if (respuesta.ok) {
+                    window.location.href = "registros.html";
+                } else {
+                    alert("Error al guardar el registro en el servidor.");
+                }
+            } catch (error) {
+                console.error("Error al conectar con el backend:", error);
+                alert("No se pudo conectar con el servidor.");
+            }
         });
     }
 
@@ -526,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Guardar Registro ESTADO DE ÁNIMO (automático como Sueño)
+    // Guardar Registro ESTADO DE ÁNIMO
     if (btnGuardarAnimo) {
         btnGuardarAnimo.addEventListener("click", async () => {
             const mapaIntensidad = { "1": "baja", "2": "moderada", "3": "alta" };
@@ -538,26 +552,36 @@ document.addEventListener("DOMContentLoaded", () => {
             const dStr = String(ahora.getDate()).padStart(2, '0');
             const fechaISO = `${aStr}-${mStr}-${dStr}`;
 
-            let horas = ahora.getHours();
-            const minutos = String(ahora.getMinutes()).padStart(2, '0');
-            const periodo = horas >= 12 ? "PM" : "AM";
-            horas = horas % 12 || 12;
-            const horaFormateada = `${String(horas).padStart(2, '0')}:${minutos} ${periodo}`;
+            //Obtener el usuario activo
+            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
+                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                               || { id: 1 };
 
-            const nuevoRegistro = {
-                id: Date.now(),
-                fechaISO: fechaISO,
-                hora: horaFormateada,
-                tipo: "Estado de Ánimo",
-                info: `Emoción: ${emocionSeleccionada} - Intensidad: ${valorIntensidad}`,
-                detalles: {
-                    emocion: emocionSeleccionada,
-                    intensidad: valorIntensidad
-                }
+            //  objeto con la estructura que espera backend en POST /estadoDeAnimo
+            const datosAnimo = {
+                pacienteId: usuarioActivo.id,
+                emocion: String(emocionSeleccionada),
+                intensidad: String(valorIntensidad),
+                fecha: fechaISO
             };
 
-            await apiGuardarRegistro(nuevoRegistro);
-            window.location.href = "registros.html";
+            // Envia la petición al backend
+            try {
+                const respuesta = await fetch(`${IP_BACKEND}/estadoDeAnimo`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datosAnimo)
+                });
+
+                if (respuesta.ok) {
+                    window.location.href = "registros.html";
+                } else {
+                    alert("Error al guardar el estado de ánimo en el servidor.");
+                }
+            } catch (error) {
+                console.error("Error al conectar con el backend:", error);
+                alert("No se pudo conectar con el servidor.");
+            }
         });
     }
 });

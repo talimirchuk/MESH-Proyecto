@@ -54,7 +54,7 @@ if (continuar) {
 
         try {
             // Petición POST enviando credenciales a la IP del backend por Wi-Fi
-            const respuesta = await fetch("http://10.8.5.215:3000/login", {
+            const respuesta = await fetch("http://http://192.168.0.153:3000/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
