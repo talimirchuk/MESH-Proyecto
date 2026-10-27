@@ -1,3 +1,5 @@
+const IP_BACKEND = "http://10.4.16.169:3000";
+
 const ICONOS = {
   "sueño": `<svg width="24" height="24" viewBox="0 0 45 45" fill="none"><path d="M42.0678 25.911C40.3141 26.4281 38.5154 26.698 36.7166 26.698C26.5538 26.698 18.2797 18.4238 18.2797 8.26101C18.2797 6.46228 18.5495 4.66355 19.0666 2.90979C19.314 2.12285 19.0891 1.24597 18.5045 0.661386C17.9199 0.0767998 17.0655 -0.148041 16.2561 0.0992838C11.5426 1.52263 7.41447 4.42937 4.48559 8.38721C1.55671 12.345 -0.0164322 17.1426 0.000129438 22.0662C0.000129438 34.7023 10.2754 45 22.9339 45C33.1192 45 41.9329 38.4571 44.8784 28.7215C45.1257 27.9346 44.9008 27.0577 44.3163 26.4731C43.7317 25.8885 42.8773 25.6637 42.0678 25.911ZM22.9339 40.5032C12.7711 40.5032 4.49695 32.229 4.49695 22.0662C4.48398 18.7913 5.34894 15.5727 7.00182 12.7454C8.65471 9.91806 11.0351 7.5854 13.8953 5.99011C13.8278 6.75457 13.7829 7.51903 13.7829 8.28349C13.7829 20.9195 24.0581 31.2173 36.7166 31.2173C37.4811 31.2173 38.2456 31.1723 39.01 31.1048C35.8173 36.8608 29.7466 40.5032 22.9339 40.5032ZM31.4778 13.5223L33.5913 8.89056L38.2231 6.77706L33.5913 4.66355L31.4778 0.0318316L29.3643 4.66355L24.7326 6.77706L29.3643 8.89056L31.4778 13.5223ZM41.0336 12.3981L39.797 15.0962L37.0989 16.3328L39.797 17.5694L41.0336 20.2675L42.2702 17.5694L44.9683 16.3328L42.2702 15.0962L41.0336 12.3981Z" fill="black"/></svg>`,
   "medicación": `<svg width="24" height="24" viewBox="0 0 43 44" fill="none"><path d="M29.0604 7.47411e-05C27.2268 -0.006017 25.4103 0.360328 23.7163 1.07785C22.0223 1.79536 20.4846 2.84976 19.1923 4.17984L4.07143 19.6405C-1.35714 25.191 -1.35714 34.2472 4.07143 39.8202C6.70879 42.5169 10.2033 44 13.9396 44C17.6758 44 21.1703 42.5169 23.8077 39.8202L38.9286 24.3596C44.3571 18.809 44.3571 9.75287 38.9286 4.17984C37.6363 2.84976 36.0986 1.79536 34.4046 1.07785C32.7106 0.360328 30.894 -0.006017 29.0604 7.47411e-05ZM35.8077 21.1686L29.8077 27.3034L16.2912 13.4832L22.2912 7.34838C24.0934 5.50568 26.489 4.49445 29.0385 4.49445C31.5879 4.49445 33.9835 5.50568 35.7857 7.34838C37.5699 9.18548 38.5712 11.6695 38.5712 14.2585C38.5712 16.8475 37.5699 19.3315 35.7857 21.1686H35.8077Z" fill="black"/></svg>`,
@@ -13,19 +15,96 @@ let filtroPeriodoValor = "";
 const dashboardHistorial = document.getElementById("dashboard-historial");
 const busqueda = document.getElementById("buscar");
 
-function cargarRegistros() {
-    // 1. Obtener el usuario activo de la clave correcta 'usuarioLogueado'
-    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
-                       || JSON.parse(sessionStorage.getItem("usuarioLogueado")) 
-                       || { email: "invitado" };
+async function cargarRegistros() {
+    //Obtener  usuario activo
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                       || {};
 
-    // 2. Traer todos los registros del LocalStorage
-    const todos = JSON.parse(localStorage.getItem("registrosMESH")) || [];
+    const idPacienteValido = Number(usuarioActivo.id) || 1;
 
-    // 3. FILTRAR: Solo se muestran si pertenecen al email del usuario activo
-    todosLosRegistros = todos.filter(reg => reg.usuarioEmail === usuarioActivo.email);
+    try {
+        //Pedir todo el historial en una sola llamada al backend
+        const respuesta = await fetch(`${IP_BACKEND}/pacientes/${idPacienteValido}/historial`);
+        
+        if (!respuesta.ok) {
+            throw new Error(`Error en servidor: ${respuesta.status}`);
+        }
 
-    aplicarFiltros();
+        const data = await respuesta.json();
+        let arrayUnificado = [];
+
+        // 3. Transformar los datos recibidos del backend
+        if (Array.isArray(data.sueno)) {
+            data.sueno.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fechaDelDia,
+                    hora: "",
+                    tipo: "Sueño",
+                    info: `Sueño: ${item.horasDormidas}${item.cuantasVeces ? ` (Despertó ${item.cuantasVeces} veces)` : ''}`
+                });
+            });
+        }
+
+        if (Array.isArray(data.estadodeanimo)) {
+            data.estadodeanimo.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fecha,
+                    hora: "",
+                    tipo: "Estado de ánimo",
+                    info: `Ánimo: ${item.emocion} (Intensidad: ${item.intensidad})`
+                });
+            });
+        }
+
+        if (Array.isArray(data.crisis)) {
+            data.crisis.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fecha,
+                    hora: item.horario || "",
+                    tipo: "Crisis",
+                    info: `Crisis: ${item.tipo}${item.observaciones ? ` - ${item.observaciones}` : ''}`
+                });
+            });
+        }
+
+        if (Array.isArray(data.menstruacion)) {
+            data.menstruacion.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fechaInicio,
+                    hora: "",
+                    tipo: "Menstruación",
+                    info: `Menstruación (Hasta ${item.fechaTermino})${item.observaciones ? ` - ${item.observaciones}` : ''}`
+                });
+            });
+        }
+
+        if (Array.isArray(data.medicaciones)) {
+            data.medicaciones.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fecha,
+                    hora: item.horario && item.momentoDia ? `${item.horario} ${item.momentoDia}` : (item.horario || ""),
+                    tipo: "Medicación",
+                    info: `Medicación (${item.tipoMedicacion}): ${item.nombreMedicamento}${item.dosis ? ` - ${item.dosis}` : ''}`
+                });
+            });
+        }
+
+        // Guardar y renderizar
+        todosLosRegistros = arrayUnificado;
+        aplicarFiltros();
+
+    } catch (error) {
+        console.error("Error al cargar registros del backend:", error);
+        if (dashboardHistorial) {
+            dashboardHistorial.innerHTML = "<p style='font-size:22px; text-align:center;'>No se encontraron registros o error de conexión.</p>";
+        }
+    }
 }
 
 function convertirAFechaFormateada(fechaISO) {

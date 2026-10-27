@@ -1,4 +1,4 @@
-const IP_BACKEND = "http://10.8.5.215:3000";
+const IP_BACKEND = "http://10.4.16.169:3000";
 
 /* Lista inicial de prueba */
 let listaRecordatorios = [
