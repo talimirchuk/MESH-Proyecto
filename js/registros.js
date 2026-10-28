@@ -1,4 +1,4 @@
-const IP_BACKEND = "http://10.10.32.41:3000";
+const IP_BACKEND = "http://10.8.5.15:3000";
 
 // futuro BACKEND 
 async function apiGuardarRegistro(nuevoRegistro) {
