@@ -16,7 +16,7 @@ async function obtenerDatosPaciente() {
     }
 
     try {
-        const respuesta = await fetch(`http://http://192.168.0.153:3000/usuarios/${usuarioSesion.id}`);
+        const respuesta = await fetch(`http://10.4.16.169:3000/usuarios/${usuarioSesion.id}`);
         if (respuesta.ok) {
             const datosUsuario = await respuesta.json();
 
@@ -72,7 +72,7 @@ async function guardarDatos() {
     };
 
     try {
-        const respuesta = await fetch(`http://http://192.168.0.153:3000/editar-usuario/${usuarioSesion.id}`, {
+        const respuesta = await fetch(`http://10.4.16.169:3000/editar-usuario/${usuarioSesion.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
