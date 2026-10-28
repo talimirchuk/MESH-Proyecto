@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MESH - Inicio</title>
+    <title>Inicio - MESH</title>
 
     <link class="css-path" rel="stylesheet" href="../css/style.css">
     <link class="css-path" rel="stylesheet" href="../css/inicio.css">
@@ -102,63 +102,82 @@
 </aside>
 
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main>
+   <main>
 
         <!-- ENCABEZADO -->
         <section class="inicio-header">
-
             <div>
-                <h1 id="saludo-usuario">¡Hola, Paciente!</h1>
-                <p>Resumen del perfil</p>
+                <h1 id="saludo-usuario">¡Hola!</h1>
+                <p class="subtitulo-header">Resumen de tus últimos registros</p>
             </div>
 
             <div class="inicio-icons">
-                <div class="select-periodo">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <select id="periodo">
-                        <option value="hoy">Hoy</option>
-                        <option value="7dias" selected>Últimos 7 días</option>
-                        <option value="30dias">Últimos 30 días</option>
-                        <option value="mes">Este mes</option>
-                        <option value="año">Este año</option>
-                    </select>
+                <button class="btn-notificacion" aria-label="Notificaciones">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="punto-notificacion"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- RESUMEN DE ÚLTIMOS REGISTROS (4 TARJETAS) -->
+        <section class="tarjetas-resumen">
+            
+            <!-- Sueño -->
+            <div class="tarjeta-resumen" id="tarjeta-sueno">
+                <div class="icono-circulo">
+                    <i class="fa-regular fa-moon"></i>
                 </div>
-                <button><i class="fa-solid fa-bell"></i></button>
-                <button><a href="paciente.html"><i class="fa-solid fa-circle-user"></i></a></button>
+                <div class="contenido-tarjeta">
+                    <span class="valor-principal" id="valor-sueno">-- hs</span>
+                </div>
+            </div>
+
+            <!-- Medicamento -->
+            <div class="tarjeta-resumen" id="tarjeta-medicacion">
+                <div class="icono-circulo">
+                    <i class="fa-solid fa-pills"></i>
+                </div>
+                <div class="contenido-tarjeta">
+                    <p class="linea-info" id="linea-med-hora">Última --:--hs:</p>
+                    <p class="linea-info negrita" id="linea-med-dosis">--</p>
+                </div>
+            </div>
+
+            <!-- Estado de Ánimo -->
+            <div class="tarjeta-resumen" id="tarjeta-animo">
+                <div class="icono-circulo">
+                    <i class="fa-regular fa-face-smile"></i>
+                </div>
+                <div class="contenido-tarjeta">
+                    <p class="linea-info" id="linea-animo-tipo">--</p>
+                    <p class="linea-info" id="linea-animo-intensidad">--</p>
+                </div>
+            </div>
+
+            <!-- Crisis -->
+            <div class="tarjeta-resumen" id="tarjeta-crisis">
+                <div class="icono-circulo">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="contenido-tarjeta">
+                    <p class="linea-info">última crisis</p>
+                    <p class="linea-info negrita" id="linea-crisis-fecha">--/--/--</p>
+                </div>
             </div>
 
         </section>
 
-        <!-- RESUMEN -->
-        <div class="dashboard-inicio">
-
-            <div class="tarjeta">
-                <h3>Calidad del sueño</h3>
-                <p>(Información y gráfico)</p>
+        <!-- PRÓXIMOS RECORDATORIOS -->
+        <section class="contenedor-recordatorios">
+            <div class="encabezado-recordatorios">
+                <h2>Próximos recordatorios</h2>
             </div>
-
-            <div class="tarjeta">
-                <h3>Crisis</h3>
-                <p>(Información y gráfico)</p>
+            
+            <div class="lista-recordatorios-inicio" id="lista-recordatorios-inicio">
+                <p class="sin-registros-texto">Cargando recordatorios...</p>
             </div>
+        </section>
 
-            <div class="tarjeta">
-                <h3>Estado de ánimo</h3>
-                <p>--</p>
-            </div>
-
-            <div class="tarjeta tarjeta-ancha1">
-    <h2>Últimos eventos</h2>
-    <button><a href="historial.html">Ver todos</a></button>
-</div>
-
-<div class="tarjeta tarjeta-ancha2">
-    <h2>Recordatorios próximos</h2>
-    <button><a href="recordatorios.html">Ver todos</a></button>
-</div>
-
-        </div>
     </main>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />

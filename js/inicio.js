@@ -1,72 +1,101 @@
-function mostrarEventos() {
-  const dias = [
-    { fecha: "Hoy", registros: [] }, //vacío a propósito así usa la funcion de saltar al primero q tenga algo
+const IP_BACKEND = "http://10.8.5.215:3000";
 
-    { fecha: "Ayer", registros: [
-        { hora: "14:30", tipo: "Crisis", info: "Episodio breve, sin complicaciones" },
-        { hora: "09:00", tipo: "Medicación", info: "Dosis matutina administrada" }
-      ]
-    },
-    { fecha: "Hace 2 días", registros: [
-        { hora: "20:15", tipo: "Sueño", info: "Durmió 8 horas" }
-      ]
+document.addEventListener("DOMContentLoaded", async () => {
+    establecerSaludoUsuario();
+    await cargarUltimosRegistrosDelBackend();
+    await cargarProximosRecordatoriosDelBackend();
+});
+
+function obtenerUsuarioSesion() {
+    return JSON.parse(localStorage.getItem("usuarioLogueado")) || 
+           JSON.parse(sessionStorage.getItem("usuarioLogueado"));
+}
+
+function establecerSaludoUsuario() {
+    const usuarioLogueado = obtenerUsuarioSesion();
+    const elSaludo = document.getElementById("saludo-usuario");
+
+    if (usuarioLogueado && usuarioLogueado.nombre) {
+        elSaludo.textContent = `¡Hola ${usuarioLogueado.nombre}!`;
+    } else {
+        elSaludo.textContent = "¡Hola!";
     }
-  ]; // esta lista simula lo que en el futuro va a devolver el backend con fetch, por eso tiene esta forma con fecha + registros adentro
-
-  const diaConRegistros = dias.find(dia => dia.registros.length > 0); //pone la info del día más reciente con registros
-
-  const lineas = diaConRegistros.registros.slice(0, 3).map(registro => { // .map transforma cada registro del array en un texto (fecha - hora - tipo), para convertirse en un mismo párrafo después
-    // diaConRegistros.fecha se usa acá porque el registro en sí no tiene fecha propia, es la del día completo
-    return `${diaConRegistros.fecha} - ${registro.hora} - ${registro.tipo}`; //arma el texto completo de la línea (ej: "Ayer - 14:30 - Crisis"), todavía no es un <p>, solo texto
-  }); // cierra el { del map y el ( del .map(
-
-  return lineas; // devuelve la lista de textos ya armados, para convertirse en <p> en renderEventos()
 }
 
-function renderEventos() {
-  const lineas = mostrarEventos();
-  const tarjeta = document.querySelector(".tarjeta.tarjeta-ancha1"); // busca en el HTML la tarjeta de "Últimos eventos" para poder modificarla
+async function cargarUltimosRegistrosDelBackend() {
+    const usuarioLogueado = obtenerUsuarioSesion();
+    if (!usuarioLogueado || !usuarioLogueado.id) return;
 
-  // saca los <p> viejos y remplaza por recientes, por si renderEventos() se llama más de una vez y hay que refrescar la lista sin duplicar
-  tarjeta.querySelectorAll("p").forEach(p => p.remove());//querySelectorAll("p") busca todos los <p> que hay adentro de esa tarjeta y me devuelve un mismo p
-  const boton = tarjeta.querySelector("button"); // guarda una referencia al botón "Ver todos" para usarla abajo
+    try {
+        const respuesta = await fetch(`${IP_BACKEND}/registros/ultimos/${usuarioLogueado.id}`);
+        
+        if (!respuesta.ok) return;
 
-  lineas.forEach(linea => {
-    const p = document.createElement("p"); // crea un <p> nuevo, vacío, que todavía no está en la página
-    p.textContent = linea; // le mete el texto adentro
-    tarjeta.insertBefore(p, boton); // inserta cada <p> antes del botón "Ver todos"
-  });
+        const datos = await respuesta.json();
+
+        if (datos.sueno && datos.sueno.horas) {
+            document.getElementById("valor-sueno").textContent = `${datos.sueno.horas} hs`;
+        } else {
+            document.getElementById("valor-sueno").textContent = "-- hs";
+        }
+
+        if (datos.medicacion) {
+            document.getElementById("linea-med-hora").textContent = `Última ${datos.medicacion.hora || '--:--'}hs:`;
+            document.getElementById("linea-med-dosis").textContent = `${datos.medicacion.medicamento || ''} ${datos.medicacion.dosis || ''}`.trim();
+        } else {
+            document.getElementById("linea-med-hora").textContent = "Última --:--hs:";
+            document.getElementById("linea-med-dosis").textContent = "--";
+        }
+
+        if (datos.animo) {
+            document.getElementById("linea-animo-tipo").textContent = datos.animo.estado || datos.animo.emocion || '--';
+            document.getElementById("linea-animo-intensidad").textContent = datos.animo.intensidad || '--';
+        } else {
+            document.getElementById("linea-animo-tipo").textContent = "--";
+            document.getElementById("linea-animo-intensidad").textContent = "--";
+        }
+
+        if (datos.crisis && datos.crisis.fecha) {
+            document.getElementById("linea-crisis-fecha").textContent = datos.crisis.fecha;
+        } else {
+            document.getElementById("linea-crisis-fecha").textContent = "--/--/--";
+        }
+
+    } catch (error) {
+        console.error("Error al obtener los últimos registros:", error);
+    }
 }
 
-renderEventos(); //fuera de cualquier función, para que se ejecute sola apenas carga la página
+async function cargarProximosRecordatoriosDelBackend() {
+    const usuarioLogueado = obtenerUsuarioSesion();
+    const contenedor = document.getElementById("lista-recordatorios-inicio");
+    if (!usuarioLogueado || !usuarioLogueado.id) return;
 
-function mostrarRecordatorios() {
-  const recordatorios = [
-    { hora: "10:00", tipo: "Medicación" },
-    { hora: "14:30", tipo: "Terapia" },
-    { hora: "18:00", tipo: "Actividad" },
-    { hora: "20:00", tipo: "Medicación" } // para probar que slice corta bien a 3
-  ]; 
+    try {
+        const respuesta = await fetch(`${IP_BACKEND}/recordatorios/proximos/${usuarioLogueado.id}`);
 
-  const lineas = recordatorios.slice(0, 3).map(recordatorio => { //sin find porque acá no hay que buscar por día(en eventos sí)
-    return `${recordatorio.hora} - ${recordatorio.tipo}`; //arma el texto de la línea, todavía no es un <p>
-  });
+        if (!respuesta.ok) return;
 
-  return lineas;
+        const recordatorios = await respuesta.json();
+
+        contenedor.innerHTML = "";
+
+        if (!recordatorios || recordatorios.length === 0) {
+            contenedor.innerHTML = `<p class="sin-registros-texto">No hay recordatorios próximos.</p>`;
+            return;
+        }
+
+        recordatorios.slice(0, 3).forEach(rec => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "item-recordatorio-inicio";
+            itemDiv.innerHTML = `
+                <span class="hora-rec">${rec.hora}</span>
+                <span class="desc-rec">${rec.descripcion}</span>
+            `;
+            contenedor.appendChild(itemDiv);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar los recordatorios:", error);
+    }
 }
-
-function renderRecordatorios() {
-  const lineas = mostrarRecordatorios();
-  const tarjeta = document.querySelector(".tarjeta.tarjeta-ancha2"); //la tarjeta de recordatorios, no la de eventos
-
-  tarjeta.querySelectorAll("p").forEach(p => p.remove()); //por si se llama más de una vez
-  const boton = tarjeta.querySelector("button");
-
-  lineas.forEach(linea => {
-    const p = document.createElement("p");
-    p.textContent = linea;
-    tarjeta.insertBefore(p, boton);
-  });
-}
-
-renderRecordatorios(); //la llamo acá abajo para que arranque sola, igual que renderEventos
