@@ -25,7 +25,7 @@ activarOcultarMostrarContrasena("contrasena", "ojo-contrasena");
 activarOcultarMostrarContrasena("confirmar-contrasena", "ojo-confirmar-contrasena");
 
 async function guardarUsuario(datosFrontend) {
-    // 1. Mapeamos las propiedades al formato EXACTO que pide tu server.ts
+    // Mapea las propiedades al formato EXACTO que pide tu server.ts
     const datosParaBackend = {
         nombreYapellido: datosFrontend.nombreCompleto,
         email: datosFrontend.email,
@@ -38,8 +38,8 @@ async function guardarUsuario(datosFrontend) {
         observaciones: datosFrontend.observaciones || ""
     };
 
-    // 2. Petición POST al endpoint de server.ts
-    const respuesta = await fetch("http://10.4.16.169:3000/usuarios/crear", {
+    //  Petición POST al endpoint de server.ts
+    const respuesta = await fetch("http://10.10.32.41:3000/usuarios/crear", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -49,12 +49,12 @@ async function guardarUsuario(datosFrontend) {
 
     const resultado = await respuesta.json();
 
-    // 3. Si tu backend responde con error 400 (ej. email repetido)
+    //  Si backend responde con error 400 (ej. email repetido)
     if (!respuesta.ok) {
         throw new Error(resultado.mensaje || "Error al crear la cuenta.");
     }
 
-    // 4. Si fue exitoso (201), tu backend devuelve el objeto 'usuario' dentro de la respuesta
+    // Si fue exitoso (201), tu backend devuelve el objeto 'usuario' dentro de la respuesta
     localStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
     sessionStorage.setItem("usuarioLogueado", JSON.stringify(resultado.usuario));
 }

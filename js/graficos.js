@@ -1,73 +1,51 @@
-//GRRÁFICOS
-const ctx = document.getElementById('graficoCanvas')
-const names = ['Tali','Vicky','Martu','Juan','Sofi']
-const ages = [14, 15, 16, 17, 18]
+let categoriasSeleccionadas = [];
 
-const graficoCanvas = new Chart(ctx,{
-type: 'line',
-data: {
-    labels: names,
-    datasets:[{
-        label:'Edad',
-        data: ages,
-        backgroundColor:[
-            'rgba(255, 0, 0, 0.2)',
-            'rgba(0, 149, 255, 0.2)',
-            'rgba(99, 255, 99, 0.2)',
-            'rgba(0, 238, 255, 0.2)',
-            'rgba(140, 0, 255, 0.2)',
-            'rgba(255, 187, 0, 0.2)'
-        ],
-        borderColor: [
-            'rgb(255, 0, 0)',
-            'rgb(0, 149, 255)',
-            'rgb(99, 255, 99)',
-            'rgb(0, 238, 255)',
-            'rgb(140, 0, 255)',
-            'rgb(255, 187, 0)'
-        ],
-        borderWidth: 1.5
-    }]
-}
-})
+document.addEventListener("DOMContentLoaded", () => {
+    const botonesOpcion = document.querySelectorAll(".btn-opcion-registro");
 
-//COSAS DEL ENCABEZADO
-// desplegable interactivo de categorías
-const btnDropdown = document.getElementById("btn-dropdown-categorias");
-const listaCategorias = document.getElementById("lista-categorias");
-const checkboxes = document.querySelectorAll(".checkbox-categoria");
-const textoCategorias = document.getElementById("texto-categorias-seleccionadas");
+    // Permitir seleccionar HASTA 2 opciones
+    botonesOpcion.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const valor = btn.getAttribute("data-valor");
 
-// abrir y cerrar el desplegable al hacer clic en el botón
-btnDropdown.addEventListener("click", function() {
-    listaCategorias.classList.toggle("abierto");
-});
-
-// selecciónar de hasta máximo 2 opciones
-checkboxes.forEach(function(checkbox) {
-    checkbox.addEventListener("change", function() {
-        const seleccionados = document.querySelectorAll(".checkbox-categoria:checked");
-
-        // si intenta marcar más de 2, desmarca la última elegida
-        if (seleccionados.length > 2) {
-            this.checked = false;
-            return;
-        }
-
-        // actualizar el texto del botón con lo que tildó el usuario
-        const nombresSeleccionados = Array.from(seleccionados).map(c => c.parentElement.textContent.trim());
-        
-        if (nombresSeleccionados.length > 0) {
-            textoCategorias.textContent = nombresSeleccionados.join(" y ");
-        } else {
-            textoCategorias.textContent = "Categorías (hasta 2)";
-        }
+            if (btn.classList.contains("seleccionado")) {
+                // Si ya estaba seleccionado, se desmarca
+                btn.classList.remove("seleccionado");
+                categoriasSeleccionadas = categoriasSeleccionadas.filter(c => c !== valor);
+            } else {
+                // Si intenta marcar más de 2, no lo deja
+                if (categoriasSeleccionadas.length >= 2) {
+                    alert("Solo podés seleccionar hasta 2 categorías para comparar.");
+                    return;
+                }
+                btn.classList.add("seleccionado");
+                categoriasSeleccionadas.push(valor);
+            }
+        });
     });
-});
 
-// cerrar la lista si el usuario hace clic fuera del desplegable
-document.addEventListener("click", function(e) {
-    if (!btnDropdown.contains(e.target) && !listaCategorias.contains(e.target)) {
-        listaCategorias.classList.remove("abierto");
+    // Al hacer clic en "realizar gráfico"
+    const btnRealizar = document.getElementById("btn-realizar-grafico");
+    if (btnRealizar) {
+        btnRealizar.addEventListener("click", () => {
+            const periodoSeleccionado = document.getElementById("periodo")?.value;
+
+            if (categoriasSeleccionadas.length === 0) {
+                alert("Por favor, seleccioná al menos una categoría.");
+                return;
+            }
+
+            if (!periodoSeleccionado) {
+                alert("Por favor, seleccioná un período de tiempo.");
+                return;
+            }
+
+            // Guardamos las selecciones en localStorage para usarlas en la otra vista
+            localStorage.setItem("grafico_categorias", JSON.stringify(categoriasSeleccionadas));
+            localStorage.setItem("grafico_periodo", periodoSeleccionado);
+
+            // Redirige a la pantalla donde se cargará el gráfico
+            window.location.href = "graficocreado.html";
+        });
     }
 });

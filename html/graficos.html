@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MESH - Gráficos</title>
+    <title>Gráficos - MESH</title>
     <link rel="stylesheet" href="../css/style.css">
     <link class="css-path" rel="stylesheet" href="../css/graficos.css">
     <meta name="view-transition" content="same-origin">
@@ -98,54 +98,81 @@
     </aside>
 
     <main>
-        <h1 style="view-transition-name: titulo-seccion;">Gráficos</h1>
-        
-        <section class="historial">
-            <!-- Dropdown personalizado de Categorías con casillas -->
-            <div class="dropdown-categorias">
-                <button type="button" class="btn-dropdown" id="btn-dropdown-categorias">
-                    <span id="texto-categorias-seleccionadas">Categorías (hasta 2)</span>
+        <div class="encabezado-graficos">
+            <h1 class="titulo-con-subrayado" style="view-transition-name: titulo-seccion;">Gráficos</h1>
+            
+            <div class="filtros-superiores">
+                <div class="select-custom">
+                    <select id="periodo">
+                        <option value="" disabled selected hidden>Período de tiempo</option>
+                        <option value="7dias">Últimos 7 días</option>
+                        <option value="15dias">Últimos 15 días</option>
+                        <option value="30dias">Último mes</option>
+                        <option value="6meses">Últimos 6 meses</option>
+                        <option value="1ano">Último año</option>
+                        <option value="todo">Desde que me registré</option>
+                    </select>
                     <i class="fa-solid fa-chevron-down"></i>
-                </button>
-        
-                <!-- Lista desplegable oculta con casillas -->
-                <div class="lista-opciones" id="lista-categorias">
-                    <label class="opcion-item">
-                        <input type="checkbox" value="sueno" class="checkbox-categoria"> Sueño
-                    </label>
-                    <label class="opcion-item">
-                        <input type="checkbox" value="medicacion" class="checkbox-categoria"> Medicación
-                    </label>
-                    <label class="opcion-item">
-                        <input type="checkbox" value="crisis" class="checkbox-categoria"> Crisis
-                    </label>
-                    <label class="opcion-item">
-                        <input type="checkbox" value="estado_animo" class="checkbox-categoria"> Estado de ánimo
-                    </label>
-                    <label class="opcion-item">
-                        <input type="checkbox" value="menstruacion" class="checkbox-categoria"> Menstruación
-                    </label>
                 </div>
             </div>
-        
-            <!-- Filtro de tiempo personalizado: "Últimos [ 7 ] [ Días v ]" -->
-            <div class="filtro-tiempo">
-                <span>Últimos</span>
-                <input type="number" id="cantidad-tiempo" value="7" min="1">
-                <select id="unidad-tiempo">
-                    <option value="dias" selected>Días</option>
-                    <option value="meses">Meses</option>
-                    <option value="anos">Años</option>
-                </select>
-            </div>
-        </section>
-
-        <div class="dashboard-gráficos">
-            <!-- Acá Chart.js va a hacer el gráfico -->
-
-            <canvas id="graficoCanvas"></canvas>
         </div>
 
+        <!-- Opciones de Registros -->
+        <section class="contenedor-opciones-graficos">
+            <!-- Sueño -->
+            <button type="button" class="btn-opcion-registro" data-valor="sueno">
+                <span class="icono-opcion">
+                    <svg viewBox="0 0 73 73" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M68.2434 42.0334C65.3984 42.8723 62.4805 43.31 59.5625 43.31C43.0762 43.31 29.6537 29.8875 29.6537 13.4012C29.6537 10.4833 30.0914 7.56532 30.9303 4.72033C31.3315 3.44374 30.9668 2.02124 30.0185 1.07291C29.0701 0.124586 27.6841 -0.240156 26.371 0.16106C18.7247 2.47004 12.0279 7.18542 7.27663 13.6059C2.52533 20.0264 -0.0266567 27.809 0.000209978 35.7963C0.000209978 56.2948 16.6689 73 37.2039 73C53.7267 73 68.0246 62.386 72.8027 46.5927C73.2039 45.3161 72.8391 43.8936 71.8908 42.9453C70.9425 41.9969 69.5565 41.6322 68.2434 42.0334ZM37.2039 65.7052C20.7175 65.7052 7.29505 52.2827 7.29505 35.7963C7.27401 30.4836 8.67717 25.2623 11.3585 20.6758C14.0399 16.0893 17.9014 12.3052 22.5413 9.7173C22.4318 10.9574 22.3589 12.1975 22.3589 13.4377C22.3589 33.9361 39.0276 50.6413 59.5625 50.6413C60.8027 50.6413 62.0428 50.5684 63.2829 50.459C58.1036 59.7963 48.2555 65.7052 37.2039 65.7052ZM51.0641 21.9361L54.4926 14.4225L62.0063 10.9939L54.4926 7.56532L51.0641 0.051638L47.6355 7.56532L40.1218 10.9939L47.6355 14.4225L51.0641 21.9361ZM66.5656 20.1124L64.5595 24.4893L60.1826 26.4954L64.5595 28.5015L66.5656 32.8784L68.5717 28.5015L72.9486 26.4954L68.5717 24.4893L66.5656 20.1124Z" fill="black"/>
+                    </svg>
+                </span>
+                <span class="texto-opcion">Sueño</span>
+            </button>
+        
+            <!-- Crisis -->
+            <button type="button" class="btn-opcion-registro" data-valor="crisis">
+                <span class="icono-opcion">
+                    <svg viewBox="0 0 48 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.3674 4.03499L2.50745 35.2047C1.00262 37.8289 3.00026 41.031 6.13973 41.031H41.8531C44.9948 41.031 46.988 37.8289 45.4898 35.2047L27.632 4.03499C26.0656 1.29563 21.9361 1.29563 20.3674 4.03499Z" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24 16V26M24 32V33" stroke="black" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="texto-opcion">Crisis</span>
+            </button>
+        
+            <!-- Estado de ánimo -->
+            <button type="button" class="btn-opcion-registro" data-valor="estado_animo">
+                <span class="icono-opcion">
+                    <svg viewBox="0 0 77 77" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M38.2307 73.7305C47.6459 73.7305 56.6755 69.9903 63.333 63.3328C69.9905 56.6752 73.7307 47.6457 73.7307 38.2305C73.7307 28.8153 69.9905 19.7857 63.333 13.1282C56.6755 6.47064 47.6459 2.73047 38.2307 2.73047C28.8155 2.73047 19.786 6.47064 13.1284 13.1282C6.47088 19.7857 2.73071 28.8153 2.73071 38.2305C2.73071 47.6457 6.47088 56.6752 13.1284 63.3328C19.786 69.9903 28.8155 73.7305 38.2307 73.7305Z" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="27" cy="30" r="4" fill="black"/>
+                        <circle cx="49" cy="30" r="4" fill="black"/>
+                        <path d="M26 48C30 55 46 55 50 48" stroke="black" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                <span class="texto-opcion">Estado de ánimo</span>
+            </button>
+        
+            <!-- Menstruación -->
+            <button type="button" class="btn-opcion-registro" data-valor="menstruacion">
+                <span class="icono-opcion">
+                    <svg viewBox="0 0 46 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23 0C10.3117 0 0 9.953 0 22.2C0 33.189 8.31833 42.291 19.1667 44.067V51.8H7.66667V59.2H19.1667V74H26.8333V59.2H38.3333V51.8H26.8333V44.067C37.6817 42.291 46 33.189 46 22.2C46 9.953 35.6883 0 23 0ZM23 37C14.5283 37 7.66667 30.377 7.66667 22.2C7.66667 14.023 14.5283 7.4 23 7.4C31.4717 7.4 38.3333 14.023 38.3333 22.2C38.3333 30.377 31.4717 37 23 37Z" fill="black"/>
+                    </svg>
+                </span>
+                <span class="texto-opcion">Menstruación</span>
+            </button>
+        </section>
+
+        <!-- Botón Realizar gráfico -->
+        <div class="contenedor-btn-realizar">
+            <button type="button" id="btn-realizar-grafico" class="btn-realizar-grafico">
+                <svg width="28" height="18" viewBox="0 0 80 39" fill="none">
+                    <path d="M64.2235 9.2379L51.0093 22.4521L33.7786 5.22142C33.407 4.84908 32.9656 4.55368 32.4797 4.35213C31.9939 4.15057 31.473 4.04683 30.947 4.04683C30.4209 4.04683 29.9001 4.15057 29.4142 4.35213C28.9283 4.55368 28.4869 4.84908 28.1153 5.22142L0 33.3368L5.66323 39L30.9269 13.7364L48.1576 30.967C49.724 32.5335 52.2544 32.5335 53.8208 30.967L69.8867 14.9011L79.0844 24.0989V0H54.9856L64.1833 9.19773L64.2235 9.2379Z" fill="black"/>
+                </svg>
+                <span>Realizar gráfico</span>
+            </button>
+        </div>
     </main>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
