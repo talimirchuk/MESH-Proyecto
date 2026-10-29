@@ -1,4 +1,4 @@
-const IP_BACKEND = "http://10.8.5.149:3000";
+const IP_BACKEND = "http://localhost:3000";
 
 let chartInstancia = null;
 
@@ -85,7 +85,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const nombreCat = NOMBRES_CATEGORIAS[categoriaSeleccionada] || categoriaSeleccionada;
     const textoPeriodo = NOMBRES_PERIODOS[periodo] || periodo;
 
-    if (subtitulo) subtitulo.textContent = `${nombreCat} — ${textoPeriodo}`;
+    if (subtitulo) {
+        if (categorias.length === 1) {
+            subtitulo.textContent = `${nombreCat} — ${textoPeriodo}`;
+        } else if (categorias.length === 2) {
+            const cat1 = NOMBRES_CATEGORIAS[categorias[0]] || categorias[0];
+            const cat2 = NOMBRES_CATEGORIAS[categorias[1]] || categorias[1];
+            subtitulo.textContent = `Comparativa: ${cat1} vs. ${cat2} — ${textoPeriodo}`;
+        }
+    }
 
     // 2. Obtener paciente activo
     const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"))
@@ -107,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Destruir gráfico anterior si existía
         if (chartInstancia) chartInstancia.destroy();
+       
 
         // Verificar que Chart.js esté cargado
         if (typeof Chart === 'undefined') {
@@ -114,9 +123,167 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        // =========================================================
+        // Si seleccionaron 2 categorías para comparar
+        if (categorias.length === 2) {
+            const cat1 = categorias[0];
+            const cat2 = categorias[1];
+
+            // Validación: Estado de ánimo no se puede comparar en gráfico de líneas superpuestas
+            if (cat1 === "estado_animo" || cat2 === "estado_animo") {
+                if (subtitulo) subtitulo.textContent = "El Estado de ánimo solo se puede ver de forma individual.";
+                return;
+            }
+
+            // 1. Generamos el eje X con todas las fechas del período
+            const listaFechas = [];
+            const hoy = new Date();
+            const diasAtras = fechaLimite ? Math.round((hoy - fechaLimite) / (1000 * 60 * 60 * 24)) : 30;
+
+            for (let i = diasAtras; i >= 0; i--) {
+                const f = new Date(hoy);
+                f.setDate(hoy.getDate() - i);
+                listaFechas.push(f.toISOString().split('T')[0]);
+            }
+
+            const etiquetasX = listaFechas.map(f => formatearFecha(f));
+
+            // Función auxiliar para extraer datos de una categoría específica
+            function obtenerDatosCategoria(cat) {
+                if (cat === "sueno") {
+                    const registros = (data.sueno || []).filter(item => Number(item.pacienteId) === idUsuario);
+                    const mapa = {};
+                    registros.forEach(r => {
+                        const f = r.fechaDelDia || r.fecha;
+                        if (f) mapa[f] = extraerHorasNumericas(r.horasDormidas);
+                    });
+                    return {
+                        tipo: 'horas',
+                        valores: listaFechas.map(f => mapa[f] || 0)
+                    };
+                } else if (cat === "crisis") {
+                    const registros = (data.crisis || []).filter(item => Number(item.pacienteId) === idUsuario);
+                    const setFechas = new Set(registros.map(r => r.fecha));
+                    return {
+                        tipo: 'binario',
+                        valores: listaFechas.map(f => setFechas.has(f) ? 1 : 0)
+                    };
+                } else if (cat === "menstruacion") {
+                    const registros = (data.menstruacion || []).filter(item => Number(item.pacienteId) === idUsuario);
+                    const setFechas = new Set();
+                    registros.forEach(r => {
+                        if (r.fechaInicio && r.fechaTermino) {
+                            let act = new Date(r.fechaInicio + "T00:00:00");
+                            const fin = new Date(r.fechaTermino + "T00:00:00");
+                            while (act <= fin) {
+                                setFechas.add(act.toISOString().split('T')[0]);
+                                act.setDate(act.getDate() + 1);
+                            }
+                        } else if (r.fecha) {
+                            setFechas.add(r.fecha);
+                        }
+                    });
+                    return {
+                        tipo: 'binario',
+                        valores: listaFechas.map(f => setFechas.has(f) ? 1 : 0)
+                    };
+                }
+            }
+
+            const res1 = obtenerDatosCategoria(cat1);
+            const res2 = obtenerDatosCategoria(cat2);
+
+            // Definición de colores para las variables
+            const colores = {
+                sueno: '#037ffc',        // Azul
+                crisis: '#FFAB91',       // Salmón/Coral
+                menstruacion: '#E91E63'  // Rosado
+            };
+
+            // Configuramos los dos datasets
+            const dataset1 = {
+                label: NOMBRES_CATEGORIAS[cat1],
+                data: res1.valores,
+                borderColor: colores[cat1] || '#037ffc',
+                backgroundColor: 'transparent',
+                borderWidth: 3,
+                borderDash: [6, 6],
+                yAxisID: 'yLeft',
+                stepped: res1.tipo === 'binario',
+                tension: res1.tipo === 'horas' ? 0.3 : 0
+            };
+
+
+            const dataset2 = {
+                label: NOMBRES_CATEGORIAS[cat2],
+                data: res2.valores,
+                borderColor: colores[cat2] || '#E91E63',
+                backgroundColor: 'transparent',
+                borderWidth: 3,
+                yAxisID: 'yRight',
+                stepped: res2.tipo === 'binario',
+                tension: res2.tipo === 'horas' ? 0.3 : 0
+            };
+
+
+            // Configuración de escalas según el tipo de dato
+            const escalaLeft = res1.tipo === 'horas'
+                ? {
+                    type: 'linear',
+                    position: 'left',
+                    beginAtZero: true,
+                    title: { display: true, text: 'Horas' },
+                    ticks: { callback: v => v + ' hs' }
+                  }
+                : {
+                    type: 'linear',
+                    position: 'left',
+                    min: -0.05,  
+                    max: 1.05,
+                    title: { display: true, text: `${NOMBRES_CATEGORIAS[cat1]} (Sí/No)` },
+                    ticks: { callback: v => (v === 1 ? 'Sí' : (v === 0 ? 'No' : '')) }
+                  };
+
+            const escalaRight = res2.tipo === 'binario'
+                ? {
+                    type: 'linear',
+                    position: 'right',
+                    min: 0,
+                    max: 1.15,
+                    grid: { drawOnChartArea: false }, // Para que no choque la grilla horizontal
+                    title: { display: true, text: `${NOMBRES_CATEGORIAS[cat2]} (Sí/No)` },
+                    ticks: { callback: v => (v === 1 ? 'Sí' : (v === 0 ? 'No' : '')) }
+                  }
+                : {
+                    type: 'linear',
+                    position: 'right',
+                    beginAtZero: true,
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: 'Horas' },
+                    ticks: { callback: v => v + ' hs' }
+                  };
+
+            chartInstancia = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: etiquetasX,
+                    datasets: [dataset1, dataset2]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { top: 20, bottom: 10, right: 15, left: 5 } },
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        yLeft: escalaLeft,
+                        yRight: escalaRight,
+                        x: { title: { display: true, text: 'Fecha' } }
+                    }
+                }
+            });
+            return;
+        }
+
         // CATEGORÍA: SUEÑO
-        // =========================================================
         if (categoriaSeleccionada === "sueno") {
             let registrosSueno = (data.sueno || []).filter(item => Number(item.pacienteId) === idUsuario);
 
@@ -256,7 +423,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         borderColor: '#FFAB91',        // Color coral / salmón
                         backgroundColor: 'rgba(255, 171, 145, 0.2)',
                         borderWidth: 3,
-                        stepped: true,                  // 👈 Hace el trazo en forma de escalón (subida/bajada recta)
+                        stepped: true,                  // 👈 Hace el trazo en forma de escalón recto
                         pointRadius: 5,
                         pointBackgroundColor: '#FFAB91'
                     }]
@@ -274,8 +441,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     },
                     scales: {
                         y: {
-                            min: 0,        // 👈 Evita que el punto "No" de abajo quede pegado
-                            max: 1.15, // 👈 Da aire arriba del valor 1 ("Sí")
+                            min: 0,       
+                            max: 1.15, 
                             ticks: {
                                 stepSize: 1,
                                 callback: function(value) {
@@ -339,11 +506,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            // Mapeo los días: 1 para "Sí" (hubo período) y 0 para "No"
+            // Mapeo los días: 1 para "Sí"  y 0 para "No"
             const valoresBinarios = listaFechas.map(f => fechasConMenstruacion.has(f) ? 1 : 0);
             const etiquetasFechas = listaFechas.map(f => formatearFecha(f));
 
-            // Genero el gráfico de línea escalonada con Chart.js
+            // Genero el gráfico de línea escalonada 
             chartInstancia = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -405,160 +572,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Error al obtener datos:", error);
     }
-
-    // Si seleccionaron 2 categorías para comparar
-if (categorias.length === 2) {
-    const cat1 = categorias[0];
-    const cat2 = categorias[1];
-
-    // Validación: Estado de ánimo no se puede comparar en gráfico de líneas superpuestas
-    if (cat1 === "estado_animo" || cat2 === "estado_animo") {
-        if (subtitulo) subtitulo.textContent = "El Estado de ánimo solo se puede ver de forma individual.";
-        return;
-    }
-
-    // 1. Generamos el eje X con todas las fechas del período
-    const listaFechas = [];
-    const hoy = new Date();
-    const diasAtras = fechaLimite ? Math.round((hoy - fechaLimite) / (1000 * 60 * 60 * 24)) : 30;
-
-    for (let i = diasAtras; i >= 0; i--) {
-        const f = new Date(hoy);
-        f.setDate(hoy.getDate() - i);
-        listaFechas.push(f.toISOString().split('T')[0]);
-    }
-
-    const etiquetasX = listaFechas.map(f => formatearFecha(f));
-
-    // Función auxiliar para extraer datos de una categoría específica
-    function obtenerDatosCategoria(cat) {
-        if (cat === "sueno") {
-            const registros = (data.sueno || []).filter(item => Number(item.pacienteId) === idUsuario);
-            const mapa = {};
-            registros.forEach(r => {
-                const f = r.fechaDelDia || r.fecha;
-                if (f) mapa[f] = extraerHorasNumericas(r.horasDormidas);
-            });
-            return {
-                tipo: 'horas',
-                valores: listaFechas.map(f => mapa[f] || 0)
-            };
-        } else if (cat === "crisis") {
-            const registros = (data.crisis || []).filter(item => Number(item.pacienteId) === idUsuario);
-            const setFechas = new Set(registros.map(r => r.fecha));
-            return {
-                tipo: 'binario',
-                valores: listaFechas.map(f => setFechas.has(f) ? 1 : 0)
-            };
-        } else if (cat === "menstruacion") {
-            const registros = (data.menstruacion || []).filter(item => Number(item.pacienteId) === idUsuario);
-            const setFechas = new Set();
-            registros.forEach(r => {
-                if (r.fechaInicio && r.fechaTermino) {
-                    let act = new Date(r.fechaInicio + "T00:00:00");
-                    const fin = new Date(r.fechaTermino + "T00:00:00");
-                    while (act <= fin) {
-                        setFechas.add(act.toISOString().split('T')[0]);
-                        act.setDate(act.getDate() + 1);
-                    }
-                } else if (r.fecha) {
-                    setFechas.add(r.fecha);
-                }
-            });
-            return {
-                tipo: 'binario',
-                valores: listaFechas.map(f => setFechas.has(f) ? 1 : 0)
-            };
-        }
-    }
-
-    const res1 = obtenerDatosCategoria(cat1);
-    const res2 = obtenerDatosCategoria(cat2);
-
-    // Definición de colores para las variables
-    const colores = {
-        sueno: '#037ffc',        // Azul
-        crisis: '#FFAB91',       // Salmón/Coral
-        menstruacion: '#E91E63'  // Rosado
-    };
-
-    // Configuramos los dos datasets
-    const dataset1 = {
-        label: NOMBRES_CATEGORIAS[cat1],
-        data: res1.valores,
-        borderColor: colores[cat1] || '#037ffc',
-        backgroundColor: 'transparent',
-        borderWidth: 3,
-        yAxisID: 'yLeft',
-        stepped: res1.tipo === 'binario',
-        tension: res1.tipo === 'horas' ? 0.3 : 0
-    };
-
-    const dataset2 = {
-        label: NOMBRES_CATEGORIAS[cat2],
-        data: res2.valores,
-        borderColor: colores[cat2] || '#E91E63',
-        backgroundColor: 'transparent',
-        borderWidth: 3,
-        yAxisID: 'yRight',
-        stepped: res2.tipo === 'binario',
-        tension: res2.tipo === 'horas' ? 0.3 : 0
-    };
-
-    // Configuración de escalas según el tipo de dato
-    const escalaLeft = res1.tipo === 'horas' 
-        ? {
-            type: 'linear',
-            position: 'left',
-            beginAtZero: true,
-            title: { display: true, text: 'Horas' },
-            ticks: { callback: v => v + ' hs' }
-          }
-        : {
-            type: 'linear',
-            position: 'left',
-            min: 0,
-            max: 1,
-            title: { display: true, text: `${NOMBRES_CATEGORIAS[cat1]} (Sí/No)` },
-            ticks: { callback: v => (v === 1 ? 'Sí' : (v === 0 ? 'No' : '')) }
-          };
-
-    const escalaRight = res2.tipo === 'binario'
-        ? {
-            type: 'linear',
-            position: 'right',
-            min: 0,
-            max: 1,
-            grid: { drawOnChartArea: false }, // Para que no choque la grilla horizontal
-            title: { display: true, text: `${NOMBRES_CATEGORIAS[cat2]} (Sí/No)` },
-            ticks: { callback: v => (v === 1 ? 'Sí' : (v === 0 ? 'No' : '')) }
-          }
-        : {
-            type: 'linear',
-            position: 'right',
-            beginAtZero: true,
-            grid: { drawOnChartArea: false },
-            title: { display: true, text: 'Horas' },
-            ticks: { callback: v => v + ' hs' }
-          };
-
-    chartInstancia = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: etiquetasX,
-            datasets: [dataset1, dataset2]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            layout: { padding: { top: 20, bottom: 10, right: 15, left: 5 } },
-            interaction: { mode: 'index', intersect: false },
-            scales: {
-                yLeft: escalaLeft,
-                yRight: escalaRight,
-                x: { title: { display: true, text: 'Fecha' } }
-            }
-        }
-    });
-}
 });

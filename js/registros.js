@@ -1,4 +1,4 @@
-const IP_BACKEND = "http://10.8.5.149:3000";
+const IP_BACKEND = "http://localhost:3000";
 
 // futuro BACKEND 
 async function apiGuardarRegistro(nuevoRegistro) {
@@ -202,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Guardar Registro con Validación Completa
-    // Guardar Registro Crisis
     if (botonGuardar) {
         botonGuardar.addEventListener("click", async () => {
             const tipoVal = inputTipo.value.trim();
@@ -241,43 +240,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const diaFormat = String(diaVal).padStart(2, '0');
             const mesFormat = String(mesVal).padStart(2, '0');
 
-            // Obtener el usuario activo
-            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
-                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                               || {};
-
-            const idPacienteValido = Number(usuarioActivo.id) || 1;
-
-            // Objeto para enviar al backend POST /crisis
-            const datosCrisis = {
-                pacienteId: idPacienteValido,
-                tipo: String(tipoVal),
-                fecha: `${anioVal}-${mesFormat}-${diaFormat}`,
-                horario: `${horaVal} ${periodoSeleccionado}`,
-                observaciones: String(obsVal)
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: `${anioVal}-${mesFormat}-${diaFormat}`,
+                hora: `${horaVal} ${periodoSeleccionado}`,
+                tipo: "Crisis",
+                info: `Crisis: ${tipoVal}${obsVal ? ` - ${obsVal}` : ''}`,
+                detalles: {
+                    tipoCrisis: tipoVal,
+                    observaciones: obsVal,
+                    periodo: periodoSeleccionado
+                }
             };
 
-            try {
-                const respuesta = await fetch(`${IP_BACKEND}/crisis`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datosCrisis)
-                });
-
-                if (respuesta.ok) {
-                    recordarTipo(tipoVal);
-                    window.location.href = "registros.html";
-                } else {
-                    alert("Error al guardar la crisis en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                alert("No se pudo conectar con el servidor.");
-            }
+            await apiGuardarRegistro(nuevoRegistro);
+            recordarTipo(tipoVal);
+            window.location.href = "registros.html";
         });
     }
-
-    // Guardar Menstruación en Back
+    // === AGREGAR ACÁ: Guardar Menstruación (Inscribe cada día en el Historial) ===
     if (btnGuardarMenstruacion) {
         btnGuardarMenstruacion.addEventListener("click", async () => {
             const dIni = inDiaIni.value.trim();
@@ -289,53 +270,39 @@ document.addEventListener("DOMContentLoaded", () => {
             const aFin = inAnioFin.value.trim();
             const obs = inObsMenstruacion.value.trim();
 
-            // Validaciones
-            if (!dIni || !mIni || aIni.length !== 4) return alert("Ingresá una fecha de inicio válida.");
-            if (!dFin || !mFin || aFin.length !== 4) return alert("Ingresá una fecha de fin válida.");
+            if (!dIni || !mIni || aIni.length !== 4) { alert("Ingresá una fecha de inicio válida."); return; }
+            if (!dFin || !mFin || aFin.length !== 4) { alert("Ingresá una fecha de fin válida."); return; }
 
-            const mIniFormat = String(mIni).padStart(2, '0');
-            const dIniFormat = String(dIni).padStart(2, '0');
-            const mFinFormat = String(mFin).padStart(2, '0');
-            const dFinFormat = String(dFin).padStart(2, '0');
+            const fechaInicio = new Date(Number(aIni), Number(mIni) - 1, Number(dIni));
+            const fechaFin = new Date(Number(aFin), Number(mFin) - 1, Number(dFin));
 
-            const fechaInicioISO = `${aIni}-${mIniFormat}-${dIniFormat}`;
-            const fechaTerminoISO = `${aFin}-${mFinFormat}-${dFinFormat}`;
-
-            if (new Date(fechaTerminoISO) < new Date(fechaInicioISO)) {
-                return alert("La fecha de fin no puede ser anterior a la fecha de inicio.");
+            if (fechaFin < fechaInicio) {
+                alert("La fecha de fin no puede ser anterior a la fecha de inicio.");
+                return;
             }
 
-            // Obtener usuario activo
-            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
-                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                               || {};
+            // Inscribe un registro por cada día dentro del rango
+            let fechaActual = new Date(fechaInicio);
+            while (fechaActual <= fechaFin) {
+                const aStr = fechaActual.getFullYear();
+                const mStr = String(fechaActual.getMonth() + 1).padStart(2, '0');
+                const dStr = String(fechaActual.getDate()).padStart(2, '0');
+                const fechaISO = `${aStr}-${mStr}-${dStr}`;
 
-            const idPacienteValido = Number(usuarioActivo.id) || 1;
+                const registroDia = {
+    id: Date.now() + Math.random(),
+    fechaISO: fechaISO,
+    hora: "", // Totalmente vacío para que no dibuje hora en la tarjeta
+    tipo: "Menstruación",
+    info: `Menstruación${obs ? ` - ${obs}` : ''}`,
+    detalles: { observaciones: obs }
+};
 
-            // Objeto para el endpoint POST /menstruacion
-            const datosMenstruacion = {
-                pacienteId: idPacienteValido,
-                fechaInicio: fechaInicioISO,
-                fechaTermino: fechaTerminoISO,
-                observaciones: String(obs)
-            };
-
-            try {
-                const respuesta = await fetch(`${IP_BACKEND}/menstruacion`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datosMenstruacion)
-                });
-
-                if (respuesta.ok) {
-                    window.location.href = "registros.html";
-                } else {
-                    alert("Error al guardar la menstruación en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                alert("No se pudo conectar con el servidor.");
+                await apiGuardarRegistro(registroDia);
+                fechaActual.setDate(fechaActual.getDate() + 1);
             }
+
+            window.location.href = "registros.html";
         });
     }
 
@@ -389,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cargarHistorialMedicacion();
 
-    // Guardar registro Medicación en Back
+    // Guardar registro Medicación
     if (btnGuardarMed) {
         btnGuardarMed.addEventListener("click", async () => {
             const categoria = selectCategoriaMed.value;
@@ -400,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const m = inMesMed.value.trim();
             const a = inAnioMed.value.trim();
 
-            // Validaciones
             if (!categoria) return alert("Seleccioná si es Crónica o Rescate.");
             if (!nombre) return alert("Ingresá el nombre de la medicación.");
             if (!hora) return alert("Ingresá la hora de la medicación.");
@@ -409,45 +375,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const diaFormat = String(d).padStart(2, '0');
             const mesFormat = String(m).padStart(2, '0');
-            const fechaISO = `${a}-${mesFormat}-${diaFormat}`;
 
-            // Obtener el usuario activo
-            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
-                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                               || {};
-
-            const idPacienteValido = Number(usuarioActivo.id) || 1;
-
-            const datosMedicacion = {
-                pacienteId: idPacienteValido,
-                dosis: String(dosis),
-                horario: String(hora),
-                nombreMedicamento: String(nombre),
-                fecha: fechaISO,
-                tipoMedicacion: String(categoria),
-                momentoDia: String(periodoMedSeleccionado)
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: `${a}-${mesFormat}-${diaFormat}`,
+                hora: `${hora} ${periodoMedSeleccionado}`,
+                tipo: "Medicación",
+                info: `Medicación (${categoria}): ${nombre}${dosis ? ` - ${dosis}` : ''}`,
+                detalles: { categoria, nombre, dosis, periodo: periodoMedSeleccionado }
             };
 
-            try {
-                const respuesta = await fetch(`${IP_BACKEND}/medicaciones`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datosMedicacion)
-                });
+            await apiGuardarRegistro(nuevoRegistro);
 
-                if (respuesta.ok) {
-                    // Guardar en el historial local para el autocompletado del formulario
-                    recordarOpcionMed("meds", nombre);
-                    if (dosis) recordarOpcionMed("dosis", dosis);
+            // Se guardan para autocompletar en los próximos registros de este usuario
+            recordarOpcionMed("meds", nombre);
+            if (dosis) recordarOpcionMed("dosis", dosis);
 
-                    window.location.href = "registros.html";
-                } else {
-                    alert("Error al guardar la medicación en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                alert("No se pudo conectar con el servidor.");
-            }
+            window.location.href = "registros.html";
         });
     }
     if (btnMas) {
@@ -547,38 +491,24 @@ document.addEventListener("DOMContentLoaded", () => {
             const dStr = String(ahora.getDate()).padStart(2, '0');
             const fechaISO = `${aStr}-${mStr}-${dStr}`;
 
-            // Obtener el usuario activo garantizando que tenga un ID numérico
-const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
-|| JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-|| {};
+            let textoVeces = contadorDesperto === 0 
+                ? "No se despertó durante la noche" 
+                : `Se despertó ${contadorDesperto} ${contadorDesperto === 1 ? 'vez' : 'veces'} durante la noche`;
 
-const idPacienteValido = Number(usuarioActivo.id) || 1;
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: fechaISO,
+                hora: `${hDespertaste} ${periodoDespertaste}`,
+                tipo: "Sueño",
+                info: `Durmió ${tiempoDormido}. ${textoVeces}.`,
+                detalles: {
+                    horasDurmió: tiempoDormido,
+                    vecesDesperto: contadorDesperto
+                }
+            };
 
-// Objeto exacto que espera el servidor
-const datosSueno = {
-pacienteId: idPacienteValido,
-fechaDelDia: fechaISO,
-horasDormidas: String(tiempoDormido),
-cuantasVeces: String(contadorDesperto)
-};
-
-// Enviar la petición al backend
-try {
-const respuesta = await fetch(`${IP_BACKEND}/sueno`, {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify(datosSueno)
-});
-
-if (respuesta.ok) {
-window.location.href = "registros.html";
-} else {
-alert("Error al guardar el registro en el servidor.");
-}
-} catch (error) {
-console.error("Error al conectar con el backend:", error);
-alert("No se pudo conectar con el servidor.");
-}
+            await apiGuardarRegistro(nuevoRegistro);
+            window.location.href = "registros.html";
         });
     }
 
@@ -598,7 +528,7 @@ alert("No se pudo conectar con el servidor.");
         });
     }
 
-    // Guardar Registro ESTADO DE ÁNIMO
+    // Guardar Registro ESTADO DE ÁNIMO (automático como Sueño)
     if (btnGuardarAnimo) {
         btnGuardarAnimo.addEventListener("click", async () => {
             const mapaIntensidad = { "1": "baja", "2": "moderada", "3": "alta" };
@@ -610,36 +540,26 @@ alert("No se pudo conectar con el servidor.");
             const dStr = String(ahora.getDate()).padStart(2, '0');
             const fechaISO = `${aStr}-${mStr}-${dStr}`;
 
-            //Obtener el usuario activo
-            const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
-                               || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
-                               || { id: 1 };
+            let horas = ahora.getHours();
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            const periodo = horas >= 12 ? "PM" : "AM";
+            horas = horas % 12 || 12;
+            const horaFormateada = `${String(horas).padStart(2, '0')}:${minutos} ${periodo}`;
 
-            //  objeto con la estructura que espera backend en POST /estadoDeAnimo
-            const datosAnimo = {
-                pacienteId: usuarioActivo.id,
-                emocion: String(emocionSeleccionada),
-                intensidad: String(valorIntensidad),
-                fecha: fechaISO
+            const nuevoRegistro = {
+                id: Date.now(),
+                fechaISO: fechaISO,
+                hora: horaFormateada,
+                tipo: "Estado de Ánimo",
+                info: `Emoción: ${emocionSeleccionada} - Intensidad: ${valorIntensidad}`,
+                detalles: {
+                    emocion: emocionSeleccionada,
+                    intensidad: valorIntensidad
+                }
             };
 
-            // Envia la petición al backend
-            try {
-                const respuesta = await fetch(`${IP_BACKEND}/estadoDeAnimo`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datosAnimo)
-                });
-
-                if (respuesta.ok) {
-                    window.location.href = "registros.html";
-                } else {
-                    alert("Error al guardar el estado de ánimo en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                alert("No se pudo conectar con el servidor.");
-            }
+            await apiGuardarRegistro(nuevoRegistro);
+            window.location.href = "registros.html";
         });
     }
 });
