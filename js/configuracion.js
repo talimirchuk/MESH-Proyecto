@@ -1,4 +1,4 @@
-const IP_BACKEND = "http://10.10.32.41:3000";
+const IP_BACKEND = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Botones principales

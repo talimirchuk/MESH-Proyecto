@@ -207,7 +207,7 @@ function configurarEventosModal() {
                 if (idAEliminar !== null) {
                     try {
                         // Envia la petición DELETE al servidor 
-                        const respuesta = await fetch(`http://10.8.5.215:3000/recordatorios/${idAEliminar}`, {
+                        const respuesta = await fetch(`${IP_BACKEND}/recordatorios/${idAEliminar}`, {
                             method: "DELETE"
                         });
     

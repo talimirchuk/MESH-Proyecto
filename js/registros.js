@@ -1,20 +1,89 @@
 const IP_BACKEND = "http://localhost:3000";
 
-// futuro BACKEND 
+// Envío real de registros según la ruta que espera Express
 async function apiGuardarRegistro(nuevoRegistro) {
-    // Leemos 'usuarioLogueado' (la clave real de tu pantalla)
-    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado")) 
-                       || JSON.parse(sessionStorage.getItem("usuarioLogueado")) 
-                       || { email: "invitado" };
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
+                       || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                       || {};
 
-    // Asignamos el email del usuario activo como identificador único
-    nuevoRegistro.usuarioEmail = usuarioActivo.email;
+    const idUsuario = Number(usuarioActivo.id || usuarioActivo.pacienteId || usuarioActivo.idPaciente);
 
-    const registrosBD = JSON.parse(localStorage.getItem("registrosMESH")) || [];
-    registrosBD.push(nuevoRegistro);
-    localStorage.setItem("registrosMESH", JSON.stringify(registrosBD));
+    if (!idUsuario) {
+        alert("No se encontró una sesión activa. Por favor, iniciá sesión de nuevo.");
+        return { status: 401, message: "Sin sesión" };
+    }
 
-    return { status: 200, message: "Guardado OK" };
+    try {
+        let endpoint = "";
+        let bodyData = {};
+
+        // Mapeo según los endpoints de tu backend Express:
+        if (nuevoRegistro.tipo === "Crisis") {
+            endpoint = "/crisis";
+            bodyData = {
+                pacienteId: idUsuario,
+                tipo: nuevoRegistro.detalles?.tipoCrisis || "",
+                fecha: nuevoRegistro.fechaISO,
+                horario: nuevoRegistro.hora,
+                observaciones: nuevoRegistro.detalles?.observaciones || ""
+            };
+        } else if (nuevoRegistro.tipo === "Menstruación") {
+            endpoint = "/menstruacion";
+            bodyData = {
+                pacienteId: idUsuario,
+                fechaInicio: nuevoRegistro.fechaISO,
+                fechaTermino: nuevoRegistro.fechaISO,
+                observaciones: nuevoRegistro.detalles?.observaciones || ""
+            };
+        } else if (nuevoRegistro.tipo === "Sueño") {
+            endpoint = "/sueno";
+            bodyData = {
+                pacienteId: idUsuario,
+                fechaDelDia: nuevoRegistro.fechaISO,
+                horasDormidas: nuevoRegistro.detalles?.horasDurmió || "0",
+                cuantasVeces: String(nuevoRegistro.detalles?.vecesDesperto || 0)
+            };
+        } else if (nuevoRegistro.tipo === "Medicación") {
+            endpoint = "/medicaciones";
+            bodyData = {
+                pacienteId: idUsuario,
+                dosis: nuevoRegistro.detalles?.dosis || "",
+                horario: nuevoRegistro.hora,
+                nombreMedicamento: nuevoRegistro.detalles?.nombre || "",
+                fecha: nuevoRegistro.fechaISO,
+                tipoMedicacion: nuevoRegistro.detalles?.categoria || "",
+                momentoDia: nuevoRegistro.detalles?.periodo || ""
+            };
+        } else if (nuevoRegistro.tipo === "Estado de Ánimo") {
+            endpoint = "/estadoDeAnimo";
+            bodyData = {
+                pacienteId: idUsuario,
+                emocion: nuevoRegistro.detalles?.emocion || "normal/calmado",
+                intensidad: nuevoRegistro.detalles?.intensidad || "moderada",
+                fecha: nuevoRegistro.fechaISO
+            };
+        }
+
+        const res = await fetch(`${IP_BACKEND}${endpoint}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyData)
+        });
+
+        if (!res.ok) {
+            throw new Error("Error al guardar el registro en el servidor");
+        }
+
+        const data = await res.json();
+        return { status: 200, message: "Guardado OK", data };
+
+    } catch (error) {
+        console.error("Error al conectar con el backend:", error);
+        alert("No se pudo conectar con el servidor. Verificá que el backend esté encendido.");
+        return { status: 500, message: error.message };
+    }
 }
 
 // Restricción de inputs numéricos
