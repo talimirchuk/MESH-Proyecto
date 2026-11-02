@@ -322,6 +322,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false, 
+    animation: false,
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -361,6 +363,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const valores = Object.values(conteoEmociones);
             const coloresFondo = etiquetas.map(e => COLORES_EMOCIONES[e] || "#BFF5E9");
 
+            if (chartInstancia) {
+    chartInstancia.destroy();
+}
+
             chartInstancia = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -373,10 +379,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }]
                 },
                 options: {
+                    
                     responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
+    maintainAspectRatio: false, // <-- Evita recalcular proporciones constantemente
+    animation: false,          // <-- Corta el bucle de parpadeo infinito
+    hover: {
+        mode: 'nearest',
+        intersect: true
+    }
                 }
             });
         }

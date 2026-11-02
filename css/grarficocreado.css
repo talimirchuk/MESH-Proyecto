@@ -89,7 +89,7 @@ body {
     height: auto !important;
 }
 
-.contenedor-grafico, .dashboard-gráficos {
+.contenedor-grafico{
     position: relative;
     max-width: 500px;  /* Ajusta el ancho deseado para la tarjeta */
     max-height: 400px; /* Limita la altura para que no desborde */
@@ -99,4 +99,17 @@ body {
 canvas {
     max-width: 100% !important;
     max-height: 350px !important; /* Mantiene la torta dentro del recuadro */
+}
+/* Agregá o actualizá esta regla */
+.dashboard-gráficos {
+    position: relative;
+    width: 100%;
+    height: 420px; /* <-- Al fijar la altura en px, evita que el canvas tiemble */
+    max-height: 60vh;
+    margin: 0 auto;
+}
+
+#graficoCanvas {
+    width: 100% !important;
+    height: 100% !important;
 }
