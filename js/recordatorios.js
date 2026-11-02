@@ -127,6 +127,15 @@ function configurarEventosModal() {
     const overlayModal = document.getElementById("overlay-modal");
     const form = document.getElementById("form-nuevo-recordatorio");
 
+    /* Conmutación interactiva entre AM y PM */
+    const botonesAmPm = document.querySelectorAll(".btn-ampm");
+    botonesAmPm.forEach(btn => {
+        btn.addEventListener("click", function() {
+            botonesAmPm.forEach(b => b.classList.remove("activo"));
+            this.classList.add("activo");
+        });
+    });
+
     if (btnAbrir && overlayModal) {
         btnAbrir.addEventListener("click", function() {
             overlayModal.classList.remove("oculto");
@@ -145,10 +154,17 @@ function configurarEventosModal() {
             e.preventDefault();
 
             const texto = document.getElementById("input-descripcion").value.trim();
-            const hora = document.getElementById("input-hora").value.trim();
+            let hora = document.getElementById("input-hora").value.trim();
             const fecha = document.getElementById("input-fecha").value.trim();
 
             if (!texto || !hora || !fecha) return;
+
+            /* Obtiene el valor seleccionado AM o PM */
+            const btnActivo = document.querySelector(".btn-ampm.activo");
+            const amPm = btnActivo ? btnActivo.getAttribute("data-valor") : "AM";
+            
+            /* Concatena para guardar tipo "11:11 AM" */
+            const horaFinal = `${hora} ${amPm}`;
 
             const usuarioActivo = JSON.parse(localStorage.getItem("usuarioLogueado"))
                                || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
@@ -157,8 +173,8 @@ function configurarEventosModal() {
             const nuevo = {
                 usuarioEmail: usuarioActivo.email,
                 fecha: fecha,
-                hora: hora,
-                descripcion: texto // Coincide con req.body.descripcion de Express
+                hora: horaFinal,
+                descripcion: texto
             };
 
             try {
@@ -178,6 +194,10 @@ function configurarEventosModal() {
             }
 
             form.reset();
+            /* Restablece el estado activo por defecto a AM */
+            botonesAmPm.forEach(b => b.classList.remove("activo"));
+            if (botonesAmPm[0]) botonesAmPm[0].classList.add("activo");
+
             overlayModal.classList.add("oculto");
         });
     }
@@ -202,28 +222,24 @@ function configurarEventosModal() {
     }
 
     if (btnConfirmar && overlayConfirmar) {
-        if (btnConfirmar && overlayConfirmar) {
-            btnConfirmar.addEventListener("click", async function() {
-                if (idAEliminar !== null) {
-                    try {
-                        // Envia la petición DELETE al servidor 
-                        const respuesta = await fetch(`${IP_BACKEND}/recordatorios/${idAEliminar}`, {
-                            method: "DELETE"
-                        });
-    
-                        if (respuesta.ok) {
-                            // Volvemos a pedir y dibujar la lista actualizada desde el servidor
-                            await renderizarTarjetas();
-                        }
-                    } catch (error) {
-                        console.error("Error al eliminar el recordatorio:", error);
+        btnConfirmar.addEventListener("click", async function() {
+            if (idAEliminar !== null) {
+                try {
+                    const respuesta = await fetch(`${IP_BACKEND}/recordatorios/${idAEliminar}`, {
+                        method: "DELETE"
+                    });
+
+                    if (respuesta.ok) {
+                        await renderizarTarjetas();
                     }
-    
-                    idAEliminar = null;
+                } catch (error) {
+                    console.error("Error al eliminar el recordatorio:", error);
                 }
-                overlayConfirmar.classList.add("oculto");
-            });
-        }
+
+                idAEliminar = null;
+            }
+            overlayConfirmar.classList.add("oculto");
+        });
     }
 }
 
@@ -273,6 +289,7 @@ function configurarMascarasCampos() {
             } else {
                 e.target.value = val;
             }
+            
         });
     }
 }
