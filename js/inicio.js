@@ -1,101 +1,192 @@
 const IP_BACKEND = "http://localhost:3000";
 
+// Helper para poner en mayúscula la primera letra
+function capitalizarPrimeraLetra(texto) {
+    if (!texto) return "";
+    const str = String(texto).trim();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
-    establecerSaludoUsuario();
-    await cargarUltimosRegistrosDelBackend();
-    await cargarProximosRecordatoriosDelBackend();
-});
+    // 1. Obtener usuario activo
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"))
+                 || JSON.parse(sessionStorage.getItem("usuarioLogueado"))
+                 || {};
+                 
+    const idUsuario = Number(usuario.id || usuario.pacienteId || usuario.idPaciente);
+    const emailUsuario = usuario.email || "";
+    const elemNombre = document.getElementById("nombre-usuario");
 
-function obtenerUsuarioSesion() {
-    return JSON.parse(localStorage.getItem("usuarioLogueado")) || 
-           JSON.parse(sessionStorage.getItem("usuarioLogueado"));
-}
-
-function establecerSaludoUsuario() {
-    const usuarioLogueado = obtenerUsuarioSesion();
-    const elSaludo = document.getElementById("saludo-usuario");
-
-    if (usuarioLogueado && usuarioLogueado.nombre) {
-        elSaludo.textContent = `¡Hola ${usuarioLogueado.nombre}!`;
-    } else {
-        elSaludo.textContent = "¡Hola!";
+    let nombreMostrar = usuario.nombre || usuario.nombreYapellido || usuario.nombreCompleto || usuario.nombre_apellido;
+    
+    if (!nombreMostrar && idUsuario) {
+        try {
+            const resUser = await fetch(`${IP_BACKEND}/usuarios/${idUsuario}`);
+            if (resUser.ok) {
+                const datosUser = await resUser.json();
+                nombreMostrar = datosUser.nombre || datosUser.nombreYapellido || datosUser.nombreCompleto || datosUser.email;
+            }
+        } catch (e) {
+            console.warn("No se pudo obtener el usuario.");
+        }
     }
-}
 
-async function cargarUltimosRegistrosDelBackend() {
-    const usuarioLogueado = obtenerUsuarioSesion();
-    if (!usuarioLogueado || !usuarioLogueado.id) return;
+    if (elemNombre) {
+        elemNombre.textContent = nombreMostrar || "Paciente";
+    }
+
+    if (!idUsuario) return;
+
+    // 2. Cargar Resumen de Salud (Historial)
+    try {
+        const resHist = await fetch(`${IP_BACKEND}/pacientes/${idUsuario}/historial`);
+        if (resHist.ok) {
+            const data = await resHist.json();
+
+            // A. SUEÑO
+            const suenoRegs = (data.sueno || []).filter(r => Number(r.pacienteId || r.idPaciente) === idUsuario);
+            if (suenoRegs.length > 0) {
+                const ultSueno = suenoRegs[suenoRegs.length - 1];
+                const elemSueno = document.getElementById("sueno-valor");
+                if (elemSueno) {
+                    let horasStr = String(ultSueno.horasDormidas || ultSueno.horas || '--');
+                    if (!horasStr.includes("hs")) {
+                        horasStr += " hs";
+                    }
+                    elemSueno.textContent = horasStr;
+                }
+            } else {
+                const elemSueno = document.getElementById("sueno-valor");
+                if (elemSueno) elemSueno.textContent = "Sin datos";
+            }
+
+            // B. MEDICACIÓN (Se elimina la terminación "hs:" extra)
+            const medRegs = (data.medicaciones || data.medicacion || []).filter(r => Number(r.pacienteId || r.idPaciente) === idUsuario);
+            if (medRegs.length > 0) {
+                const ultMed = medRegs[medRegs.length - 1];
+                const elemMedHora = document.getElementById("med-hora");
+                const elemMedNombre = document.getElementById("med-nombre");
+
+                const horaReg = ultMed.hora || ultMed.horaTomada || ultMed.horaMedicacion || ultMed.horario || '--:--';
+                
+                if (elemMedHora) {
+                    // Si ya incluye AM o PM, no agrega la palabra "hs"
+                    if (horaReg.toUpperCase().includes("AM") || horaReg.toUpperCase().includes("PM")) {
+                        elemMedHora.textContent = `Última ${horaReg}:`;
+                    } else {
+                        elemMedHora.textContent = `Última ${horaReg} hs:`;
+                    }
+                }
+                
+                if (elemMedNombre) {
+                    elemMedNombre.textContent = `${ultMed.nombreMedicamento || ultMed.medicamento || ''} ${ultMed.dosis || ''}`.trim() || 'Registrada';
+                }
+            }
+
+            // C. ESTADO DE ÁNIMO (Primera letra en mayúscula)
+            const animoRegs = (data.estadodeanimo || []).filter(r => Number(r.pacienteId || r.idPaciente) === idUsuario);
+            if (animoRegs.length > 0) {
+                const ultAnimo = animoRegs[animoRegs.length - 1];
+                const elemAnimoEmocion = document.getElementById("animo-emocion");
+                const elemAnimoIntensidad = document.getElementById("animo-intensidad");
+
+                if (elemAnimoEmocion) {
+                    elemAnimoEmocion.textContent = capitalizarPrimeraLetra(ultAnimo.emocion || '--');
+                }
+                if (elemAnimoIntensidad) {
+                    elemAnimoIntensidad.textContent = capitalizarPrimeraLetra(ultAnimo.intensidad || '');
+                }
+            }
+
+            // D. CRISIS (Etiqueta con primera letra en mayúscula)
+            const crisisRegs = (data.crisis || []).filter(r => Number(r.pacienteId || r.idPaciente) === idUsuario);
+            if (crisisRegs.length > 0) {
+                const ultCrisis = crisisRegs[crisisRegs.length - 1];
+                const elemCrisisFecha = document.getElementById("crisis-fecha");
+                if (elemCrisisFecha && ultCrisis.fecha) {
+                    const partes = ultCrisis.fecha.split("-");
+                    elemCrisisFecha.textContent = partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0].slice(2)}` : ultCrisis.fecha;
+                }
+            } else {
+                const elemCrisisFecha = document.getElementById("crisis-fecha");
+                if (elemCrisisFecha) elemCrisisFecha.textContent = "Sin crisis";
+            }
+        }
+    } catch (err) {
+        console.error("Error al obtener historial:", err);
+    }
+
+    // 3. Cargar Recordatorios + Mostrar Fecha
+    const contenedorRec = document.getElementById("lista-recordatorios-inicio");
+    const elemFechaRec = document.getElementById("fecha-recordatorios");
 
     try {
-        const respuesta = await fetch(`${IP_BACKEND}/registros/ultimos/${usuarioLogueado.id}`);
+        let resRec = await fetch(`${IP_BACKEND}/recordatorios/${encodeURIComponent(emailUsuario)}`);
         
-        if (!respuesta.ok) return;
-
-        const datos = await respuesta.json();
-
-        if (datos.sueno && datos.sueno.horas) {
-            document.getElementById("valor-sueno").textContent = `${datos.sueno.horas} hs`;
-        } else {
-            document.getElementById("valor-sueno").textContent = "-- hs";
+        if (!resRec.ok) {
+            resRec = await fetch(`${IP_BACKEND}/sincronizar`);
         }
 
-        if (datos.medicacion) {
-            document.getElementById("linea-med-hora").textContent = `Última ${datos.medicacion.hora || '--:--'}hs:`;
-            document.getElementById("linea-med-dosis").textContent = `${datos.medicacion.medicamento || ''} ${datos.medicacion.dosis || ''}`.trim();
-        } else {
-            document.getElementById("linea-med-hora").textContent = "Última --:--hs:";
-            document.getElementById("linea-med-dosis").textContent = "--";
-        }
+        if (resRec.ok && contenedorRec) {
+            let dataRec = await resRec.json();
+            
+            if (dataRec.recordatorios) {
+                dataRec = dataRec.recordatorios;
+            }
 
-        if (datos.animo) {
-            document.getElementById("linea-animo-tipo").textContent = datos.animo.estado || datos.animo.emocion || '--';
-            document.getElementById("linea-animo-intensidad").textContent = datos.animo.intensidad || '--';
-        } else {
-            document.getElementById("linea-animo-tipo").textContent = "--";
-            document.getElementById("linea-animo-intensidad").textContent = "--";
-        }
+            const recsUsuario = Array.isArray(dataRec)
+                ? dataRec.filter(r => !r.usuarioEmail || r.usuarioEmail === emailUsuario || Number(r.pacienteId) === idUsuario)
+                : [];
 
-        if (datos.crisis && datos.crisis.fecha) {
-            document.getElementById("linea-crisis-fecha").textContent = datos.crisis.fecha;
-        } else {
-            document.getElementById("linea-crisis-fecha").textContent = "--/--/--";
-        }
+            if (recsUsuario.length === 0) {
+                contenedorRec.innerHTML = `<p class="sin-registros-texto">No tenés recordatorios pendientes.</p>`;
+                if (elemFechaRec) elemFechaRec.textContent = "";
+                return;
+            }
 
-    } catch (error) {
-        console.error("Error al obtener los últimos registros:", error);
+            // Ordenar por fecha y hora
+            recsUsuario.sort((a, b) => new Date(`${a.fecha}T${a.hora || '00:00'}`) - new Date(`${b.fecha}T${b.hora || '00:00'}`));
+
+            const fechaMasCercana = recsUsuario[0].fecha;
+
+            if (elemFechaRec && fechaMasCercana) {
+                const partesF = fechaMasCercana.split("-");
+                if (partesF.length === 3) {
+                    elemFechaRec.textContent = `(${partesF[2]}/${partesF[1]}/${partesF[0].slice(2)})`;
+                } else {
+                    elemFechaRec.textContent = `(${fechaMasCercana})`;
+                }
+            }
+
+            const recordatoriosDelDia = recsUsuario
+                .filter(r => r.fecha === fechaMasCercana)
+                .slice(0, 3);
+
+            let html = "";
+            recordatoriosDelDia.forEach(r => {
+                let horaStr = r.hora || '--:--';
+                if (horaStr.length > 5 && !horaStr.toUpperCase().includes("AM") && !horaStr.toUpperCase().includes("PM")) {
+                    horaStr = horaStr.slice(0, 5);
+                }
+
+                const descripcion = [r.tipo, r.descripcion || r.titulo || r.nombre || r.medicamento].filter(Boolean).join(" - ");
+
+                html += `
+                    <div class="item-recordatorio">
+                        <span class="hora-rec">${horaStr}</span>
+                        <span class="texto-rec">${descripcion || 'Recordatorio'}</span>
+                    </div>
+                `;
+            });
+
+            contenedorRec.innerHTML = html;
+        } else if (contenedorRec) {
+            contenedorRec.innerHTML = `<p class="sin-registros-texto">No tenés recordatorios pendientes.</p>`;
+        }
+    } catch (err) {
+        console.error("Error al obtener recordatorios:", err);
+        if (contenedorRec) {
+            contenedorRec.innerHTML = `<p class="sin-registros-texto">No tenés recordatorios pendientes.</p>`;
+        }
     }
-}
-
-async function cargarProximosRecordatoriosDelBackend() {
-    const usuarioLogueado = obtenerUsuarioSesion();
-    const contenedor = document.getElementById("lista-recordatorios-inicio");
-    if (!usuarioLogueado || !usuarioLogueado.id) return;
-
-    try {
-        const respuesta = await fetch(`${IP_BACKEND}/recordatorios/proximos/${usuarioLogueado.id}`);
-
-        if (!respuesta.ok) return;
-
-        const recordatorios = await respuesta.json();
-
-        contenedor.innerHTML = "";
-
-        if (!recordatorios || recordatorios.length === 0) {
-            contenedor.innerHTML = `<p class="sin-registros-texto">No hay recordatorios próximos.</p>`;
-            return;
-        }
-
-        recordatorios.slice(0, 3).forEach(rec => {
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "item-recordatorio-inicio";
-            itemDiv.innerHTML = `
-                <span class="hora-rec">${rec.hora}</span>
-                <span class="desc-rec">${rec.descripcion}</span>
-            `;
-            contenedor.appendChild(itemDiv);
-        });
-
-    } catch (error) {
-        console.error("Error al cargar los recordatorios:", error);
-    }
-}
+});
