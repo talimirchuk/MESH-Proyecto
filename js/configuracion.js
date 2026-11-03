@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem("usuarioLogueado");
             sessionStorage.removeItem("usuarioLogueado");
 
-            window.location.href = "primera.html";
+            window.location.href = "iniciarsesion.html";
         });
     }
 
