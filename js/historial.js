@@ -77,16 +77,21 @@ async function cargarRegistros() {
         }
 
         if (Array.isArray(data.menstruacion)) {
-            data.menstruacion.filter(esRegistroValido).forEach(item => {
-                if (item.fechaInicio && item.fechaTermino) {
-                    let inicio = new Date(item.fechaInicio + "T00:00:00"); //T00 indica  al navegador que la fecha empieza a la medianoche en la hora local del usuario
-                    let fin = new Date(item.fechaTermino + "T00:00:00");
-                    let contadorDia = 1;
+            const registrosMenst = data.menstruacion.filter(esRegistroValido);
 
-                    for (let d = new Date(inicio); d <= fin; d.setDate(d.getDate() + 1)) {
-                        const anio = d.getFullYear();
-                        const mes = String(d.getMonth() + 1).padStart(2, '0');
-                        const dia = String(d.getDate()).padStart(2, '0');
+            // 1. Si los registros vienen con rango (fechaInicio y fechaTermino)
+            registrosMenst.forEach(item => {
+                if (item.fechaInicio && item.fechaTermino) {
+                    const [aIni, mIni, dIni] = item.fechaInicio.split('-').map(Number);
+                    const [aFin, mFin, dFin] = item.fechaTermino.split('-').map(Number);
+
+                    let fechaActual = new Date(aIni, mIni - 1, dIni);
+                    const fechaLimite = new Date(aFin, mFin - 1, dFin);
+
+                    while (fechaActual <= fechaLimite) {
+                        const anio = fechaActual.getFullYear();
+                        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+                        const dia = String(fechaActual.getDate()).padStart(2, '0');
                         const fechaIteracion = `${anio}-${mes}-${dia}`;
 
                         arrayUnificado.push({
@@ -94,11 +99,25 @@ async function cargarRegistros() {
                             fechaISO: fechaIteracion,
                             hora: "",
                             tipo: "Menstruación",
-                            info: `Menstruación (Día ${contadorDia})${item.observaciones ? ` - ${item.observaciones}` : ''}`
+                            info: `Menstruación${item.observaciones ? ` - ${item.observaciones}` : ''}`
                         });
-                        contadorDia++;
+
+                        fechaActual.setDate(fechaActual.getDate() + 1);
                     }
                 }
+            });
+
+            // 2. Si vienen como registros individuales guardados por fecha
+            const registrosPorFecha = registrosMenst.filter(item => item.fecha && !item.fechaInicio);
+
+            registrosPorFecha.forEach(item => {
+                arrayUnificado.push({
+                    id: item.id,
+                    fechaISO: item.fecha,
+                    hora: "",
+                    tipo: "Menstruación",
+                    info: `Menstruación${item.observaciones ? ` - ${item.observaciones}` : ''}`
+                });
             });
         }
 
